@@ -1,0 +1,27 @@
+{
+  "name": "garden-planner",
+  "version": "1.0.0",
+  "description": "Helps plan gardens",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "javascript": "gulp javascript",
+    "prepare": "gulp prepare",
+    "test": "gulp test"
+  },
+  "author": "Colin Jeanne <colinjeanne@hotmail.com> (http://www.colinjeanne.net)",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^11.0.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-jasmine": "^2.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "react": "^0.13.0",
+    "flux": "^2.1.0"
+  },
+  "private": true
+}

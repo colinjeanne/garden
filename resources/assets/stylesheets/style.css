@@ -1,0 +1,174 @@
+header {
+   display: block;
+   font-size: 130%;
+   font-family: sans-serif;
+   margin-bottom: 0.5em;
+}
+
+section header {
+   font-size: 125%;
+}
+
+section section header {
+   font-size: 110%;
+}
+
+body {
+   margin: 0;
+   padding: 1em;
+   overflow: hidden;
+}
+
+body > header {
+   margin-bottom: 0.5em;
+}
+
+button {
+   -moz-appearance: none;
+   -webkit-appearance: none;
+   appearance: none;
+   text-align: center;
+   color: inherit;
+   background-color: transparent;
+   border: thin solid cornflowerblue;
+}
+
+button:hover {
+   color: white;
+   background-color: cornflowerblue;
+}
+
+fieldset {
+   border-style: none;
+   margin: 0;
+   padding: 0;
+}
+
+#userContainer {
+   float: right;
+}
+
+#mainNavigation {
+   padding: 0;
+   font-family: sans-serif;
+   display: block;
+   border-bottom: solid thin black;
+   clear: left;
+}
+
+#mainNavigation ol {
+   margin: 0;
+   padding: 0;
+}
+
+#mainNavigation li {
+   margin: 0.5em 0.25em 0.5em 0;
+   display: inline-block;
+}
+
+#mainNavigation label {
+   padding: 0.5em 0.5em;
+   color: white;
+   background-color: cornflowerblue;
+   cursor: pointer;
+}
+
+#mainNavigation label:hover {
+   color: white;
+   background-color: darkblue;
+}
+
+#mainNavigation input {
+   display: none;
+}
+
+#mainNavigation input:checked ~ label {
+   color: white;
+   background-color: blue;
+}
+
+#content {
+   padding-top: 0.5em;
+}
+
+.plantList,
+.plantListAddBox {
+   font-family: sans-serif;
+   width: 9em;
+   float: left;
+   clear: left;
+}
+
+.plantList ol {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+}
+
+.plantList li {
+   margin: 0.5em 0;
+   padding: 0.5em 0.5em;
+   color: white;
+   background-color: cornflowerblue;
+   cursor: pointer;
+}
+
+.plantList li:hover {
+   color: white;
+   background-color: darkblue;
+}
+
+.plantList input[type="search"],
+.plantList select
+{
+   margin-bottom: 0.5em;
+   display: block;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+.plantListAddBox {
+   margin-bottom: 0.5em;
+   display: block;
+   box-sizing: border-box;
+}
+
+.plantListAddBox input {
+   width: 67%;
+   box-sizing: border-box;
+}
+
+.plantListAddBox button {
+   width: 33%;
+}
+
+.plantView {
+   padding-left: 0.5em;
+   width: auto;
+   overflow: hidden;
+}
+
+.plantView div {
+   margin-bottom: 0.5em;
+}
+
+.plantView label {
+   margin-right: 0.5em;
+}
+
+.plantView label::after {
+   content: ':';
+}
+
+.plantView input[type="number"] {
+   width: 5em;
+   margin-right: 0.5em;
+}
+
+.plantView textarea {
+   display: block;
+}
+
+.plantView output {
+   font-weight: bold;
+}
