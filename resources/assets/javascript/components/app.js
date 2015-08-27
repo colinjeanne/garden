@@ -1,3 +1,4 @@
+import Constants from '../constants/constants';
 import NavigationStore from '../stores/navigationStore';
 import PlantCalendarList from './plantCalendarList';
 import PlantsViewPage from './plantsViewPage';
@@ -9,7 +10,7 @@ export default class App extends React.Component {
         super(props);
         
         this.state = {
-            viewPage: 'plants'
+            viewPage: Constants.PLANTS_PAGE
         };
     }
     
@@ -30,8 +31,19 @@ export default class App extends React.Component {
     
     render() {
         let page;
-        if (this.state.viewPage === 'plants') {
-            page = <PlantsViewPage id="content" />
+        switch (this.state.viewPage) {
+            case Constants.CALENDAR_PAGE:
+                break;
+            
+            case Constants.PLANTS_PAGE:
+                page = <PlantsViewPage id="content" />;
+                break;
+            
+            case Constants.PLANTING_SUMMARY_PAGE:
+                break;
+            
+            case Constants.SPACE_PLANNING_PAGE:
+                break;
         }
         
         return (

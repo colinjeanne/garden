@@ -11,5 +11,9 @@ export default {
     PLANT_UPDATE_UNIT:                  0x2007,
     PLANT_UPDATE_UNIT_PER_SQUARE_FOOT:  0x2008,
     
-    SHOW_PAGE:                          0x3000
+    SHOW_PAGE:                          0x3000,
+    CALENDAR_PAGE:                      'calendar',
+    PLANTS_PAGE:                        'plants',
+    PLANTING_SUMMARY_PAGE:              'plantingSummary',
+    SPACE_PLANNING_PAGE:                'spacePlanning'
 };
