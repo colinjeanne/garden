@@ -1,7 +1,7 @@
 import Dispatcher from '../dispatcher/dispatcher';
 import Constants from '../constants/constants';
 
-export default class Actions {
+export default class PlantActions {
     static createPlant(name) {
         Dispatcher.dispatch({
             actionType: Constants.PLANT_CREATE,

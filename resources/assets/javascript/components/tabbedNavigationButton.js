@@ -1,10 +1,9 @@
+import NavigationActions from '../actions/navigationActions';
 import React from 'react';
 
 export default class TabbedNavigationButton extends React.Component {
     handleChange() {
-        this.props.onTabSelect({
-            id: this.props.id
-        });
+        NavigationActions.showPage(this.props.id);
     }
     
     render() {

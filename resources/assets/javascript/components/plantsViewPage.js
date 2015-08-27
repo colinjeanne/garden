@@ -4,8 +4,6 @@ import PlantStore from '../stores/plantStore';
 import PlantView from './plantView';
 import React from 'react';
 
-let dispatchToken;
-
 export default class PlantsViewPage extends React.Component {
     constructor(props) {
         super(props);
@@ -18,12 +16,11 @@ export default class PlantsViewPage extends React.Component {
     }
     
     componentDidMount() {
-        dispatchToken = PlantStore.addChangeListener(
-            this.handlePlantStoreChange.bind(this));
+        PlantStore.addChangeListener(this.handlePlantStoreChange.bind(this));
     }
     
     componentWillUnmount() {
-        PlantStore.removeChangeListener(dispatchToken);
+        PlantStore.removeChangeListener(this.handlePlantStoreChange);
     }
     
     handleSelect(plant) {

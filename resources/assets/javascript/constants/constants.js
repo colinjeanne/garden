@@ -9,5 +9,7 @@ export default {
     PLANT_UPDATE_RARITY:                0x2005,
     PLANT_UPDATE_TASTE:                 0x2006,
     PLANT_UPDATE_UNIT:                  0x2007,
-    PLANT_UPDATE_UNIT_PER_SQUARE_FOOT:  0x2008
+    PLANT_UPDATE_UNIT_PER_SQUARE_FOOT:  0x2008,
+    
+    SHOW_PAGE:                          0x3000
 };
