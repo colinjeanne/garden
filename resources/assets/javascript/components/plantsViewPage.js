@@ -1,6 +1,5 @@
 import PlantList from './plantList';
 import PlantListAddBox from './plantListAddBox';
-import PlantStore from '../stores/plantStore';
 import PlantView from './plantView';
 import React from 'react';
 
@@ -9,29 +8,19 @@ export default class PlantsViewPage extends React.Component {
         super(props);
         
         this.state = {
-            plants: PlantStore.getAll(),
-            
             selectedPlantName: ''
         };
     }
     
-    componentDidMount() {
-        PlantStore.addChangeListener(this.handlePlantStoreChange.bind(this));
-    }
-    
-    componentWillUnmount() {
-        PlantStore.removeChangeListener(this.handlePlantStoreChange);
+    static get propTypes() {
+        return {
+            plants: React.PropTypes.array.isRequired,
+        };
     }
     
     handleSelect(plant) {
         this.setState({
             selectedPlantName: plant.name
-        });
-    }
-    
-    handlePlantStoreChange() {
-        this.setState({
-            plants: PlantStore.getAll()
         });
     }
     
@@ -48,7 +37,7 @@ export default class PlantsViewPage extends React.Component {
             <div className="plantsViewPage">
                 <PlantListAddBox />
                 <PlantList
-                    plants={this.state.plants}
+                    plants={this.props.plants}
                     onSelect={this.handleSelect.bind(this)} />
                 {plantView}
             </div>

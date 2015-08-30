@@ -11,18 +11,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
    </head>
    <body>
-      <header>
-         Kathy's Garden Planner
-         <span id="userContainer">
-            <span id="currentUser"></span>
-            <span id="signInButton">
-               <div
-                  class="g-signin2"
-                  data-onsuccess="signinSucceeded"
-                  data-onfailure="signinFailed"></div>
-            </span>
-         </span>
-      </header>
       <div id="app"></div>
       <script src="main.js"></script>
    </body>

@@ -172,3 +172,7 @@ fieldset {
 .plantView output {
    font-weight: bold;
 }
+
+.signInPage {
+   text-align: center;
+}

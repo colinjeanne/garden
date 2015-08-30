@@ -1,7 +1,7 @@
 import App from './components/app';
 import React from 'react';
+import UserActions from './actions/userActions';
 
-const signinSucceeded = googleUser => {};
 const signinFailed = error => {};
 
 React.render(
@@ -9,5 +9,5 @@ React.render(
     document.getElementById('app')
 );
 
-window.signinSucceeded = signinSucceeded;
+window.signinSucceeded = UserActions.signInUser;
 window.signinFailed = signinFailed;

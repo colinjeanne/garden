@@ -47,7 +47,7 @@ class NavigationStore extends EventEmitter {
 
 const navigationStore = new NavigationStore();
 
-Dispatcher.register(action => {
+navigationStore.dispatchToken = Dispatcher.register(action => {
     switch (action.actionType) {
         case Constants.SHOW_PAGE:
             currentPage = action.page;

@@ -61,7 +61,7 @@ class PlantStore extends EventEmitter {
 
 const plantStore = new PlantStore();
 
-Dispatcher.register(action => {
+plantStore.dispatchToken = Dispatcher.register(action => {
     switch (action.actionType) {
         case Constants.PLANT_CREATE:
             create(action.name);

@@ -15,5 +15,7 @@ export default {
     CALENDAR_PAGE:                      'calendar',
     PLANTS_PAGE:                        'plants',
     PLANTING_SUMMARY_PAGE:              'plantingSummary',
-    SPACE_PLANNING_PAGE:                'spacePlanning'
+    SPACE_PLANNING_PAGE:                'spacePlanning',
+    
+    USER_SIGNIN:                        0x4000
 };
