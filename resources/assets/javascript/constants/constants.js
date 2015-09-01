@@ -17,5 +17,12 @@ export default {
     PLANTING_SUMMARY_PAGE:              'plantingSummary',
     SPACE_PLANNING_PAGE:                'spacePlanning',
     
+    SELECT_PLANT:                       0x3100,
+    FILTER_PLANTS:                      0x3101,
+    
+    SORT_PLANTS:                        0x3200,
+    SORT_TYPE_ALPHABETICAL:             'alphabetical',
+    SORT_TYPE_VALUE:                    'value',
+    
     USER_SIGNIN:                        0x4000
 };

@@ -1,21 +1,17 @@
+import Constants from '../constants/constants';
+import NavigationActions from '../actions/navigationActions';
 import React from 'react';
 
 export default class PlantListSortBox extends React.Component {
-    static get propTypes() {
-        return {
-            onChange: React.PropTypes.func.isRequired,
-        };
-    }
-    
     handleChange(event) {
-        this.props.onChange(event.target.value);
+        NavigationActions.updateSortType(event.target.value);
     }
     
     render() {
         return (
             <select onChange={this.handleChange.bind(this)}>
-                <option value="alphabetical">Sort by name</option>
-                <option value="value">Sort by value</option>
+                <option value={Constants.SORT_TYPE_ALPHABETICAL}>Sort by name</option>
+                <option value={Constants.SORT_TYPE_VALUE}>Sort by value</option>
             </select>
         );
     }

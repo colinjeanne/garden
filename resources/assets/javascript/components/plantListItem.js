@@ -1,17 +1,16 @@
+import NavigationActions from '../actions/navigationActions';
 import React from 'react';
 
 export default class PlantListItem extends React.Component {
-    static get propTypes() {
-        return {
-            onClick: React.PropTypes.func.isRequired
-        };
+    handleClick() {
+        NavigationActions.selectPlant(this.props.name);
     }
     
     render() {
         return (
             <li
                 className="plantListItem"
-                onClick={this.props.onClick}>
+                onClick={this.handleClick.bind(this)}>
                 <span className="plantListItemName">{this.props.name}</span>
                 <span className="plantListItemDetail">{this.props.detail}</span>
             </li>

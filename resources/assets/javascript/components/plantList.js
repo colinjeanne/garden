@@ -1,35 +1,16 @@
+import Constants from '../constants/constants';
 import PlantListItem from './plantListItem';
 import PlantListSearchBox from './plantListSearchBox';
 import PlantListSortBox from './plantListSortBox';
 import React from 'react';
 
 export default class PlantList extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            searchString: '',
-            sortType: 'alphabetical'
-        };
-    }
-    
     static get propTypes() {
         return {
             plants: React.PropTypes.any.isRequired,
-            onSelect: React.PropTypes.func.isRequired
+            filterString: React.PropTypes.string.isRequired,
+            sortType: React.PropTypes.string.isRequired
         };
-    }
-    
-    handleSearchStringChange(searchString) {
-        this.setState({
-            searchString: searchString
-        });
-    }
-    
-    handleSortTypeChange(sortType) {
-        this.setState({
-            sortType: sortType
-        });
     }
     
     render() {
@@ -38,7 +19,7 @@ export default class PlantList extends React.Component {
         
         const sortedPlantListItems = allPlants
             .sort((plantA, plantB) => {
-                if (this.state.sortType === 'alphabetical') {
+                if (this.props.sortType === Constants.SORT_TYPE_ALPHABETICAL) {
                     if (plantA.name < plantB.name) {
                         return -1;
                     } else if (plantA.name > plantB.name) {
@@ -46,7 +27,7 @@ export default class PlantList extends React.Component {
                     }
                     
                     return 0;
-                } else if (this.state.sortType === 'value') {
+                } else if (this.props.sortType === Constants.SORT_TYPE_VALUE) {
                     if (plantA.value < plantB.value) {
                         return 1;
                     } else if (plantA.value > plantB.value) {
@@ -59,15 +40,13 @@ export default class PlantList extends React.Component {
         
         const filteredPlantListItems = sortedPlantListItems
             .filter(plant => {
-                const searchString = this.state.searchString.toUpperCase();
-                return (plant.name.toUpperCase().indexOf(searchString) !== -1) ||
-                    (plant.label && (plant.label.toUpperCase().indexOf(searchString) !== -1));
+                const filterString = this.props.filterString.toUpperCase();
+                return (plant.name.toUpperCase().indexOf(filterString) !== -1) ||
+                    (plant.label && (plant.label.toUpperCase().indexOf(filterString) !== -1));
             });
         
         const plantListItems = filteredPlantListItems.map(
             plant => {
-                const handleClick = () => this.props.onSelect(plant);
-                
                 let value;
                 if (plant.value) {
                     value = ' ($' + plant.value.toFixed(2) + ')';
@@ -77,18 +56,15 @@ export default class PlantList extends React.Component {
                     <PlantListItem
                         key={plant.name}
                         name={plant.name}
-                        detail={value}
-                        onClick={handleClick} />
+                        detail={value} />
                 );
             }
         );
         
         return (
             <div className="plantList">
-                <PlantListSearchBox
-                    onChange={this.handleSearchStringChange.bind(this)} />
-                <PlantListSortBox
-                    onChange={this.handleSortTypeChange.bind(this)} />
+                <PlantListSearchBox />
+                <PlantListSortBox />
                 <ol>
                     {plantListItems}
                 </ol>

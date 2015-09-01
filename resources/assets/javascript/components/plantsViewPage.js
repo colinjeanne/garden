@@ -4,32 +4,21 @@ import PlantView from './plantView';
 import React from 'react';
 
 export default class PlantsViewPage extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            selectedPlantName: ''
-        };
-    }
-    
     static get propTypes() {
         return {
-            plants: React.PropTypes.array.isRequired,
+            plants: React.PropTypes.object.isRequired,
+            selectedPlantName: React.PropTypes.string,
+            filterString: React.PropTypes.string.isRequired,
+            sortType: React.PropTypes.string.isRequired
         };
-    }
-    
-    handleSelect(plant) {
-        this.setState({
-            selectedPlantName: plant.name
-        });
     }
     
     render() {
         let plantView;
-        if (this.state.selectedPlantName) {
+        if (this.props.selectedPlantName) {
             plantView = (
                 <PlantView
-                    plantName={this.state.selectedPlantName} />
+                    plantName={this.props.selectedPlantName} />
             );
         }
         
@@ -38,7 +27,8 @@ export default class PlantsViewPage extends React.Component {
                 <PlantListAddBox />
                 <PlantList
                     plants={this.props.plants}
-                    onSelect={this.handleSelect.bind(this)} />
+                    filterString={this.props.filterString}
+                    sortType={this.props.sortType} />
                 {plantView}
             </div>
         );

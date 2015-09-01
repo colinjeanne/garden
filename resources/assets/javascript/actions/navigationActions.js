@@ -8,4 +8,25 @@ export default class NavigationActions {
             page: page
         });
     }
+    
+    static selectPlant(plantName) {
+        Dispatcher.dispatch({
+            actionType: Constants.SELECT_PLANT,
+            plantName: plantName
+        });
+    }
+    
+    static filterPlants(filterString) {
+        Dispatcher.dispatch({
+            actionType: Constants.FILTER_PLANTS,
+            filterString: filterString
+        });
+    }
+    
+    static updateSortType(sortType) {
+        Dispatcher.dispatch({
+            actionType: Constants.SORT_PLANTS,
+            sortType: sortType
+        });
+    }
 }

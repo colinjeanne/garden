@@ -38,13 +38,17 @@ export default class App extends React.Component {
     
     handleNavigationStoreChange() {
         this.setState({
-            viewPage: NavigationStore.getCurrentPage()
+            viewPage: NavigationStore.getCurrentPage(),
+            selectedPlantName: NavigationStore.getSelectedPlantName(),
+            filterString: NavigationStore.getFilterString(),
+            sortType: NavigationStore.getSortType()
         });
     }
     
     handlePlantStoreChange() {
         this.setState({
-            plants: PlantStore.getAll()
+            plants: PlantStore.getAll(),
+            selectedPlantName: NavigationStore.getSelectedPlantName()
         });
     }
     
@@ -68,6 +72,9 @@ export default class App extends React.Component {
                 case Constants.PLANTS_PAGE:
                     page = <PlantsViewPage
                         plants={PlantStore.getAll()}
+                        selectedPlantName={NavigationStore.getSelectedPlantName()}
+                        filterString={NavigationStore.getFilterString()}
+                        sortType={NavigationStore.getSortType()}
                         id="content" />;
                     break;
                 

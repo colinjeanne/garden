@@ -1,14 +1,9 @@
+import NavigationActions from '../actions/navigationActions';
 import React from 'react';
 
 export default class PlantListSearchBox extends React.Component {
-    static get propTypes() {
-        return {
-            onChange: React.PropTypes.func.isRequired,
-        };
-    }
-    
     handleChange(event) {
-        this.props.onChange(event.target.value);
+        NavigationActions.filterPlants(event.target.value);
     }
     
     render() {

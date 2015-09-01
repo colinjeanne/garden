@@ -5,6 +5,9 @@ import Constants from '../constants/constants';
 const NAVIGATE_EVENT = 'navigate';
 
 let currentPage = null;
+let selectedPlantName = null;
+let filterString = '';
+let sortType = Constants.SORT_TYPE_ALPHABETICAL;
 
 class NavigationStore extends EventEmitter {
     getAllPages() {
@@ -32,6 +35,18 @@ class NavigationStore extends EventEmitter {
         return currentPage;
     }
     
+    getSelectedPlantName() {
+        return selectedPlantName;
+    }
+    
+    getFilterString() {
+        return filterString;
+    }
+    
+    getSortType() {
+        return sortType;
+    }
+    
     emitChange() {
         this.emit(NAVIGATE_EVENT);
     }
@@ -51,6 +66,21 @@ navigationStore.dispatchToken = Dispatcher.register(action => {
     switch (action.actionType) {
         case Constants.SHOW_PAGE:
             currentPage = action.page;
+            navigationStore.emitChange();
+            break;
+            
+        case Constants.SELECT_PLANT:
+            selectedPlantName = action.plantName;
+            navigationStore.emitChange();
+            break;
+            
+        case Constants.FILTER_PLANTS:
+            filterString = action.filterString;
+            navigationStore.emitChange();
+            break;
+        
+        case Constants.SORT_PLANTS:
+            sortType = action.sortType;
             navigationStore.emitChange();
             break;
     }
