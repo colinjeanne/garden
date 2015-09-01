@@ -1,4 +1,4 @@
-import Actions from '../actions/actions';
+import PlantActions from '../actions/plantActions';
 import React from 'react';
 
 export default class PlantListAddBox extends React.Component {
