@@ -21,7 +21,7 @@ export default class PlantListAddBox extends React.Component {
         }
         
         if (addInput.checkValidity()) {
-            Actions.createPlant(name);
+            PlantActions.createPlant(name);
             this.setState({
                 name: ''
             });
