@@ -1,5 +1,5 @@
-import Actions from '../actions/actions';
 import EditableText from './editableText';
+import PlantActions from '../actions/plantActions';
 import PlantStore from '../stores/plantStore';
 import React from 'react';
 
@@ -11,55 +11,55 @@ export default class PlantView extends React.Component {
     }
     
     handleDifficultyChanged(event) {
-        Actions.updatePlantDifficulty(
+        PlantActions.updatePlantDifficulty(
             this.props.plantName,
             event.target.valueAsNumber);
     }
     
     handleGrowTimeChanged(event) {
-        Actions.updatePlantGrowTime(
+        PlantActions.updatePlantGrowTime(
             this.props.plantName,
             event.target.valueAsNumber);
     }
     
     handleLabelChanged(event) {
-        Actions.updatePlantLabel(
+        PlantActions.updatePlantLabel(
             this.props.plantName,
             event.target.value);
     }
     
     handleNotesChanged(event) {
-        Actions.updatePlantNotes(
+        PlantActions.updatePlantNotes(
             this.props.plantName,
             event.target.value);
     }
     
     handlePricePerUnitChanged(event) {
-        Actions.updatePlantPricePerUnit(
+        PlantActions.updatePlantPricePerUnit(
             this.props.plantName,
             event.target.valueAsNumber);
     }
     
     handleRarityChanged(event) {
-        Actions.updatePlantRarity(
+        PlantActions.updatePlantRarity(
             this.props.plantName,
             event.target.valueAsNumber);
     }
     
     handleTasteChanged(event) {
-        Actions.updatePlantTaste(
+        PlantActions.updatePlantTaste(
             this.props.plantName,
             event.target.valueAsNumber);
     }
     
     handleUnitChanged(event) {
-        Actions.updatePlantUnit(
+        PlantActions.updatePlantUnit(
             this.props.plantName,
             event.target.value);
     }
     
     handleUnitPerSquareFootChanged(event) {
-        Actions.updatePlantUnitPerSquareFoot(
+        PlantActions.updatePlantUnitPerSquareFoot(
             this.props.plantName,
             event.target.valueAsNumber);
     }
