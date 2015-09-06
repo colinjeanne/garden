@@ -4,6 +4,7 @@ import Constants from '../constants/constants';
 
 const CHANGE_EVENT = 'change';
 let plants = new Map();
+let idToken = null;
 
 const create = name => plants.set(
     name,
@@ -36,6 +37,44 @@ const update = (name, updates) => {
     
     plants.set(name, plant);
 };
+
+const getGetHeaders = idToken =>
+    new Headers({
+        'Authorization': `Bearer ${idToken}`,
+        'Accept': 'application/json'
+    });
+
+const getPostOrPutHeaders = idToken =>
+    new Headers({
+        'Authorization': `Bearer ${idToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    });
+
+const getDeleteHeaders = idToken =>
+    new Headers({
+        'Authorization': `Bearer ${idToken}`
+    });
+
+const getAllPlants = idToken =>
+    fetch(
+        '/plants',
+        {
+            method: 'GET',
+            headers: getGetHeaders(idToken)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    then(json => {
+        plants = new Map();
+        return json.map(plant => update(plant.name, plant));
+    }).
+    catch(err => console.log(err));
 
 class PlantStore extends EventEmitter {
     getAll() {
@@ -116,6 +155,12 @@ plantStore.dispatchToken = Dispatcher.register(action => {
         case Constants.PLANT_UPDATE_UNIT_PER_SQUARE_FOOT:
             update(action.name, {unitPerSquareFoot: action.unitPerSquareFoot});
             plantStore.emitChange();
+            break;
+            
+        case Constants.USER_SIGNIN:
+            idToken = action.user.getAuthResponse()['id_token'];
+            getAllPlants(idToken).
+                then(() => plantStore.emitChange());
             break;
     }
 });
