@@ -4,6 +4,9 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # Ensure the Authorization header is passed through
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]
