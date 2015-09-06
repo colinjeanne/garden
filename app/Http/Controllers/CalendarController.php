@@ -35,7 +35,7 @@ class CalendarController extends Controller
         $startDate = new \DateTime();
         $endDate = new \DateTime("today +30 day");
 
-        $events = $this->db->getRepository('PlantEvent')
+        $events = $this->db->getRepository(PlantEvent::class)
             ->getPlantsReadyBetween($this->user->getId(), $startDate, $endDate);
 
         abort(501);
@@ -74,8 +74,8 @@ class CalendarController extends Controller
         $this->validate(
             $json,
             [
-                'plantedMonth'  => 'required|date|date_format:Y-m|after:01 January 2010|before:31 December 2020',
-                'readyMonth'    => 'required|date|date_format:Y-m|after:01 January 2010|before:31 December 2020',
+                'plantedDate'   => 'required|date|date_format:Y-m|after:01 January 2010|before:31 December 2020',
+                'readyDate'     => 'required|date|date_format:Y-m|after:01 January 2010|before:31 December 2020',
                 'isDelayed'     => 'required|boolean',
                 'isDead'        => 'required|boolean',
                 'harvests'      => 'required|array',

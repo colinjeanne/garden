@@ -23,7 +23,7 @@ class PlantsController extends Controller
 
     public function __construct(UserProvider $userProvider, DB $db)
     {
-        $this->user = $user->getCurrentUser();
+        $this->user = $userProvider->getCurrentUser();
         $this->db = $db;
 
         $this->middleware('auth');
@@ -33,12 +33,12 @@ class PlantsController extends Controller
 
     public function getPlants()
     {
-        $plants = $this->db->getRepository('Plant')
+        $plants = $this->db->getRepository(Plant::class)
             ->findAllForUser($this->user->getId());
 
         $plantsJson = array_map(
-            $plants,
-            [App\Http\Controllers\PlantsController::class, 'plantToJson']);
+            [PlantsController::class, 'plantToJson'],
+            $plants);
 
         return response()->json($plantsJson);
     }
@@ -61,7 +61,7 @@ class PlantsController extends Controller
 
     public function getPlant($plantId)
     {
-        $plant = $this->db->getRepository('Plant')
+        $plant = $this->db->getRepository(Plant::class)
             ->findForUser($plantId, $this->user->getId());
 
         return response()->json(self::plantToJson($plant));
@@ -73,7 +73,7 @@ class PlantsController extends Controller
 
         $this->validatePlantJson($json);
 
-        $plant = $this->db->getRepository('Plant')
+        $plant = $this->db->getRepository(Plant::class)
             ->findForUser($plantId, $this->user->getId());
         if (!$plant) {
             abort(404);

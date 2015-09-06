@@ -54,7 +54,7 @@ class HttpAuthorizationUserProvider implements UserProvider
         if (!$this->hasAuthorizationHeaderBeenParsed) {
             $this->log->info('Attempting Id token authorization');
       
-            $authorization = $request->header('Authorization');
+            $authorization = $this->request->header('Authorization');
             if ($authorization !== null) {
                 $this->log->info(
                     'Authorization header is present',
@@ -70,7 +70,7 @@ class HttpAuthorizationUserProvider implements UserProvider
                     $claims = $googleJwtAuth->getClaims($jwt);
                     if (isset($claims['iss']) && isset($claims['sub'])) {
                         $this->log->info('Google claims found');
-                        $claim = $this->db->getRepository('Claim')
+                        $claim = $this->db->getRepository(Claim::class)
                             ->findByIssuerAndSubject(
                                 $claims['iss'],
                                 $claims['sub']);

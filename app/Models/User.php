@@ -16,7 +16,7 @@ class User
     private $id;
 
     /**
-     * @OneToMany(targetEntity="Claim", mappedBy="user")
+     * @OneToMany(targetEntity="App\Models\Claim", mappedBy="user")
      * @var App\Models\Claim[]
      */
     private $claims = null;

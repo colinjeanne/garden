@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use App\Models\PlantEvent;
 use Doctrine\ORM\EntityRepository;
 
 class PlantEventRepository extends EntityRepository
@@ -8,10 +9,10 @@ class PlantEventRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
-           ->from('PlantEvent', 'p')
+           ->from(PlantEvent::class, 'p')
            ->where($qb->expr()->andX(
-                $qb->eq('p.user_id', '?1'),
-                $qb->between('p.readyDate', '?2', '?3')
+                $qb->expr()->eq('p.user', '?1'),
+                $qb->expr()->between('p.readyDate', '?2', '?3')
             ))
            ->orderBy('p.readyDate', 'ASC')
            ->setParameter(1, $userId)
@@ -25,10 +26,10 @@ class PlantEventRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
-           ->from('PlantEvent', 'p')
+           ->from(PlantEvent::class, 'p')
            ->where($qb->expr()->andX(
-                $qb->eq('p.user_id', '?1'),
-                $qb->between('p.plantedDate', '?2', '?3')
+                $qb->expr()->eq('p.user', '?1'),
+                $qb->expr()->between('p.plantedDate', '?2', '?3')
             ))
            ->orderBy('p.plantedDate', 'ASC')
            ->setParameter(1, $userId)

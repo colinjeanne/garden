@@ -1,7 +1,7 @@
 <?php namespace App\Models;
 
 /**
- * @Entity(repositoryClass="PlantRepository")
+ * @Entity(repositoryClass="App\Models\PlantRepository")
  */
 class Plant
 {
@@ -76,7 +76,7 @@ class Plant
     private $label;
 
     /**
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="App\Models\User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * @var App\Models\User
      */

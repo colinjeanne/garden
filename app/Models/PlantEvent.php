@@ -3,7 +3,7 @@
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Entity(repositoryClass="PlantEventRepository")
+ * @Entity(repositoryClass="App\Models\PlantEventRepository")
  * @Table(
  *     name="PlantEvent",
  *     indexes={
@@ -25,13 +25,13 @@ class PlantEvent
      * @Column(type="datetime")
      * @var DateTime
      */
-    private $plantedMonth;
+    private $plantedDate;
 
     /**
      * @Column(type="datetime")
      * @var DateTime
      */
-    private $readyMonth;
+    private $readyDate;
 
     /**
      * @Column(type="boolean", options={"default"=false})
@@ -52,29 +52,29 @@ class PlantEvent
     private $harvests;
 
     /**
-     * @ManyToOne(targetEntity="Plant", fetch="EAGER")
+     * @ManyToOne(targetEntity="App\Models\Plant", fetch="EAGER")
      * @JoinColum(name="plant_id", referencedColumnName="id", onDelete="CASCADE")
      * @var App\Models\Plant
      */
     private $plant;
 
     /**
-     * @ManyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="App\Models\User")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * @var App\Models\User
      */
     private $user;
 
-    public function __construct($user, $plant, $plantedMonth)
+    public function __construct($user, $plant, $plantedDate)
     {
-        $immutablePlantedMonth =
-            \DateTimeImmutable::createFromMutable($plantedMonth);
+        $immutablePlantedDate =
+            \DateTimeImmutable::createFromMutable($plantedDate);
         $growInterval = new \DateInterval($plant->getGrowTime());
 
         $this->user = $user;
         $this->plant = $plant;
-        $this->plantedMonth = $plantedMonth;
-        $this->readyMonth = $immutablePlantedMonth->add($growInterval);
+        $this->plantedDate = $plantedDate;
+        $this->readyDate = $immutablePlantedDate->add($growInterval);
         $this->harvests = '[]';
     }
 
@@ -83,23 +83,23 @@ class PlantEvent
         return $this->id;
     }
 
-    public function getPlantedMonth()
+    public function getPlantedDate()
     {
-        return $this->plantedMonth;
+        return $this->plantedDate;
     }
 
-    public function getReadyMonth()
+    public function getReadyDate()
     {
-        return $this->readyMonth;
+        return $this->readyDate;
     }
 
-    public function setReadyMonth(\DateTime $readyMonth)
+    public function setReadyDate(\DateTime $readyDate)
     {
         if ($this->isDead()) {
             throw new \LogicException('Cannot set the ready date of a dead plant');
         }
 
-        $this->readyMonth = $readyMonth;
+        $this->readyDate = $readyDate;
     }
 
     public function isDelayed()

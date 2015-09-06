@@ -1,7 +1,7 @@
 <?php namespace App\Models;
 
 /**
- * @Entity(repositoryClass="ClaimRepository")
+ * @Entity(repositoryClass="App\Models\ClaimRepository")
  */
 class Claim
 {
@@ -19,7 +19,7 @@ class Claim
     private $created;
 
     /**
-     * @ManyToOne(targetEntity="User", inversedBy="claims", fetch="EAGER")
+     * @ManyToOne(targetEntity="App\Models\User", inversedBy="claims", fetch="EAGER")
      * @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * @var App\Models\User
      */
