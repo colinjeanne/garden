@@ -16,7 +16,7 @@ class AuthMiddleware
      *
      * @param App\Auth\UserProvider $userProvider A user provider
      */
-    public __construct(UserProvider $userProvider)
+    public function __construct(UserProvider $userProvider)
     {
         $this->userProvider = $userProvider;
     }
