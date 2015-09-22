@@ -28,6 +28,6 @@ class PlantRepository extends EntityRepository
            ->setParameter(1, $name)
            ->setParameter(2, $userId);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
