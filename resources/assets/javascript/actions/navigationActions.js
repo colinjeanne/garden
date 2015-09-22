@@ -16,6 +16,18 @@ export default class NavigationActions {
         });
     }
     
+    static edit() {
+        Dispatcher.dispatch({
+            actionType: Constants.EDIT
+        });
+    }
+    
+    static save() {
+        Dispatcher.dispatch({
+            actionType: Constants.SAVE
+        });
+    }
+    
     static filterPlants(filterString) {
         Dispatcher.dispatch({
             actionType: Constants.FILTER_PLANTS,

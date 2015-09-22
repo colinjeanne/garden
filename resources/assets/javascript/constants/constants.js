@@ -24,5 +24,8 @@ export default {
     SORT_TYPE_ALPHABETICAL:             'alphabetical',
     SORT_TYPE_VALUE:                    'value',
     
+    EDIT:                               0x3300,
+    SAVE:                               0x3301,
+    
     USER_SIGNIN:                        0x4000
 };

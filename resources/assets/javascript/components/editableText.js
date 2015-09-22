@@ -1,3 +1,4 @@
+import NavigationActions from '../actions/navigationActions';
 import React from 'react';
 
 export default class EditableText extends React.Component {
@@ -14,8 +15,16 @@ export default class EditableText extends React.Component {
     }
     
     handleEdit() {
+        const willBeEnabled = !this.state.enabled;
+        
+        if (willBeEnabled) {
+            NavigationActions.edit();
+        } else {
+            NavigationActions.save();
+        }
+        
         this.setState({
-            enabled: !this.state.enabled
+            enabled: willBeEnabled
         });
     }
     

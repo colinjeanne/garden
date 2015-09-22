@@ -1,6 +1,7 @@
+import Constants from '../constants/constants';
 import Dispatcher from '../dispatcher/dispatcher';
 import {EventEmitter} from 'events';
-import Constants from '../constants/constants';
+import NavigationStore from './navigationStore';
 
 const CHANGE_EVENT = 'change';
 let plants = new Map();
@@ -149,56 +150,53 @@ plantStore.dispatchToken = Dispatcher.register(action => {
         
         case Constants.PLANT_UPDATE_DIFFICULTY:
             update(action.name, {difficulty: action.difficulty});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_GROWTIME:
             update(action.name, {growTime: action.growTime});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_LABEL:
             update(action.name, {label: action.label});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_NOTES:
             update(action.name, {notes: action.notes});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_PRICE_PER_UNIT:
             update(action.name, {pricePerUnit: action.pricePerUnit});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_RARITY:
             update(action.name, {rarity: action.rarity});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_TASTE:
             update(action.name, {taste: action.taste});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_UNIT:
             update(action.name, {unit: action.unit});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
             break;
         
         case Constants.PLANT_UPDATE_UNIT_PER_SQUARE_FOOT:
             update(action.name, {unitPerSquareFoot: action.unitPerSquareFoot});
-            updatePlantRemotely(idToken, plants.get(action.name)).
-                then(() => plantStore.emitChange());
+            plantStore.emitChange();
+            break;
+        
+        case Constants.SAVE:
+            updatePlantRemotely(
+                idToken,
+                plants.get(NavigationStore.getSelectedPlantName()));
             break;
             
         case Constants.USER_SIGNIN:
