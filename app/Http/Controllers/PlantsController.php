@@ -137,7 +137,7 @@ class PlantsController extends Controller
             'value'             => $plant->value(),
 
             'links'             => [
-                'self'          => route('getPlant', $plant->getName()),
+                'self'          => route('getPlant', ['name' => $plant->getName()]),
             ],
         ];
     }
