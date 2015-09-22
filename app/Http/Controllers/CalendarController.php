@@ -4,6 +4,7 @@ use App\Auth\UserProvider;
 use App\Http\Controllers\Controller;
 use Doctrine\Common\Persistence\ObjectManager as DB;
 use Illuminate\Http\Request;
+use Respect\Validation\Validator as v;
 
 class CalendarController extends Controller
 {
@@ -43,7 +44,7 @@ class CalendarController extends Controller
 
     public function createItem(Request $request)
     {
-        $json = $request->json();
+        $json = $request->json()->all();
 
         $this->validateEventJson($json);
 
@@ -57,7 +58,7 @@ class CalendarController extends Controller
 
     public function updateItem(Request $request, $eventId)
     {
-        $json = $request->json();
+        $json = $request->json()->all();
         
         $this->validateEventJson($json);
 
@@ -71,38 +72,30 @@ class CalendarController extends Controller
 
     private function validateEventJson($json)
     {
-        $this->validate(
-            $json,
-            [
-                'plantedDate'   => 'required|date|date_format:Y-m|after:01 January 2010|before:31 December 2020',
-                'readyDate'     => 'required|date|date_format:Y-m|after:01 January 2010|before:31 December 2020',
-                'isDelayed'     => 'required|boolean',
-                'isDead'        => 'required|boolean',
-                'harvests'      => 'required|array',
-                'links'         => 'array',
-            ]);
-
-        foreach ($json['harvests'] as $key => $value) {
-            if (!is_int($key)) {
-                abort(400);
-            }
-
-            if (!is_numeric($value)) {
-                abort(400);
-            }
-
-            if (($value <= 0) || ($value > 1000)) {
-                abort(400);
-            }
-        }
-
-        if (array_key_exists('links', $json)) {
-            $this->validate(
-                $json['links'],
-                [
-                    'self'  => 'url',
-                    'plant' => 'url',
-                ]);
-        }
+        $validator = v::arrType()->
+            keySet(
+                v::key(
+                    'plantedDate',
+                    v::date('Y-m')->between('01 January 2010', '31 December 2020')),
+                v::key(
+                    'readyDate',
+                    v::date('Y-m')->between('01 January 2010', '31 December 2020')),
+                v::key('isDelayed', v::boolType()),
+                v::key('isDead', v::boolType()),
+                v::key(
+                    'harvests',
+                    v::arrType()->each(
+                        v::numericVal()->between(0, 1000), // Value
+                        v::intVal() // Key
+                    )),
+                v::key(
+                    'links',
+                    v::arrType()->ketSet(
+                        key('self', v::url()),
+                        key('plant', v::url())),
+                    false)
+            );
+        
+        $validator->check($json);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Plant;
 use App\Models\UserPlantData;
 use Doctrine\Common\Persistence\ObjectManager as DB;
 use Illuminate\Http\Request;
+use Respect\Validation\Validator as v;
 
 class PlantsController extends Controller
 {
@@ -45,8 +46,8 @@ class PlantsController extends Controller
 
     public function createPlant(Request $request)
     {
-        $json = $request->json();
-        
+        $json = $request->json()->all();
+
         $this->validatePlantJson($json);
 
         $plant = new Plant($json['name'], $this->user);
@@ -59,22 +60,22 @@ class PlantsController extends Controller
         return response()->json(self::plantToJson($plant));
     }
 
-    public function getPlant($plantId)
+    public function getPlant(Request $request)
     {
         $plant = $this->db->getRepository(Plant::class)
-            ->findForUser($plantId, $this->user->getId());
+            ->findForUser($name, $this->user->getId());
 
         return response()->json(self::plantToJson($plant));
     }
 
-    public function updatePlant(Request $request, $plantId)
+    public function updatePlant(Request $request, $name)
     {
-        $json = $request->json();
+        $json = $request->json()->all();
 
         $this->validatePlantJson($json);
 
         $plant = $this->db->getRepository(Plant::class)
-            ->findForUser($plantId, $this->user->getId());
+            ->findForUser($name, $this->user->getId());
         if (!$plant) {
             abort(404);
         }
@@ -86,31 +87,25 @@ class PlantsController extends Controller
         return response()->json(self::plantToJson($plant));
     }
 
-    private static function validatePlantJson($json)
+    private function validatePlantJson($json)
     {
-        $this->validate(
-            $json,
-            [
-                'name'              => 'required|string|between:2,100',
-                'growTime'          => 'required|string|between:1,5',
-                'difficulty'        => 'required|integer|between:1,5',
-                'taste'             => 'required|integer|between:1,5',
-                'rarity'            => 'required|integer|between:1,3',
-                'pricePerUnit'      => 'required|numeric|min:0.01',
-                'unit'              => 'required|string|between:1,20',
-                'unitPerSquareFoot' => 'required|numeric|min:0.001',
-                'notes'             => 'required|string|max:65536',
-                'label'             => 'required|string|max:50',
-                'links'             => 'array'
-            ]);
-
-        if (array_key_exists('links', $json)) {
-            $this->validate(
-                $json['links'],
-                [
-                    'self'          => 'url',
-                ]);
-        }
+        $validator = v::arrType()->
+            keySet(
+                v::key('name', v::strType()->length(2, 100)),
+                v::key('growTime', v::strType()->length(1, 5)),
+                v::key('difficulty', v::intVal()->between(1, 5)),
+                v::key('taste', v::intVal()->between(1, 5)),
+                v::key('rarity', v::intVal()->between(1, 3)),
+                v::key('pricePerUnit', v::numericVal()->min(0.01, true)),
+                v::key('unit', v::strType()->length(null, 20), false),
+                v::key('unitPerSquareFoot', v::numericVal()->min(0.001, true)),
+                v::key('notes', v::strType()->length(null, 65536), false),
+                v::key('label', v::strType()->length(null, 50), false),
+                v::key('links', v::arrType()->key('self', v::url()), false),
+                v::key('value', v::numericVal(), false)
+            );
+        
+        $validator->check($json);
     }
 
     private function updatePlantFromJson(Plant $plant, array $json)
@@ -142,7 +137,7 @@ class PlantsController extends Controller
             'value'             => $plant->value(),
 
             'links'             => [
-                'self'          => route('getPlant', $plant->getId()),
+                'self'          => route('getPlant', $plant->getName()),
             ],
         ];
     }

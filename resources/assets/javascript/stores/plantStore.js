@@ -10,7 +10,7 @@ const create = name => plants.set(
     name,
     {
         difficulty: 1,
-        growTime: 1,
+        growTime: 'P1M',
         label: '',
         name: name,
         notes: '',
@@ -76,6 +76,40 @@ const getAllPlants = idToken =>
     }).
     catch(err => console.log(err));
 
+const createPlantRemotely = (idToken, plant) =>
+    fetch(
+        '/plants',
+        {
+            method: 'POST',
+            headers: getPostOrPutHeaders(idToken),
+            body: JSON.stringify(plant)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    catch(err => console.log(err));
+
+const updatePlantRemotely = (idToken, plant) =>
+    fetch(
+        `/plants/${plant.name}`,
+        {
+            method: 'PUT',
+            headers: getPostOrPutHeaders(idToken),
+            body: JSON.stringify(plant)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    catch(err => console.log(err));
+
 class PlantStore extends EventEmitter {
     getAll() {
         return plants;
@@ -104,7 +138,8 @@ plantStore.dispatchToken = Dispatcher.register(action => {
     switch (action.actionType) {
         case Constants.PLANT_CREATE:
             create(action.name);
-            plantStore.emitChange();
+            createPlantRemotely(idToken, plants.get(action.name)).
+                then(() => plantStore.emitChange());
             break;
         
         case Constants.PLANT_DESTROY:

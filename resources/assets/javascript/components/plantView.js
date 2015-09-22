@@ -19,7 +19,7 @@ export default class PlantView extends React.Component {
     handleGrowTimeChanged(event) {
         PlantActions.updatePlantGrowTime(
             this.props.plantName,
-            event.target.valueAsNumber);
+            `P${event.target.valueAsNumber}M`);
     }
     
     handleLabelChanged(event) {

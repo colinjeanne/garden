@@ -1,8 +1,8 @@
 <?php namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Contracts\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Respect\Validation\Exceptions\ValidationExceptionInterface as ValidationException;
 
 class Handler extends ExceptionHandler {
 
@@ -38,14 +38,10 @@ class Handler extends ExceptionHandler {
     public function render($request, Exception $e)
     {
         if ($e instanceof ValidationException) {
-            abort(400);
-        } else if ($e instanceof \RuntimeException) {
-            abort(400);
-        } else if ($e instanceof \LogicException) {
-            abort(500);
+            return response($e->getMainMessage(), 400);
         }
         
-        return parent::render($request, $e);
+        return response((string)$e, 500);
     }
 
 }
