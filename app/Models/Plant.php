@@ -7,13 +7,6 @@ class Plant
 {
     /**
      * @Id
-     * @GeneratedValue
-     * @Column(type="integer")
-     * @var int
-     */
-    private $id;
-
-    /**
      * @Column(type="string", unique=true, length=100)
      * @var string
      */
@@ -88,11 +81,6 @@ class Plant
         $this->user = $user;
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
     public function getName()
     {
         return $this->name;
@@ -122,6 +110,11 @@ class Plant
         }
         
         $this->growTime = $growTime;
+    }
+    
+    public function getDifficulty()
+    {
+        return $this->difficulty;
     }
 
     public function setDifficulty($difficulty)
@@ -180,7 +173,7 @@ class Plant
 
     public function setPricePerUnit($pricePerUnit)
     {
-        if (!is_float($pricePerUnit)) {
+        if (!is_numeric($pricePerUnit)) {
             throw new \InvalidArgumentException('pricePerUnit');
         }
 
@@ -216,7 +209,7 @@ class Plant
 
     public function setUnitPerSquareFoot($unitPerSquareFoot)
     {
-        if (!is_float($unitPerSquareFoot)) {
+        if (!is_numeric($unitPerSquareFoot)) {
             throw new \InvalidArgumentException('unitPerSquareFoot');
         }
 

@@ -40,7 +40,7 @@ $app->post(
 );
 
 $app->get(
-   '/plants/{plantId:\d+}',
+   '/plants/{name}',
    [
       'as' => 'getPlant',
       'uses' => 'App\Http\Controllers\PlantsController@getPlant'
@@ -48,7 +48,7 @@ $app->get(
 );
 
 $app->put(
-   '/plants/{plantId:\d+}',
+   '/plants/{name}',
    [
       'as' => 'updatePlant',
       'uses' => 'App\Http\Controllers\PlantsController@updatePlant'

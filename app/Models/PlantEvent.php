@@ -53,7 +53,7 @@ class PlantEvent
 
     /**
      * @ManyToOne(targetEntity="App\Models\Plant", fetch="EAGER")
-     * @JoinColum(name="plant_id", referencedColumnName="id", onDelete="CASCADE")
+     * @JoinColumn(name="plant_name", referencedColumnName="name", onDelete="CASCADE")
      * @var App\Models\Plant
      */
     private $plant;
