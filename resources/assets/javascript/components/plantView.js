@@ -110,7 +110,7 @@ export default class PlantView extends React.Component {
                             id="rarity"
                             type="number"
                             min="1"
-                            max="5"
+                            max="3"
                             onChange={this.handleRarityChanged.bind(this)}
                             value={plant.rarity} />
                     </div>
