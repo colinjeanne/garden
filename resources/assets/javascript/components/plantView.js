@@ -67,6 +67,10 @@ export default class PlantView extends React.Component {
     render() {
         const plant = PlantStore.getByName(this.props.plantName);
         
+        // The app only generates durations in terms of months
+        const growTimeRegex = /P([1-9]\d?)M/;
+        const growTime = growTimeRegex.exec(plant.growTime)[1];
+        
         return (
             <section className="plantView">
                 <header>{plant.name}</header>
@@ -79,7 +83,7 @@ export default class PlantView extends React.Component {
                             min="1"
                             max="12"
                             onChange={this.handleGrowTimeChanged.bind(this)}
-                            value={plant.growTime} />
+                            value={growTime} />
                         Months
                     </div>
                     <div>
