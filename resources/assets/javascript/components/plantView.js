@@ -22,6 +22,12 @@ export default class PlantView extends React.Component {
             `P${event.target.valueAsNumber}M`);
     }
     
+    handleHarvestTimeChanged(event) {
+        PlantActions.updatePlantHarvestTime(
+            this.props.plantName,
+            `P${event.target.valueAsNumber}M`);
+    }
+    
     handleLabelChanged(event) {
         PlantActions.updatePlantLabel(
             this.props.plantName,
@@ -68,8 +74,9 @@ export default class PlantView extends React.Component {
         const plant = PlantStore.getByName(this.props.plantName);
         
         // The app only generates durations in terms of months
-        const growTimeRegex = /P([1-9]\d?)M/;
-        const growTime = growTimeRegex.exec(plant.growTime)[1];
+        const durationRegex = /P([1-9]\d?)M/;
+        const growTime = durationRegex.exec(plant.growTime)[1];
+        const harvestTime = durationRegex.exec(plant.harvestTime)[1];
         
         return (
             <section className="plantView">
@@ -84,6 +91,17 @@ export default class PlantView extends React.Component {
                             max="12"
                             onChange={this.handleGrowTimeChanged.bind(this)}
                             value={growTime} />
+                        Months
+                    </div>
+                    <div>
+                        <label htmlFor="harvestTime">Harvest Time</label>
+                        <input
+                            id="harvestTime"
+                            type="number"
+                            min="1"
+                            max="12"
+                            onChange={this.handleHarvestTimeChanged.bind(this)}
+                            value={harvestTime} />
                         Months
                     </div>
                     <div>

@@ -32,6 +32,14 @@ export default class PlantActions {
         });
     }
     
+    static updatePlantHarvestTime(name, harvestTime) {
+        Dispatcher.dispatch({
+            actionType: Constants.PLANT_UPDATE_HARVESTTIME,
+            name: name,
+            harvestTime: harvestTime
+        });
+    }
+    
     static updatePlantLabel(name, label) {
         Dispatcher.dispatch({
             actionType: Constants.PLANT_UPDATE_LABEL,

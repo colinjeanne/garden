@@ -16,9 +16,20 @@ class Plant
      * @Column(type="string", length=30)
      * @var string
      * 
-     * An ISO 8601 duration specification
+     * An ISO 8601 duration specification. The grow time of a plant is the
+     * amount of time between when the plant is first planted and when the
+     * first harvest should be ready.
      */
     private $growTime;
+    
+    /**
+     * @Column(type="string", length=30)
+     * @var string
+     * 
+     * An ISO 8601 duration specification. The harvest time of a plant is the
+     * amount of time that the plant should have harvets.
+     */
+    private $harvestTime;
 
     /**
      * @Column(type="smallint", options={"unsigned":true, "default":1})
@@ -93,23 +104,21 @@ class Plant
 
     public function setGrowTime($growTime)
     {
-        try
-        {
-            $testInterval = new \DateInterval($growTime);
-            if (($testInterval->y !== 0) ||
-                ($testInterval->d !== 0) ||
-                ($testInterval->h !== 0) ||
-                ($testInterval->i !== 0) ||
-                ($testInterval->s !== 0) ||
-                ($testInterval->invert !== 0) ||
-                ($testInterval->m === 0)) {
-                throw new \InvalidArgumentException('growTime');
-            }
-        } catch (Exception $e) {
-            throw new \UnexpectedValueException('growTime');
-        }
+        self::validateDuration($growTime);
         
         $this->growTime = $growTime;
+    }
+    
+    public function getHarvestTime()
+    {
+        return $this->harvestTime;
+    }
+
+    public function setHarvestTime($harvestTime)
+    {
+        self::validateDuration($harvestTime);
+        
+        $this->harvestTime = $harvestTime;
     }
     
     public function getDifficulty()
@@ -268,6 +277,25 @@ class Plant
             $this->getRarity() *
             $this->getTaste() /
             $this->getDifficulty();
+    }
+    
+    private static function validateDuration($duration)
+    {
+        try
+        {
+            $testInterval = new \DateInterval($duration);
+            if (($testInterval->y !== 0) ||
+                ($testInterval->d !== 0) ||
+                ($testInterval->h !== 0) ||
+                ($testInterval->i !== 0) ||
+                ($testInterval->s !== 0) ||
+                ($testInterval->invert !== 0) ||
+                ($testInterval->m === 0)) {
+                throw new \InvalidArgumentException('duration');
+            }
+        } catch (Exception $e) {
+            throw new \UnexpectedValueException('duration');
+        }
     }
 
     private static function withinRange($value, $min, $max)

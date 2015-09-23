@@ -93,6 +93,7 @@ class PlantsController extends Controller
             keySet(
                 v::key('name', v::strType()->length(2, 100)),
                 v::key('growTime', v::strType()->length(1, 5)),
+                v::key('harvestTime', v::strType()->length(1, 5)),
                 v::key('difficulty', v::intVal()->between(1, 5)),
                 v::key('taste', v::intVal()->between(1, 5)),
                 v::key('rarity', v::intVal()->between(1, 3)),
@@ -111,6 +112,7 @@ class PlantsController extends Controller
     private function updatePlantFromJson(Plant $plant, array $json)
     {
         $plant->setGrowTime($json['growTime']);
+        $plant->setHarvestTime($json['harvestTime']);
         $plant->setDifficulty($json['difficulty']);
         $plant->setTaste($json['taste']);
         $plant->setRarity($json['rarity']);
@@ -126,6 +128,7 @@ class PlantsController extends Controller
         return [
             'name'              => $plant->getName(),
             'growTime'          => $plant->getGrowTime(),
+            'harvestTime'       => $plant->getHarvestTime(),
             'difficulty'        => $plant->getDifficulty(),
             'taste'             => $plant->getTaste(),
             'rarity'            => $plant->getRarity(),

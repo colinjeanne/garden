@@ -12,6 +12,7 @@ const create = name => plants.set(
     {
         difficulty: 1,
         growTime: 'P1M',
+        harvestTime: 'P1M',
         label: '',
         name: name,
         notes: '',
@@ -155,6 +156,11 @@ plantStore.dispatchToken = Dispatcher.register(action => {
         
         case Constants.PLANT_UPDATE_GROWTIME:
             update(action.name, {growTime: action.growTime});
+            plantStore.emitChange();
+            break;
+        
+        case Constants.PLANT_UPDATE_HARVESTTIME:
+            update(action.name, {harvestTime: action.harvestTime});
             plantStore.emitChange();
             break;
         
