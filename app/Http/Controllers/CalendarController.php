@@ -2,6 +2,7 @@
 
 use App\Auth\UserProvider;
 use App\Http\Controllers\Controller;
+use App\Models\CalendarEvent;
 use Doctrine\Common\Persistence\ObjectManager as DB;
 use Illuminate\Http\Request;
 use Respect\Validation\Validator as v;
@@ -36,7 +37,7 @@ class CalendarController extends Controller
         $startDate = new \DateTime();
         $endDate = new \DateTime("today +30 day");
 
-        $events = $this->db->getRepository(PlantEvent::class)
+        $events = $this->db->getRepository(CalendarEvent::class)
             ->getPlantsReadyBetween($this->user->getId(), $startDate, $endDate);
 
         abort(501);
@@ -74,6 +75,7 @@ class CalendarController extends Controller
     {
         $validator = v::arrType()->
             keySet(
+                v::key('id', v::strType()->length(5, 10)),
                 v::key(
                     'plantedDate',
                     v::date('Y-m')->between('01 January 2010', '31 December 2020')),

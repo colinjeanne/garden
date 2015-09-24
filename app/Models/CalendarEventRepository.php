@@ -1,15 +1,15 @@
 <?php namespace App\Models;
 
-use App\Models\PlantEvent;
+use App\Models\CalendarEvent;
 use Doctrine\ORM\EntityRepository;
 
-class PlantEventRepository extends EntityRepository
+class CalendarEventRepository extends EntityRepository
 {
     public function getPlantsReadyBetween($userId, \DateTime $startDate, \DateTime $endDate)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
-           ->from(PlantEvent::class, 'p')
+           ->from(CalendarEvent::class, 'p')
            ->where($qb->expr()->andX(
                 $qb->expr()->eq('p.user', '?1'),
                 $qb->expr()->between('p.readyDate', '?2', '?3')
@@ -26,7 +26,7 @@ class PlantEventRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
-           ->from(PlantEvent::class, 'p')
+           ->from(CalendarEvent::class, 'p')
            ->where($qb->expr()->andX(
                 $qb->expr()->eq('p.user', '?1'),
                 $qb->expr()->between('p.plantedDate', '?2', '?3')

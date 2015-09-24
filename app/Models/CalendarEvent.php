@@ -3,19 +3,19 @@
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Entity(repositoryClass="App\Models\PlantEventRepository")
+ * @Entity(repositoryClass="App\Models\CalendarEventRepository")
  * @Table(
- *     name="PlantEvent",
+ *     name="CalendarEvent",
  *     indexes={
  *         @Index(name="plantedDate_idx", columns={"plantedDate"}),
  *         @Index(name="readyDate_idx", columns={"readyDate"})
  *     })
  */
-class PlantEvent
+class CalendarEvent
 {
     /**
      * @Id
-     * @Column(type="string")
+     * @Column(type="string", unique=true, length=10)
      * @var string
      */
     private $id;
