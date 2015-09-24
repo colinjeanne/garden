@@ -15,9 +15,8 @@ class PlantEvent
 {
     /**
      * @Id
-     * @GeneratedValue
-     * @Column(type="integer")
-     * @var int
+     * @Column(type="string")
+     * @var string
      */
     private $id;
 
@@ -65,12 +64,13 @@ class PlantEvent
      */
     private $user;
 
-    public function __construct($user, $plant, $plantedDate)
+    public function __construct($id, $user, $plant, $plantedDate)
     {
         $immutablePlantedDate =
             \DateTimeImmutable::createFromMutable($plantedDate);
         $growInterval = new \DateInterval($plant->getGrowTime());
 
+        $this->id = $id;
         $this->user = $user;
         $this->plant = $plant;
         $this->plantedDate = $plantedDate;
