@@ -1,4 +1,5 @@
 import EditableText from './editableText';
+import moment from 'moment';
 import PlantActions from '../actions/plantActions';
 import PlantStore from '../stores/plantStore';
 import React from 'react';
@@ -73,10 +74,8 @@ export default class PlantView extends React.Component {
     render() {
         const plant = PlantStore.getByName(this.props.plantName);
         
-        // The app only generates durations in terms of months
-        const durationRegex = /P([1-9]\d?)M/;
-        const growTime = durationRegex.exec(plant.growTime)[1];
-        const harvestTime = durationRegex.exec(plant.harvestTime)[1];
+        const growTime = moment.duration(plant.growTime).asMonths();
+        const harvestTime = moment.duration(plant.harvestTime).asMonths();
         
         return (
             <section className="plantView">
