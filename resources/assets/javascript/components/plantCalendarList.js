@@ -2,27 +2,34 @@ import PlantCalendarItem from './plantCalendarItem';
 import React from 'react';
 
 export default class PlantCalendarList extends React.Component {
+    static get propTypes() {
+        return {
+            calendarDate: React.PropTypes.string.isRequired,
+        };
+    }
+    
     render() {
-        let calendarItems = this.state.data.map(
+        let calendarItems = [].map(
             item => {
                 return (
                     <PlantCalendarItem
-                        key={item.name}
-                        name={item.name}
-                        space={item.space}
-                        amount={item.amount}
-                        unit={item.unit}
+                        key={item.plant.name}
+                        name={item.plant.name}
+                        amount={item.harvests.amount}
+                        unit={item.plant.unit}
                         isDelayed={item.isDelayed}
-                        isDead={item.isDead}
-                        isEditable={item.isEditable} />
+                        isDead={item.isDead} />
                 );
             }
         );
         
         return (
-            <ol className="plantCalendarList">
-                {calendarItems}
-            </ol>
+            <div>
+                <header>{this.props.calendarDate}</header>
+                <ol className="plantCalendarList">
+                    {calendarItems}
+                </ol>
+            </div>
         );
     }
 }

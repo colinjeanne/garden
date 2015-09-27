@@ -1,4 +1,6 @@
 import AppHeader from './appHeader';
+import CalendarPage from './calendarPage';
+import CalendarStore from '../stores/calendarStore';
 import Constants from '../constants/constants';
 import NavigationStore from '../stores/navigationStore';
 import PlantCalendarList from './plantCalendarList';
@@ -19,6 +21,9 @@ export default class App extends React.Component {
     }
     
     componentDidMount() {
+        CalendarStore.addChangeListener(
+            this.handleCalendarStoreChange.bind(this));
+        
         NavigationStore.addChangeListener(
             this.handleNavigationStoreChange.bind(this));
         
@@ -29,11 +34,18 @@ export default class App extends React.Component {
     }
     
     componentWillUnmount() {
+        CalendarStore.removeChangeListener(this.handleCalendarStoreChange);
+        
         NavigationStore.removeChangeListener(this.handleNavigationStoreChange);
         
         PlantStore.removeChangeListener(this.handlePlantStoreChange);
         
         UserStore.removeChangeListener(this.handleUserStoreChange);
+    }
+    
+    handleCalendarStoreChange() {
+        this.setState({
+        });
     }
     
     handleNavigationStoreChange() {
@@ -67,6 +79,9 @@ export default class App extends React.Component {
             let page;
             switch (NavigationStore.getCurrentPage()) {
                 case Constants.CALENDAR_PAGE:
+                    page = <CalendarPage
+                        currentDate="2015-09-30T11:59:59-08:00"
+                        id="content" />;
                     break;
                 
                 case Constants.PLANTS_PAGE:
