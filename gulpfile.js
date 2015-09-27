@@ -2,11 +2,13 @@
 
 var babel = require('gulp-babel');
 var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
 var gulp = require('gulp');
 var jasmine = require('gulp-jasmine');
 var source = require('vinyl-source-stream');
+var uglify = require('gulp-uglify');
 
-gulp.task('browserify', function () {
+gulp.task('browserify', ['babel-src'], function () {
    return browserify({
          entries: ['./main.js'],
          basedir: './build/src',
@@ -16,6 +18,8 @@ gulp.task('browserify', function () {
       .bundle()
       .on('error', function (err) { console.log('Error: ' + err.message); })
       .pipe(source('main.js'))
+      .pipe(buffer())
+      .pipe(uglify())
       .pipe(gulp.dest('./public/'));
 });
 
