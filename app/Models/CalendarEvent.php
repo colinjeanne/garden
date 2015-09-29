@@ -17,7 +17,7 @@ class CalendarEvent
 {
     /**
      * @Id
-     * @Column(type="string", unique=true, length=10)
+     * @Column(type="string", unique=true, length=20)
      * @var string
      */
     private $id;
