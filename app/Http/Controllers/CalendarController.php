@@ -31,16 +31,31 @@ class CalendarController extends Controller
         $this->middleware('provide-json', ['except' => 'getCurrent', 'getItem']);
     }
 
-    public function getCurrent()
+    public function getCurrent(Request $request)
     {
-        // XXX Get from input as well
-        $startDate = new \DateTime();
-        $endDate = new \DateTime("today +30 day");
+        $hasReadyStartDate = $request->has('readyStartDate');
+        $hasReadyEndDate = $request->has('readyEndDate');
+        
+        if ($hasReadyStartDate !== $hasReadyEndDate) {
+            abort(400);
+        }
+        
+        if ($hasReadyStartDate) {
+            $startDate = new \DateTime($request->input('readyStartDate'));
+            $endDate = new \DateTime($request->input('readyEndDate'));
+        } else {
+            $startDate = new \DateTime();
+            $endDate = new \DateTime("today +30 day");
+        }
 
         $events = $this->db->getRepository(CalendarEvent::class)
             ->getPlantsReadyBetween($this->user->getId(), $startDate, $endDate);
+        
+        $eventsJson = array_map(
+            [self::class, 'calendarEventToJson'],
+            $events);
 
-        abort(501);
+        return response()->json($eventsJson);
     }
 
     public function createItem(Request $request)
@@ -99,5 +114,22 @@ class CalendarController extends Controller
             );
         
         $validator->check($json);
+    }
+    
+    private static function calendarEventToJson(CalendarEvent $calendarEvent)
+    {
+        return [
+            'id'              => $calendarEvent->getId(),
+            'plantedDate'       => $calendarEvent->getPlantedDate()->format(\DateTime::ISO8601),
+            'plantedDate'       => $calendarEvent->getReadyDate()->format(\DateTime::ISO8601),
+            'isDelayed'         => $calendarEvent->isDelayed(),
+            'isDead'            => $calendarEvent->isDead(),
+            'harvests'          => $calendarEvent->getHarvests(),
+            
+            'links'             => [
+                'self'          => route('getCalendarItem', ['eventId' => $calendarEvent->getId()]),
+                'plant'         => route('getPlant', ['name' => $calendarEvent->plant()->getName()])
+            ],
+        ];
     }
 }

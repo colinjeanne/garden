@@ -38,7 +38,7 @@ class PlantsController extends Controller
             ->findAllForUser($this->user->getId());
 
         $plantsJson = array_map(
-            [PlantsController::class, 'plantToJson'],
+            [self::class, 'plantToJson'],
             $plants);
 
         return response()->json($plantsJson);
