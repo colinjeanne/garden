@@ -15,7 +15,7 @@ const create = (plant, plantedDate) => {
     }
     
     const id = shortId.generate();
-    const growTime = moment().duration(plant.growTime);
+    const growTime = moment.duration(plant.growTime);
     const readyDate = moment().
         utc(plantedDateMoment).
         add(growTime).
