@@ -24,12 +24,12 @@ export default class PlantCalendarList extends React.Component {
         );
         
         return (
-            <div>
+            <section>
                 <header>{this.props.calendarDate}</header>
                 <ol className="plantCalendarList">
                     {calendarItems}
                 </ol>
-            </div>
+            </section>
         );
     }
 }
