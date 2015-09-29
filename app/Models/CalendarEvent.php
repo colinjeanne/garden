@@ -1,5 +1,7 @@
 <?php namespace App\Models;
 
+use App\Models\Plant;
+use App\Models\User;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -64,7 +66,7 @@ class CalendarEvent
      */
     private $user;
 
-    public function __construct($id, $user, $plant, $plantedDate)
+    public function __construct($id, User $user, Plant $plant, \DateTime $plantedDate)
     {
         $immutablePlantedDate =
             \DateTimeImmutable::createFromMutable($plantedDate);
