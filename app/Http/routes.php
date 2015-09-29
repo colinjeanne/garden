@@ -72,7 +72,7 @@ $app->post(
 );
 
 $app->get(
-   '/calendar/{eventId:\d+}',
+   '/calendar/{eventId:[A-Za-z0-9_-]+}',
    [
       'as' => 'getCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@getItem'
@@ -80,7 +80,7 @@ $app->get(
 );
 
 $app->put(
-   '/calendar/{eventId:\d+}',
+   '/calendar/{eventId:[A-Za-z0-9_-]+}',
    [
       'as' => 'updateCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@updateItem'
@@ -88,7 +88,7 @@ $app->put(
 );
 
 $app->delete(
-   '/calendar/{eventId:\d+}',
+   '/calendar/{eventId:[A-Za-z0-9_-]+}',
    [
       'as' => 'deleteCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@deleteItem'
