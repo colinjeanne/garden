@@ -24,16 +24,12 @@ export default class PlantCalendarItem extends React.Component {
             isDeadElement = <span className="isDead">Died</span>;
         }
         
-        let delayButton;
-        if (this.props.isEditable) {
-            delayButton = <button type="button">Delay</button>;
-        }
+        let delayButton = <button type="button">Delay</button>;
         
         return (
             <li className="plantCalendarItem">
                 <div className="mainLine">
-                    <span className="name"></span>
-                    <span className="space"></span>
+                    <span className="name">{this.props.name}</span>
                 </div>
                 {harvestElement}
                 {isDelayedElement}

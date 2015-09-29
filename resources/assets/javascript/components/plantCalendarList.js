@@ -1,3 +1,5 @@
+import CalendarEventStore from '../stores/calendarStore';
+import moment from 'moment';
 import PlantCalendarItem from './plantCalendarItem';
 import React from 'react';
 
@@ -9,7 +11,15 @@ export default class PlantCalendarList extends React.Component {
     }
     
     render() {
-        let calendarItems = [].map(
+        const utcTime = moment.utc(this.props.calendarDate);
+        const title = utcTime.format('MMMM, YYYY');
+        const nextMonth = utcTime.
+            add(1, 'months').toISOString();
+        const calendarEvents = CalendarEventStore.getReadyBetween(
+            this.props.calendarDate,
+            nextMonth);
+        
+        let calendarItems = calendarEvents.map(
             item => {
                 return (
                     <PlantCalendarItem
@@ -25,7 +35,7 @@ export default class PlantCalendarList extends React.Component {
         
         return (
             <section>
-                <header>{this.props.calendarDate}</header>
+                <header>{title}</header>
                 <ol className="plantCalendarList">
                     {calendarItems}
                 </ol>
