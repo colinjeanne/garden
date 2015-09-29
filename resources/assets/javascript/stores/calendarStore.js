@@ -16,7 +16,7 @@ const create = (plant, plantedDate) => {
     
     const id = shortId.generate();
     const growTime = moment.duration(plant.growTime);
-    const readyDate = moment().
+    const readyDate = moment.
         utc(plantedDateMoment).
         add(growTime).
         toISOString();
@@ -39,25 +39,25 @@ const tempEvents = [
         growTime: 'P1M',
         name: 'One Month',
         unit: 'Bunches'
-    }, '2015-09-01T00:00:00+00:00'),
+    }, '2015-08-01T00:00:00+00:00'),
     
     create({
         growTime: 'P7M',
         name: 'Seven Month',
         unit: 'Bowls'
-    }, '2015-05-01T00:00:00-08:00'),
+    }, '2015-04-01T00:00:00-08:00'),
     
     create({
         growTime: 'P3M',
         name: 'Three Month',
         unit: 'Barges'
-    }, '2015-07-01T00:00:00+00:00'),
+    }, '2015-06-01T00:00:00+00:00'),
     
     create({
         growTime: 'P2M',
         name: 'Two Month',
         unit: 'Borks'
-    }, '2015-08-01T00:00:00+00:00'),
+    }, '2015-07-01T00:00:00+00:00'),
     
     create({
         growTime: 'P2M',
@@ -146,12 +146,14 @@ const updateRemotely = (idToken, calendarEvent) =>
     catch(err => console.log(err));
 
 class CalendarEventStore extends EventEmitter {
-    getPlantedBetween(startDate, endDate) {
+    getReadyBetween(startDate, endDate) {
         const startDateMoment = moment.utc(startDate);
         const endDateMoment = moment.utc(endDate);
         let events = [];
         for (let value of calendarEvents.values()) {
-            if (moment.utc(value.readyDate).isBetween(startDateMoment, endDateMoment)) {
+            const readyMoment = moment.utc(value.readyDate);
+            if (readyMoment.isBetween(startDateMoment, endDateMoment) ||
+                readyMoment.isSame(startDateMoment)) {
                 events.push(value);
             }
         }
@@ -178,8 +180,6 @@ calendarEventStore.dispatchToken = Dispatcher.register(action => {
     switch (action.actionType) {
         case Constants.SHOW_PAGE:
             if (action.page === Constants.CALENDAR_PAGE) {
-                calendarEvents = new Map();
-                tempEvents.forEach(plantEvent => update(plantEvent.id, plantEvent));
                 calendarEventStore.emitChange();
                 /*getCalendarEvents(idToken).
                     then(() => calendarEventStore.emitChange());*/
