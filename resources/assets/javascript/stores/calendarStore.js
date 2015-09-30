@@ -60,7 +60,7 @@ const tempEvents = [
     }, '2015-07-01T00:00:00+00:00'),
     
     create({
-        growTime: 'P2M',
+        growTime: 'P1M',
         name: 'Next Month',
         unit: 'Barks'
     }, '2015-09-01T00:00:00+00:00')
