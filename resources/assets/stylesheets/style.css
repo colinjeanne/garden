@@ -176,3 +176,58 @@ fieldset {
 .signInPage {
    text-align: center;
 }
+
+.plantCalendarListContainer {
+   width: 40em;
+   display: inline-block;
+   vertical-align: top;
+   margin-right: 1em;
+}
+
+.plantCalendarList {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+}
+
+.plantCalendarList li {
+   color: white;
+   background-color: cornflowerblue;
+   margin-bottom: 0.5em;
+   padding: 0.5em;
+}
+
+.plantCalendarList button {
+   color: black;
+   background-color: #edbf64;
+   border-color: #ed7b64;
+}
+
+.plantCalendarList button:hover {
+   color: black;
+   background-color: #ed7b64;
+   border-color: #edbf64;
+}
+
+.plantCalendarList .isDelayed,
+.plantCalendarList .isDead {
+   color: #ed7b64;
+}
+
+.plantCalendarList .mainLine {
+   margin-bottom: 0.5em;
+}
+
+.plantCalendarAddBox {
+   margin-bottom: 0.5em;
+}
+
+.plantCalendarAddBox input {
+   width: 90%;
+   font-size: 110%;
+}
+
+.plantCalendarAddBox button {
+   width: 9%;
+   font-size: 110%;
+}

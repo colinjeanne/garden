@@ -1,5 +1,5 @@
 import moment from 'moment';
-import PlantCalendarList from './plantCalendarList';
+import PlantCalendarListContainer from './plantCalendarListContainer';
 import React from 'react';
 
 export default class CalendarPage extends React.Component {
@@ -18,10 +18,16 @@ export default class CalendarPage extends React.Component {
             millisecond(0).
             toISOString();
         
+        const nextMonth = moment.utc(currentMonth).
+            add(1, 'months').
+            toISOString();
+        
         return (
             <div className="calendarPage">
-                <PlantCalendarList
+                <PlantCalendarListContainer
                     calendarDate={currentMonth} />
+                <PlantCalendarListContainer
+                    calendarDate={nextMonth} />
             </div>
         );
     }
