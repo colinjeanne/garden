@@ -26,7 +26,7 @@ export default class CalendarPage extends React.Component {
             toISOString();
         
         return (
-            <div className="calendarPage">
+            <div id="content" className="calendarPage">
                 <PlantDataList
                     listId="plantDataList"
                     plantNames={this.props.plantNames} />

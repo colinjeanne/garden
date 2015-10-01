@@ -81,8 +81,7 @@ export default class App extends React.Component {
                 case Constants.CALENDAR_PAGE:
                     page = <CalendarPage
                         plantNames={this.state.plants.getAllPlantNames()}
-                        currentDate="2015-09-30T11:59:59-08:00"
-                        id="content" />;
+                        currentDate="2015-09-30T11:59:59-08:00" />;
                     break;
                 
                 case Constants.PLANTS_PAGE:
@@ -90,8 +89,7 @@ export default class App extends React.Component {
                         plants={PlantStore.getAll()}
                         selectedPlantName={NavigationStore.getSelectedPlantName()}
                         filterString={NavigationStore.getFilterString()}
-                        sortType={NavigationStore.getSortType()}
-                        id="content" />;
+                        sortType={NavigationStore.getSortType()} />;
                     break;
                 
                 case Constants.PLANTING_SUMMARY_PAGE:

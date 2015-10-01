@@ -23,7 +23,7 @@ export default class PlantsViewPage extends React.Component {
         }
         
         return (
-            <div className="plantsViewPage">
+            <div id="content" className="plantsViewPage">
                 <PlantListAddBox />
                 <PlantList
                     plants={this.props.plants}
