@@ -117,6 +117,10 @@ class PlantStore extends EventEmitter {
         return plants;
     }
     
+    getAllPlantNames() {
+        return plants.keys();
+    }
+    
     getByName(name) {
         return plants.get(name);
     }

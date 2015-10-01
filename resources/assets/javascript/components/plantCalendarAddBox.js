@@ -10,6 +10,12 @@ export default class PlantCalendarAddBox extends React.Component {
         };
     }
     
+    static get propTypes() {
+        return {
+            plantDataListId: React.PropTypes.string.isRequired
+        };
+    }
+    
     handleAdd() {
         const addInput = React.findDOMNode(this.refs.addInput);
         const name = addInput.value.trim();
@@ -39,13 +45,12 @@ export default class PlantCalendarAddBox extends React.Component {
                 <input
                     type="text"
                     placeholder="Plant name"
+                    list={this.props.plantDataListId}
                     size="12"
                     maxLength="100"
                     value={this.state.name}
                     ref="addInput"
                     onChange={this.handleChange.bind(this)} />
-                <datalist id="123">
-                </datalist>
                 <button
                     type="button"
                     onClick={this.handleAdd.bind(this)}>

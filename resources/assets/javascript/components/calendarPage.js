@@ -1,11 +1,14 @@
 import moment from 'moment';
 import PlantCalendarListContainer from './plantCalendarListContainer';
+import PlantDataList from './plantDataList';
 import React from 'react';
 
 export default class CalendarPage extends React.Component {
     static get propTypes() {
         return {
             currentDate: React.PropTypes.string.isRequired,
+            plantNames: React.PropTypes
+                .arrayOf(React.PropTypes.string).isRequired
         };
     }
     
@@ -24,9 +27,14 @@ export default class CalendarPage extends React.Component {
         
         return (
             <div className="calendarPage">
+                <PlantDataList
+                    listId="plantDataList"
+                    plantNames={this.props.plantNames} />
                 <PlantCalendarListContainer
+                    plantDataListId="plantDataList"
                     calendarDate={currentMonth} />
                 <PlantCalendarListContainer
+                    plantDataListId="plantDataList"
                     calendarDate={nextMonth} />
             </div>
         );
