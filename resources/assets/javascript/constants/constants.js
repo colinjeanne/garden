@@ -28,5 +28,7 @@ export default {
     EDIT:                               0x3300,
     SAVE:                               0x3301,
     
-    USER_SIGNIN:                        0x4000
+    USER_SIGNIN:                        0x4000,
+    
+    CALENDAR_CREATE_EVENT:              0x5000
 };

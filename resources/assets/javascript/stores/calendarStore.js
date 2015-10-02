@@ -187,6 +187,13 @@ calendarEventStore.dispatchToken = Dispatcher.register(action => {
             
             break;
         
+        case Constants.CALENDAR_CREATE_EVENT:
+            create(action.plantName, action.calendarDate);
+            calendarEventStore.emitChange();
+            /*createRemotely(idToken, calendarEvents.get(?)).
+                then(() => calendarEventStore.emitChange());*/
+            break;
+        
         case Constants.USER_SIGNIN:
             idToken = action.user.getAuthResponse()['id_token'];
             break;

@@ -26,7 +26,8 @@ export default class PlantCalendarListContainer extends React.Component {
                 <header>{title}</header>
                 <section>
                     <PlantCalendarAddBox
-                        plantDataListId={this.props.plantDataListId} />
+                        plantDataListId={this.props.plantDataListId}
+                        calendarDate={this.props.calendarDate} />
                     <PlantCalendarList
                         calendarEvents={calendarEvents} />
                 </section>

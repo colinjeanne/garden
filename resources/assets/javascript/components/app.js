@@ -44,8 +44,7 @@ export default class App extends React.Component {
     }
     
     handleCalendarStoreChange() {
-        this.setState({
-        });
+        this.forceUpdate();
     }
     
     handleNavigationStoreChange() {
