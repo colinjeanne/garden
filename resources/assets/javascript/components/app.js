@@ -80,7 +80,7 @@ export default class App extends React.Component {
             switch (NavigationStore.getCurrentPage()) {
                 case Constants.CALENDAR_PAGE:
                     page = <CalendarPage
-                        plantNames={this.state.plants.getAllPlantNames()}
+                        plantNames={PlantStore.getAllPlantNames()}
                         currentDate="2015-09-30T11:59:59-08:00" />;
                     break;
                 
