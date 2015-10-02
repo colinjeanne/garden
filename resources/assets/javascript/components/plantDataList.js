@@ -11,8 +11,8 @@ export default class PlantDataList extends React.Component {
     }
     
     render() {
-        const plantOptions = plantNames.map(name =>
-            <option value={name} />);
+        const plantOptions = this.props.plantNames.map(name =>
+            <option key={name} value={name} />);
         
         return (
             <datalist id={this.props.listId}>
