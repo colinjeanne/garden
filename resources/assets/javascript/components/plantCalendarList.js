@@ -14,11 +14,7 @@ export default class PlantCalendarList extends React.Component {
                 return (
                     <PlantCalendarItem
                         key={item.id}
-                        name={item.plant.name}
-                        amount={item.harvests.amount}
-                        unit={item.plant.unit}
-                        isDelayed={item.isDelayed}
-                        isDead={item.isDead} />
+                        calendarItem={item} />
                 );
             }
         );

@@ -30,5 +30,8 @@ export default {
     
     USER_SIGNIN:                        0x4000,
     
-    CALENDAR_CREATE_EVENT:              0x5000
+    CALENDAR_CREATE_EVENT:              0x5000,
+    CALENDAR_ADD_HARVEST:               0x5001,
+    CALENDAR_DELAY_HARVEST:             0x5002,
+    CALENDAR_PLANT_DIED:                0x5003
 };
