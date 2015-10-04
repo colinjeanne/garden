@@ -71,6 +71,7 @@ export default class PlantCalendarItem extends React.Component {
                         type="number"
                         max="1000"
                         min="0.01"
+                        step="0.01"
                         value={this.state.harvestAmount}
                         ref="harvestAmount"
                         onChange={this.handleHarvestChange.bind(this)} />
