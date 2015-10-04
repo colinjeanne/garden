@@ -64,7 +64,7 @@ export default class PlantCalendarItem extends React.Component {
         );
         
         const addHarvestElement = (
-            <div>
+            <div className="addHarvest">
                 <label>
                     Amount harvested
                     <input
@@ -84,18 +84,11 @@ export default class PlantCalendarItem extends React.Component {
             </div>
         );
         
-        let unitElement;
-        if (plant.unit) {
-            unitElement = <span className="unit">{plant.unit}</span>;
-        }
-        
         let harvestElement;
         if (harvestAmount > 0) {
             harvestElement = (
                 <div className="harvest">
-                    <span className="amount">{harvestAmount}</span>
-                    {unitElement}
-                    harvested
+                    {harvestAmount.toFixed(2)} {plant.unit} harvested
                     {addHarvestElement}
                 </div>
             );
@@ -107,45 +100,56 @@ export default class PlantCalendarItem extends React.Component {
             );
         }
         
-        const delayButton = <button
-            type="button"
-            onClick={this.handleDelayClicked.bind(this)}>
-                Delay
-            </button>;
+        const delayedElement = (calendarItem.isDelayed) ? (
+            <div>
+                Harvest Delayed
+            </div>
+        ) : undefined;
         
-        let delayedElement;
-        if (calendarItem.isDelayed) {
-            delayedElement = (
-                <div className="delay">
-                    <span className="isDelayed">Delayed</span>
-                    {delayButton}
-                </div>
-            );
-        } else {
-            delayedElement = (
-                <div className="delay">
-                    {delayButton}
-                </div>
-            );
-        }
+        const deadElement = (calendarItem.isDead) ? (
+            <div>
+                Plant Died
+            </div>
+        ) : undefined;
         
-        let deadElement;
-        if (calendarItem.isDead) {
-            deadElement = <span className="isDead">Died</span>;
-        } else {
-            deadElement = <button
+        const errorsElement = (
+            <div className="errors">
+                {delayedElement}
+                {deadElement}
+            </div>
+        );
+        
+        const delayButton = (
+            <button
+                type="button"
+                onClick={this.handleDelayClicked.bind(this)}>
+                Delay This Harvest
+            </button>
+        );
+        
+        const deadButton = (!calendarItem.isDead) ? (
+            <button
                 type="button"
                 onClick={this.handlePlantDiedClicked.bind(this)}>
-                    This Plant Died
-                </button>;
-        }
+                This Plant Died
+            </button>
+        ) : undefined;
+        
+        const actionsElement = (
+            <div className="actions">
+                {delayButton}
+                {deadButton}
+            </div>
+        );
         
         return (
             <li className="plantCalendarItem">
-                {mainLineElement}
-                {harvestElement}
-                {delayedElement}
-                {deadElement}
+                <section>
+                    {mainLineElement}
+                    {harvestElement}
+                    {errorsElement}
+                    {actionsElement}
+                </section>
             </li>
         );
     }

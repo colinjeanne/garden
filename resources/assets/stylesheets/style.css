@@ -209,9 +209,31 @@ fieldset {
    border-color: #edbf64;
 }
 
-.plantCalendarList .isDelayed,
-.plantCalendarList .isDead {
+.plantCalendarList .addHarvest {
+   margin: 0.25em 0;
+}
+
+.plantCalendarList .addHarvest input,
+.plantCalendarList .addHarvest button {
+   margin-left: 0.5em;
+}
+
+.plantCalendarList .actions {
+   padding: 0.25em 0;
+   text-align: right;
+}
+
+.plantCalendarList .actions button {
+   margin-left: 0.5em;
+}
+
+.plantCalendarList .errors {
    color: #ed7b64;
+   margin: 0.25em 0;
+}
+
+.plantCalendarList .errors div {
+   padding: 0.25em 0;
 }
 
 .plantCalendarList .mainLine {
