@@ -177,6 +177,7 @@ class CalendarEventStore extends EventEmitter {
 const calendarEventStore = new CalendarEventStore();
 
 calendarEventStore.dispatchToken = Dispatcher.register(action => {
+    let calendarEvent;
     switch (action.actionType) {
         case Constants.SHOW_PAGE:
             if (action.page === Constants.CALENDAR_PAGE) {
@@ -191,6 +192,37 @@ calendarEventStore.dispatchToken = Dispatcher.register(action => {
             create(action.plantName, action.calendarDate);
             calendarEventStore.emitChange();
             /*createRemotely(idToken, calendarEvents.get(?)).
+                then(() => calendarEventStore.emitChange());*/
+            break;
+        
+        case Constants.CALENDAR_ADD_HARVEST:
+            calendarEvent = calendarEvents.get(action.id);
+            const updatedHarvests = [...calendarEvent.harvests, action.amount];
+            update(action.id, {harvests: updatedHarvests});
+            calendarEventStore.emitChange();
+            /* updateRemotely(idToken, calendarEvents.get(action.id)).
+                then(() => calendarEventStore.emitChange());*/
+            break;
+        
+        case Constants.CALENDAR_DELAY_HARVEST:
+            calendarEvent = calendarEvents.get(action.id);
+            const updatedReadyDate = moment.utc(calendarEvent.readyDate).
+                add(1, 'months');
+            update(
+                action.id,
+                {
+                    isDelayed: true,
+                    readyDate: updatedReadyDate
+                });
+            calendarEventStore.emitChange();
+            /* updateRemotely(idToken, calendarEvents.get(action.id)).
+                then(() => calendarEventStore.emitChange());*/
+            break;
+        
+        case Constants.CALENDAR_PLANT_DIED:
+            update(action.id, {isDead: true});
+            calendarEventStore.emitChange();
+            /* updateRemotely(idToken, calendarEvents.get(action.id)).
                 then(() => calendarEventStore.emitChange());*/
             break;
         
