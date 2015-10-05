@@ -38,12 +38,6 @@ class CalendarEvent
      * @Column(type="boolean", options={"default"=false})
      * @var boolean
      */
-    private $isDelayed;
-
-    /**
-     * @Column(type="boolean", options={"default"=false})
-     * @var boolean
-     */
     private $isDead;
 
     /**
@@ -66,17 +60,15 @@ class CalendarEvent
      */
     private $user;
 
-    public function __construct($id, User $user, Plant $plant, \DateTime $plantedDate)
+    public function __construct($id, User $user, Plant $plant, \DateTimeImmutable $plantedDate)
     {
-        $immutablePlantedDate =
-            \DateTimeImmutable::createFromMutable($plantedDate);
         $growInterval = new \DateInterval($plant->getGrowTime());
 
         $this->id = $id;
         $this->user = $user;
         $this->plant = $plant;
         $this->plantedDate = $plantedDate;
-        $this->readyDate = $immutablePlantedDate->add($growInterval);
+        $this->readyDate = $plantedDate->add($growInterval);
         $this->harvests = '[]';
     }
 
@@ -106,7 +98,10 @@ class CalendarEvent
 
     public function isDelayed()
     {
-        return $this->isDelayed;
+        $growInterval = new \DateInterval($this->plant()->getGrowTime());
+        $expectedReadyDate = $this->getPlantedDate()->add($growInterval);
+        
+        return $this->getReadyDate() < $expectedReadyDate;
     }
 
     public function isDead()
@@ -147,7 +142,6 @@ class CalendarEvent
             throw new \LogicException('Cannot delay a dead plant');
         }
 
-        $this->isDelayed = true;
         $this->readyMonth->add(new \DateInterval('P1M'));
     }
 
