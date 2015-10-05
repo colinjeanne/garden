@@ -42,11 +42,11 @@ class CalendarController extends Controller
         }
         
         if ($hasReadyStartDate) {
-            $startDate = new \DateTime($request->input('readyStartDate'));
-            $endDate = new \DateTime($request->input('readyEndDate'));
+            $startDate = new \DateTimeImmutable($request->input('readyStartDate'));
+            $endDate = new \DateTimeImmutable($request->input('readyEndDate'));
         } else {
-            $startDate = new \DateTime();
-            $endDate = new \DateTime("today +30 day");
+            $startDate = new \DateTimeImmutable();
+            $endDate = new \DateTimeImmutable("today +30 day");
         }
 
         $events = $this->db->getRepository(CalendarEvent::class)

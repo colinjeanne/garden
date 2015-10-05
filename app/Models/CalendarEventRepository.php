@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityRepository;
 
 class CalendarEventRepository extends EntityRepository
 {
-    public function getPlantsReadyBetween($userId, \DateTime $startDate, \DateTime $endDate)
+    public function getPlantsReadyBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
@@ -22,7 +22,7 @@ class CalendarEventRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getPlantsPlantedBetween($userId, \DateTime $startDate, \DateTime $endDate)
+    public function getPlantsPlantedBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
