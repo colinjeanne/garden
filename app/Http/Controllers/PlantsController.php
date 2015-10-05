@@ -64,6 +64,9 @@ class PlantsController extends Controller
     {
         $plant = $this->db->getRepository(Plant::class)
             ->findForUser($name, $this->user->getId());
+        if (!$plant) {
+            abort(404);
+        }
 
         return response()->json(self::plantToJson($plant));
     }
