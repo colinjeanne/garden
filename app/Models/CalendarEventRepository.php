@@ -5,30 +5,45 @@ use Doctrine\ORM\EntityRepository;
 
 class CalendarEventRepository extends EntityRepository
 {
+    public function findForUser($eventId, $userId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('c')
+           ->from(CalendarEvent::class, 'c')
+           ->where($qb->expr()->andX(
+                $qb->expr()->eq('c.id', '?1'),
+                $qb->expr()->eq('c.user', '?2')
+            ))
+           ->setParameter(1, $eventId)
+           ->setParameter(2, $userId);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+    
     public function getCalendarEventsBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('p')
+        $qb->select('c')
            ->addSelect(
-               'LENGTH(p.plant.harvestTime) AS harvestTimeLength'
+               'LENGTH(c.plant.harvestTime) AS harvestTimeLength'
             )
            ->addSelect(
-               'SUBSTRING(p.plant.harvestTime, 1, harvestTimeLength - 1) AS harvestMonths'
+               'SUBSTRING(c.plant.harvestTime, 1, harvestTimeLength - 1) AS harvestMonths'
             )
            ->addSelect(
-               'DATE_ADD(p.readyDate, harvestMonths, \'MONTH\') AS lastReadyDate'
+               'DATE_ADD(c.readyDate, harvestMonths, \'MONTH\') AS lastReadyDate'
             )
-           ->from(CalendarEvent::class, 'p')
-           ->where($qb->expr()->eq('p.user', '?1'))
+           ->from(CalendarEvent::class, 'c')
+           ->where($qb->expr()->eq('c.user', '?1'))
            ->where($qb->expr()->andX(
-                $qb->expr()->eq('p.user', '?1'),
+                $qb->expr()->eq('c.user', '?1'),
                 $qb->expr()->orX(
-                    $qb->expr()->between('p.readyDate', '?2', '?3'),
+                    $qb->expr()->between('c.readyDate', '?2', '?3'),
                     $qb->expr()->between('lastReadyDate', '?2', '?3'),
-                    $qb->expr()->between('?2', 'p.readyDate', 'lastReadyDate'),
-                    $qb->expr()->between('p.plantedDate', '?2', '?3')
+                    $qb->expr()->between('?2', 'c.readyDate', 'lastReadyDate'),
+                    $qb->expr()->between('c.plantedDate', '?2', '?3')
             )))
-           ->orderBy('p.readyDate', 'ASC')
+           ->orderBy('c.readyDate', 'ASC')
            ->setParameter(1, $userId)
            ->setParameter(2, $startDate)
            ->setParameter(3, $endDate);
