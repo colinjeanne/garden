@@ -50,7 +50,10 @@ class CalendarController extends Controller
         }
 
         $events = $this->db->getRepository(CalendarEvent::class)
-            ->getPlantsReadyBetween($this->user->getId(), $startDate, $endDate);
+            ->getCalendarEventsBetween(
+                $this->user->getId(),
+                $startDate,
+                $endDate);
         
         $eventsJson = array_map(
             [self::class, 'calendarEventToJson'],

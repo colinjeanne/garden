@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityRepository;
 
 class CalendarEventRepository extends EntityRepository
 {
-    public function getPlantsReadyBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    public function getCalendarEventsBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p')
@@ -25,7 +25,8 @@ class CalendarEventRepository extends EntityRepository
                 $qb->expr()->orX(
                     $qb->expr()->between('p.readyDate', '?2', '?3'),
                     $qb->expr()->between('lastReadyDate', '?2', '?3'),
-                    $qb->expr()->between('?2', 'p.readyDate', 'lastReadyDate')
+                    $qb->expr()->between('?2', 'p.readyDate', 'lastReadyDate'),
+                    $qb->expr()->between('p.plantedDate', '?2', '?3')
             )))
            ->orderBy('p.readyDate', 'ASC')
            ->setParameter(1, $userId)
@@ -37,22 +38,5 @@ class CalendarEventRepository extends EntityRepository
                 return $result[0];
             },
             $qb->getQuery()->getResult());
-    }
-
-    public function getPlantsPlantedBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('p')
-           ->from(CalendarEvent::class, 'p')
-           ->where($qb->expr()->andX(
-                $qb->expr()->eq('p.user', '?1'),
-                $qb->expr()->between('p.plantedDate', '?2', '?3')
-            ))
-           ->orderBy('p.plantedDate', 'ASC')
-           ->setParameter(1, $userId)
-           ->setParameter(2, $startDate)
-           ->setParameter(3, $endDate);
-
-        return $qb->getQuery()->getResult();
     }
 }
