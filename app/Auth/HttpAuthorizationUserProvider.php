@@ -64,12 +64,17 @@ class HttpAuthorizationUserProvider implements UserProvider
                 if ((count($authInfo) === 2) && ($authInfo[0] === 'Bearer')) {
                     $jwt = $authInfo[1];
 
-                    $this->log->info('Attempting Google authentication');
-
-                    $googleJwtAuth = new GoogleJwtAuthorization();
-                    $claims = $googleJwtAuth->getClaims($jwt);
+                    if (app()->environment() === 'testing') {
+                        $this->log->info('Attempting unit test authentication');
+                        $authorization = new UnitTestAuthorization();
+                    } else {
+                        $this->log->info('Attempting Google authentication');
+                        $authorization = new GoogleJwtAuthorization();
+                    }
+                    
+                    $claims = $authorization->getClaims($jwt);
                     if (isset($claims['iss']) && isset($claims['sub'])) {
-                        $this->log->info('Google claims found');
+                        $this->log->info('Claims found');
                         $claim = $this->db->getRepository(Claim::class)
                             ->findByIssuerAndSubject(
                                 $claims['iss'],
