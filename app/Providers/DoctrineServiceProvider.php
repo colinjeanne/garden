@@ -21,12 +21,15 @@ class DoctrineServiceProvider extends ServiceProvider
                 $config = Setup::createAnnotationMetadataConfiguration(
                     [$modelsPath], $isDevMode);
 
-                $databaseDirectory = realpath(__DIR__ . '/../../storage');
-                $databasePath = $databaseDirectory . '/database.sqlite';
-                $connection = [
-                    'driver' => getenv('DOCTRINE_DRIVER'),
-                    'path' => $databasePath,
-                ];
+                $connection = ['driver' => getenv('DOCTRINE_DRIVER')];
+                
+                if ($app->environment() === 'testing') {
+                    $connection['memory'] = true;
+                } else {
+                    $databaseDirectory = realpath(__DIR__ . '/../../storage');
+                    $databasePath = $databaseDirectory . '/database.sqlite';
+                    $connection['path'] = $databasePath;
+                }
 
                 return EntityManager::create($connection, $config);
             });
