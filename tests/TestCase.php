@@ -22,6 +22,8 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
         $this->beforeApplicationDestroyed(
             [$this, 'beforeApplicationDestroyedCallback']);
         
+        $app->make('Psr\Log\LoggerInterface')->info("===Begin Test {$this->getName()} ===");
+        
         return $app;
     }
     
