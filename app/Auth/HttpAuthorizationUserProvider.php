@@ -88,6 +88,7 @@ class HttpAuthorizationUserProvider implements UserProvider
                         if (isset($claim)) {
                             $this->currentUser = $claim->user();
                             if (!isset($this->currentUser)) {
+                                $this->log->info('Generating user for claim');
                                 $this->currentUser = new User();
                                 $this->db->persist($this->currentUser);
 
