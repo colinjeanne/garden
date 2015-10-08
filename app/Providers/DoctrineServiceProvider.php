@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Illuminate\Support\ServiceProvider;
@@ -14,7 +15,7 @@ class DoctrineServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-            'Doctrine\Common\Persistence\ObjectManager',
+            ObjectManager::class,
             function($app) {
                 $isDevMode = getenv('APP_DEBUG');
                 $modelsPath = realpath(__DIR__ . '/../Models');
