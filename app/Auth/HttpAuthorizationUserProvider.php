@@ -96,8 +96,12 @@ class HttpAuthorizationUserProvider implements UserProvider
                         }
 
                         $this->db->flush();
+                    } else {
+                        $this->log->info('No claims found');
                     }
                 }
+            } else {
+                $this->log->info('Authorization header not present');
             }
         }
 

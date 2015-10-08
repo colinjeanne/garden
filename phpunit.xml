@@ -18,6 +18,7 @@
         <env name="APP_ENV" value="testing"/>
         <env name="CLAIM_ISSUER" value="test-iss"/>
         <env name="CLAIM_SUBJECT" value="test-subject"/>
+        <env name="JWT" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXN1YmplY3QiLCJpc3MiOiJ0ZXN0LWlzc3VlciJ9.m9sb3HVkdDV_bGPySYquWUFNKLiCvnWKEvWowugxcM4"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>

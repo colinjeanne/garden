@@ -37,11 +37,16 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $e)
     {
+        $log = app()->make('Psr\Log\LoggerInterface');
         if ($e instanceof ValidationException) {
+            $log->info($e->getMainMessage());
             return response($e->getMainMessage(), 400);
+        } else if ($this->shouldReport($e)) {
+            $log->critical((string)$e);
+            return response((string)$e, 500);
         }
         
-        return response((string)$e, 500);
+        return parent::render($request, $e);
     }
 
 }
