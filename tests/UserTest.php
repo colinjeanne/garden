@@ -5,9 +5,9 @@ class UserTest extends TestCase
     public function testGetMe()
     {
         $this->get(
-                '/me',
-                $this->getAuthorizationHeader() +
-                $this->getAcceptJSONHeader())
+            '/me',
+            $this->getAuthorizationHeader() +
+            $this->getAcceptJSONHeader())
             ->assertResponseOk();
 
         $this->seeJsonEquals(
