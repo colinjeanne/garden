@@ -29,8 +29,8 @@ class UserController extends Controller
     {
         return [
             'links' => [
-                'self' => route('getMe', $user->getId()),
-                'calendar' => route('getCurrentCalendarItems', $user->getId())
+                'self' => route('getMe'),
+                'calendar' => route('getCurrentCalendarItems')
             ]
         ];
     }
