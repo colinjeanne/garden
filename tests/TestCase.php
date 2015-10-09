@@ -46,7 +46,7 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
     public function getAuthorizationHeader()
     {
         $jwt = getenv('JWT');
-        return ['HTTP_Authorization' => "Bearer $jwt"];
+        return ['HTTP_AUTHORIZATION' => "Bearer $jwt"];
     }
     
     /**
@@ -56,7 +56,7 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function getAcceptJSONHeader()
     {
-        return ['Accept' => 'application/json'];
+        return ['HTTP_ACCEPT' => 'application/json'];
     }
     
     /**
@@ -66,6 +66,6 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function getJSONContentTypeHeader()
     {
-        return ['Accept' => 'application/json'];
+        return ['CONTENT_TYPE' => 'application/json'];
     }
 }

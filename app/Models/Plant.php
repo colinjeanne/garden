@@ -59,7 +59,7 @@ class Plant
      * @Column(type="string", length=20)
      * @var string
      */
-    private $unit;
+    private $unit = '';
 
     /**
      * @Column(type="float", options={"default":1.0})
@@ -71,13 +71,13 @@ class Plant
      * @Column(type="string", length=65536)
      * @var string
      */
-    private $notes;
+    private $notes = '';
     
     /**
      * @Column(type="string", length=50)
      * @var string
      */
-    private $label;
+    private $label = '';
 
     /**
      * @ManyToOne(targetEntity="App\Models\User")

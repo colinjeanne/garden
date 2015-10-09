@@ -29,7 +29,8 @@ class PlantsController extends Controller
 
         $this->middleware('auth');
         $this->middleware('accept-json');
-        $this->middleware('provide-json', ['only' => 'updateUserPlantData']);
+        $this->middleware('provide-json',
+            ['only' => 'createPlant', 'updatePlant']);
     }
 
     public function getPlants()
@@ -57,7 +58,7 @@ class PlantsController extends Controller
 
         $this->db->flush();
 
-        return response()->json(self::plantToJson($plant));
+        return response()->json(self::plantToJson($plant), 201);
     }
 
     public function getPlant(Request $request)
@@ -120,10 +121,20 @@ class PlantsController extends Controller
         $plant->setTaste($json['taste']);
         $plant->setRarity($json['rarity']);
         $plant->setPricePerUnit($json['pricePerUnit']);
-        $plant->setUnit($json['unit']);
+        
+        if (array_key_exists('unit', $json)) {
+            $plant->setUnit($json['unit']);
+        }
+        
         $plant->setUnitPerSquareFoot($json['unitPerSquareFoot']);
-        $plant->setNotes($json['notes']);
-        $plant->setLabel($json['label']);
+        
+        if (array_key_exists('notes', $json)) {
+            $plant->setNotes($json['notes']);
+        }
+        
+        if (array_key_exists('label', $json)) {
+            $plant->setLabel($json['label']);
+        }
     }
 
     private static function plantToJson(Plant $plant)
