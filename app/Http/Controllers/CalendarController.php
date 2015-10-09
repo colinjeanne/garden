@@ -92,7 +92,7 @@ class CalendarController extends Controller
         
         $this->db->flush();
 
-        return response()->json(self::calendarEventToJson($calendarEvent));
+        return response()->json(self::calendarEventToJson($calendarEvent), 201);
     }
 
     public function getItem($eventId)
@@ -172,9 +172,12 @@ class CalendarController extends Controller
     private function updateCalendarEventFromJson(CalendarEvent $calendarEvent, array $json)
     {
         $calendarEvent->setReadyDate($json['readyDate']);
-        $calendarEvent->setHarvests($json['harvests']);
         
-        if ($json['isDead']) {
+        if (array_key_exists('harvests', $json)) {
+            $calendarEvent->setHarvests($json['harvests']);
+        }
+        
+        if (array_key_exists('isDead', $json) && $json['isDead']) {
             $calendarEvent->died();
         }
     }

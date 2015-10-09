@@ -35,7 +35,7 @@ class CalendarEvent
     private $readyDate;
 
     /**
-     * @Column(type="boolean", options={"default"=false})
+     * @Column(type="boolean", options={"default":false})
      * @var boolean
      */
     private $isDead;
@@ -44,7 +44,7 @@ class CalendarEvent
      * @Column(type="string")
      * @var string
      */
-    private $harvests;
+    private $harvests = '[]';
 
     /**
      * @ManyToOne(targetEntity="App\Models\Plant", fetch="EAGER")
