@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Plant;
 use App\Models\UserPlantData;
 use Doctrine\Common\Persistence\ObjectManager as DB;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException as UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Respect\Validation\Validator as v;
 
@@ -56,12 +57,16 @@ class PlantsController extends Controller
 
         $this->updatePlantFromJson($plant, $json);
 
-        $this->db->flush();
+        try {
+            $this->db->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            abort(400);
+        }
 
         return response()->json(self::plantToJson($plant), 201);
     }
 
-    public function getPlant(Request $request)
+    public function getPlant(Request $request, $name)
     {
         $plant = $this->db->getRepository(Plant::class)
             ->findForUser($name, $this->user->getId());
