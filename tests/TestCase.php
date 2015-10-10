@@ -36,6 +36,8 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
         $metadata = $entityManager->getMetadataFactory()->getAllMetadata();
         $schemaTool = new SchemaTool($entityManager);
         $schemaTool->dropDatabase();
+        
+        $this->app->make('Psr\Log\LoggerInterface')->info("===End Test {$this->getName()} ===");
     }
 
     /**
