@@ -164,6 +164,24 @@ class PlantTest extends TestCase
         $this->seeJson($plant);
     }
     
+    public function testUpdateNonexistentPlant()
+    {
+        $plant = [
+            'name' => 'plant',
+            'growTime' => 'P1M',
+            'harvestTime' => 'P1M',
+            'difficulty' => 1,
+            'taste' => 1,
+            'rarity' => 1,
+            'pricePerUnit' => 1,
+            'unitPerSquareFoot' => 1
+        ];
+        
+        $this->updatePlant($plant['name'], $plant);
+        $this->assertResponseStatus(404);
+        $this->assertEmpty($this->response->getContent());
+    }
+    
     public function testGetPlant()
     {
         $plant = [
@@ -183,6 +201,13 @@ class PlantTest extends TestCase
         $this->assertResponseOk();
         
         $this->seeJson($plant);
+    }
+    
+    public function testGetNonexistentPlant()
+    {
+        $this->getPlant('plant');
+        $this->assertResponseStatus(404);
+        $this->assertEmpty($this->response->getContent());
     }
     
     private function createPlant(array $json) {

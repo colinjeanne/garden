@@ -41,6 +41,7 @@ class RequestLoggerMiddleware
         $this->log->info(
             'End request',
             [
+                'status' => $response->status(),
                 'time' => $endTime,
                 'duration' => $endTime - $startTime
             ]);
