@@ -144,7 +144,7 @@ class CalendarController extends Controller
         $validator = v::arrType()->
             keySet(
                 v::key('id', v::strType()->length(5, 10)),
-                v::key('plantName'), v::strType()->length(2, 100),
+                v::key('plantName', v::strType()->length(2, 100)),
                 v::key(
                     'plantedDate',
                     v::date('Y-m')->between('01 January 2010', '31 December 2020')),
@@ -160,9 +160,9 @@ class CalendarController extends Controller
                     )),
                 v::key(
                     'links',
-                    v::arrType()->ketSet(
-                        key('self', v::url()),
-                        key('plant', v::url())),
+                    v::arrType()->keySet(
+                        v::key('self', v::url()),
+                        v::key('plant', v::url())),
                     false)
             );
         
