@@ -3,7 +3,7 @@
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\SchemaTool;
 
-class TestCase extends Laravel\Lumen\Testing\TestCase
+abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {
     /**
      * Creates the application.
