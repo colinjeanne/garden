@@ -23,13 +23,13 @@ class CalendarEvent
     private $id;
 
     /**
-     * @Column(type="datetime")
+     * @Column(type="datetimetz")
      * @var DateTime
      */
     private $plantedDate;
 
     /**
-     * @Column(type="datetime")
+     * @Column(type="datetimetz")
      * @var DateTime
      */
     private $readyDate;
@@ -38,13 +38,13 @@ class CalendarEvent
      * @Column(type="boolean", options={"default":false})
      * @var boolean
      */
-    private $isDead;
+    private $isDead = false;
 
     /**
-     * @Column(type="string")
-     * @var string
+     * @Column(type="array")
+     * @var array
      */
-    private $harvests = '[]';
+    private $harvests = [];
 
     /**
      * @ManyToOne(targetEntity="App\Models\Plant", fetch="EAGER")
@@ -111,7 +111,7 @@ class CalendarEvent
 
     public function getHarvests()
     {
-        return json_decode($this->harvests, true);
+        return $this->harvests;
     }
 
     public function setHarvests(array $harvests)
@@ -133,7 +133,7 @@ class CalendarEvent
             throw new \InvalidArgumentException('harvests');
         }
 
-        $this->harvests = json_encode($harvests);
+        $this->harvests = $harvests;
     }
 
     public function delay()
