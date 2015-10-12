@@ -182,6 +182,48 @@ class PlantTest extends TestCase
         $this->assertEmpty($this->response->getContent());
     }
     
+    public function testUpdatePlantRemovesFields()
+    {
+        $plant = [
+            'name' => 'plant',
+            'growTime' => 'P1M',
+            'harvestTime' => 'P1M',
+            'difficulty' => 1,
+            'taste' => 1,
+            'rarity' => 1,
+            'pricePerUnit' => 1,
+            'unit' => 'unit',
+            'unitPerSquareFoot' => 1,
+            'notes' => 'notes',
+            'label' => 'label',
+        ];
+        
+        $this->createPlant($plant);
+        
+        unset($plant['unit']);
+        unset($plant['notes']);
+        unset($plant['label']);
+        
+        $this->updatePlant($plant['name'], $plant);
+        $this->assertResponseOk();
+        
+        $updatedPlant = [
+            'name' => 'plant',
+            'growTime' => 'P1M',
+            'harvestTime' => 'P1M',
+            'difficulty' => 1,
+            'taste' => 1,
+            'rarity' => 1,
+            'pricePerUnit' => 1,
+            'unit' => '',
+            'unitPerSquareFoot' => 1,
+            'notes' => '',
+            'label' => '',
+        ];
+        
+        $this->seeJson($plant);
+    }
+    
     public function testGetPlant()
     {
         $plant = [

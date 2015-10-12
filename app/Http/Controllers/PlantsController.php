@@ -129,16 +129,22 @@ class PlantsController extends Controller
         
         if (array_key_exists('unit', $json)) {
             $plant->setUnit($json['unit']);
+        } else {
+            $plant->setUnit('');
         }
         
         $plant->setUnitPerSquareFoot($json['unitPerSquareFoot']);
         
         if (array_key_exists('notes', $json)) {
             $plant->setNotes($json['notes']);
+        } else {
+            $plant->setNotes('');
         }
         
         if (array_key_exists('label', $json)) {
             $plant->setLabel($json['label']);
+        } else {
+            $plant->setLabel('');
         }
     }
 
