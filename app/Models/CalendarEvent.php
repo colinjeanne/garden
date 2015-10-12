@@ -87,7 +87,7 @@ class CalendarEvent
         return $this->readyDate;
     }
 
-    public function setReadyDate(\DateTime $readyDate)
+    public function setReadyDate(\DateTimeImmutable $readyDate)
     {
         if ($this->isDead()) {
             throw new \LogicException('Cannot set the ready date of a dead plant');
