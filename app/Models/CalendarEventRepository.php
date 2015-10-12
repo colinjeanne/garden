@@ -22,36 +22,30 @@ class CalendarEventRepository extends EntityRepository
     
     public function getCalendarEventsBetween($userId, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
+        // Doctrine does not support either type conversions or date interval
+        // and so it is necessary to query for all events and filter them in
+        // directly.
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('c')
-           ->addSelect(
-               'LENGTH(c.plant.harvestTime) AS harvestTimeLength'
-            )
-           ->addSelect(
-               'SUBSTRING(c.plant.harvestTime, 1, harvestTimeLength - 1) AS harvestMonths'
-            )
-           ->addSelect(
-               'DATE_ADD(c.readyDate, harvestMonths, \'MONTH\') AS lastReadyDate'
-            )
            ->from(CalendarEvent::class, 'c')
            ->where($qb->expr()->eq('c.user', '?1'))
-           ->where($qb->expr()->andX(
-                $qb->expr()->eq('c.user', '?1'),
-                $qb->expr()->orX(
-                    $qb->expr()->between('c.readyDate', '?2', '?3'),
-                    $qb->expr()->between('lastReadyDate', '?2', '?3'),
-                    $qb->expr()->between('?2', 'c.readyDate', 'lastReadyDate'),
-                    $qb->expr()->between('c.plantedDate', '?2', '?3')
-            )))
            ->orderBy('c.readyDate', 'ASC')
-           ->setParameter(1, $userId)
-           ->setParameter(2, $startDate)
-           ->setParameter(3, $endDate);
+           ->setParameter(1, $userId);
 
-        return array_map(
-            function ($result) {
-                return $result[0];
-            },
-            $qb->getQuery()->getResult());
+        return array_filter(
+            $qb->getQuery()->getResult(),
+            function ($calendarEvent) {
+                $harvestTime = new \DateInterval(
+                    $calendarEvent->plant()->getHarvestTime());
+                $readyDate = \DateTimeImmutable::createFromMutable(
+                    $calendarEvent->getReadyDate());
+                $lastReadyDate = $readyDate->add($harvestTime);
+                $plantedDate = $calendarEvent->getPlantedDate();
+                
+                return ($readyDate >= $startDate && $readyDate <= $endDate) ||
+                    ($lastReadyDate >= $startDate && $lastReadyDate <= $endDate) ||
+                    ($startDate >= $readyDate && $startDate <= $lastReadyDate) ||
+                    ($plantedDate >= $startDate && $plantedDate <= $endDate);
+            });
     }
 }
