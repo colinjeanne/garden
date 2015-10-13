@@ -31,7 +31,7 @@ class RequestLoggerMiddleware
             'Start request',
             [
                 'method' => $request->method(),
-                'path' => '/' + $request->path(),
+                'path' => '/' . $request->path(),
                 'time' => $startTime
             ]);
         
