@@ -31,14 +31,13 @@ class CalendarEventRepository extends EntityRepository
            ->where($qb->expr()->eq('c.user', '?1'))
            ->orderBy('c.readyDate', 'ASC')
            ->setParameter(1, $userId);
-
+        
         return array_filter(
             $qb->getQuery()->getResult(),
-            function ($calendarEvent) {
+            function ($calendarEvent) use ($startDate, $endDate) {
                 $harvestTime = new \DateInterval(
                     $calendarEvent->plant()->getHarvestTime());
-                $readyDate = \DateTimeImmutable::createFromMutable(
-                    $calendarEvent->getReadyDate());
+                $readyDate = $calendarEvent->getReadyDate();
                 $lastReadyDate = $readyDate->add($harvestTime);
                 $plantedDate = $calendarEvent->getPlantedDate();
                 

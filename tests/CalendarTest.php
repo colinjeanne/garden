@@ -1,6 +1,6 @@
 <?php
 
-class CalendarTestTest extends TestCase
+class CalendarEventTest extends TestCase
 {
     public function testGetCurrentEvents()
     {
@@ -13,24 +13,34 @@ class CalendarTestTest extends TestCase
         $this->seeJsonEquals([]);
         
         $this->createPlant('plant', 'P2M', 'P3M');
-        $this->createPlant('plant2', 'P1M', 'P1M');
-        $this->createPlant('plant3', 'P5M', 'P6M');
         
-        $this->markTestIncomplete();
+        $lastMonth = new \DateTime('now -2 months');
+        $now = new \DateTime('now');
+        $nextMonth = new \DateTime('next month');
         
-        $event = [
-            'id' => 'plant',
-            'plantName' => 'P1M',
-            'plantedDate' => 'P1M',
-            'readyDate' => 1
+        $event1 = [
+            'id' => '11111',
+            'plantName' => 'plant',
+            'plantedDate' => $lastMonth->format(\DateTime::ATOM)
         ];
         
-        $event = [
-            'id' => 'plant',
-            'plantName' => 'P1M',
-            'plantedDate' => 'P1M',
-            'readyDate' => 1
+        $this->createEvent($event1);
+        
+        $event2 = [
+            'id' => '22222',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
         ];
+        
+        $this->createEvent($event2);
+        
+        $event3 = [
+            'id' => '33333',
+            'plantName' => 'plant',
+            'plantedDate' => $nextMonth->format(\DateTime::ATOM),
+        ];
+        
+        $this->createEvent($event3);
         
         $this->get(
             '/calendar',
@@ -38,12 +48,77 @@ class CalendarTestTest extends TestCase
             $this->getAcceptJSONHeader())
             ->assertResponseOk();
         
-        $this->seeJson($plant);
-        $this->seeJson($plant2);
+        $json = json_decode($this->response->content());
+        $this->assertCount(2, $json);
+        $this->seeJson($event1);
+        $this->seeJson($event2);
     }
     
     public function testGetEventsBetweenDates() {
-        $this->markTestIncomplete();
+        $startDate = new \DateTimeImmutable('today');
+        $endDate = $startDate->add(new \DateInterval('P3M'));
+        
+        $this->get(
+            '/calendar?startDate=' . $startDate->getTimestamp() .
+                '&endDate=' . $endDate->getTimestamp(),
+            $this->getAuthorizationHeader() +
+            $this->getAcceptJSONHeader())
+            ->assertResponseOk();
+        
+        $this->seeJsonEquals([]);
+        
+        $this->createPlant('plant', 'P1M', 'P3M');
+        
+        $plantedDateBetween = [
+            'id' => 'plantedB',
+            'plantName' => 'plant',
+            'plantedDate' => $startDate->format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($plantedDateBetween);
+        
+        $plantedDateOutside = [
+            'id' => 'plantedO',
+            'plantName' => 'plant',
+            'plantedDate' => $endDate->
+                add(new \DateInterval('P1M'))->
+                format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($plantedDateOutside);
+        
+        $readyDateBetween = [
+            'id' => 'readyB',
+            'plantName' => 'plant',
+            'plantedDate' => $startDate->
+                sub(new \DateInterval('P1M'))->
+                format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($readyDateBetween);
+        
+        $harvestBetween = [
+            'id' => 'harvestB',
+            'plantName' => 'plant',
+            'plantedDate' => $startDate->
+                sub(new \DateInterval('P3M'))->
+                format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($harvestBetween);
+        
+        $this->get(
+            '/calendar?startDate=' . $startDate->getTimestamp() .
+                '&endDate=' . $endDate->getTimestamp(),
+            $this->getAuthorizationHeader() +
+            $this->getAcceptJSONHeader())
+            ->assertResponseOk();
+        
+        $json = json_decode($this->response->content());
+        $this->assertCount(3, $json);
+        $this->seeJson($plantedDateBetween);
+        $this->seeJson($readyDateBetween);
+        $this->seeJson($harvestBetween);
     }
     
     public function testCreateEvent()
@@ -111,7 +186,6 @@ class CalendarTestTest extends TestCase
     public function testCreateEventForNonexistentPlant()
     {
         $now = new \DateTime();
-        $nextMonth = new \DateTime('next month');
         
         $event = [
             'id' => 'plant',
@@ -125,192 +199,225 @@ class CalendarTestTest extends TestCase
     
     public function testCreateEventMissingRequiredField()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant'
         ];
         
-        $this->createPlant($plant);
+        $this->createEvent($event);
         $this->assertResponseStatus(400);
     }
     
     public function testCreateEventInvalidFieldValue()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unitPerSquareFoot' => 'foo'
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => 5
         ];
         
-        $this->createPlant($plant);
+        $this->createEvent($event);
+        $this->assertResponseStatus(400);
+    }
+    
+    public function testCreateEventWithReadyDateBeforePlantDate() {
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $nextMonth->format(\DateTime::ATOM),
+            'readyDate' => $now->format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($event);
         $this->assertResponseStatus(400);
     }
     
     public function testUpdateEvent()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unitPerSquareFoot' => 1
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM)
         ];
         
-        $this->createPlant($plant);
+        $this->createEvent($event);
         
-        $plant['unit'] = 'oz';
-        $this->updatePlant($plant['name'], $plant);
+        $event += [
+            'readyDate' => $nextMonth->format(\DateTime::ATOM),
+            'isDead' => true,
+            'harvests' => [1, 2, 3],
+        ];
+        
+        $this->updateEvent($event['id'], $event);
         $this->assertResponseOk();
         
-        $this->seeJson($plant);
+        $this->seeJson($event);
     }
     
     public function testUpdateNonexistentEvent()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unitPerSquareFoot' => 1
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM),
+            'isDead' => true,
+            'harvests' => [1, 2, 3],
         ];
         
-        $this->updatePlant($plant['name'], $plant);
+        $this->updateEvent($event['id'], $event);
         $this->assertResponseStatus(404);
         $this->assertEmpty($this->response->getContent());
     }
     
     public function testUpdateEventRemovesFields()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unit' => 'unit',
-            'unitPerSquareFoot' => 1,
-            'notes' => 'notes',
-            'label' => 'label',
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM),
+            'harvests' => [1, 2, 3]
         ];
         
-        $this->createPlant($plant);
+        $this->createEvent($event);
         
-        unset($plant['unit']);
-        unset($plant['notes']);
-        unset($plant['label']);
+        unset($event['harvests']);
         
-        $this->updatePlant($plant['name'], $plant);
+        $this->updateEvent($event['id'], $event);
         $this->assertResponseOk();
         
-        $updatedPlant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unit' => '',
-            'unitPerSquareFoot' => 1,
-            'notes' => '',
-            'label' => '',
+        $expectedEvent = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM),
+            'harvests' => []
         ];
         
-        $this->seeJson($plant);
+        $this->seeJson($expectedEvent);
     }
     
     public function testUpdateEventBringBackDeadPlant()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unit' => 'unit',
-            'unitPerSquareFoot' => 1,
-            'notes' => 'notes',
-            'label' => 'label',
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM),
+            'isDead' => true
         ];
         
-        $this->createPlant($plant);
+        $this->createEvent($event);
         
-        unset($plant['unit']);
-        unset($plant['notes']);
-        unset($plant['label']);
+        $event['isDead'] = false;
         
-        $this->updatePlant($plant['name'], $plant);
-        $this->assertResponseOk();
+        $this->updateEvent($event['id'], $event);
+        $this->assertResponseStatus(400);
         
-        $updatedPlant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unit' => '',
-            'unitPerSquareFoot' => 1,
-            'notes' => '',
-            'label' => '',
+        unset($event['isDead']);
+        
+        $this->updateEvent($event['id'], $event);
+        $this->assertResponseStatus(400);
+    }
+    
+    public function testUpdateEventWithReadyDateBeforePlantDate() {
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $lastMonth = new \DateTime('last month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
         ];
         
-        $this->seeJson($plant);
+        $this->createEvent($event);
+        
+        $event['readyDate'] = $lastMonth->format(\DateTime::ATOM);
+        
+        $this->updateEvent($event['id'], $event);
+        $this->assertResponseStatus(400);
+    }
+    
+    public function testUpdateEventSetPlantedDate() {
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($event);
+        
+        $event['plantedDate'] = $nextMonth->format(\DateTime::ATOM);
+        
+        $this->updateEvent($event['id'], $event);
+        $this->assertResponseStatus(400);
     }
     
     public function testGetEvent()
     {
-        $this->markTestIncomplete();
-        $plant = [
-            'name' => 'plant',
-            'growTime' => 'P1M',
-            'harvestTime' => 'P1M',
-            'difficulty' => 1,
-            'taste' => 1,
-            'rarity' => 1,
-            'pricePerUnit' => 1,
-            'unitPerSquareFoot' => 1
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM)
         ];
         
-        $this->createPlant($plant);
+        $this->createEvent($event);
         
-        $this->getPlant($plant['name']);
+        $this->getEvent($event['id']);
         $this->assertResponseOk();
-        
-        $this->seeJson($plant);
+        $this->seeJson($event);
     }
     
     public function testGetNonexistentEvent()
     {
-        $this->markTestIncomplete();
         $this->getEvent('unknown');
         $this->assertResponseStatus(404);
         $this->assertEmpty($this->response->getContent());

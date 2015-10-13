@@ -30,24 +30,38 @@ class CalendarController extends Controller
 
         $this->middleware('auth');
         $this->middleware('accept-json', ['except' => 'deleteItem']);
-        $this->middleware('provide-json', ['except' => 'getCurrent', 'getItem']);
+        $this->middleware('provide-json', ['except' => ['getCurrent', 'getItem']]);
     }
 
     public function getCurrent(Request $request)
     {
-        $hasReadyStartDate = $request->has('readyStartDate');
-        $hasReadyEndDate = $request->has('readyEndDate');
+        $hasReadyStartDate = $request->has('startDate');
+        $hasReadyEndDate = $request->has('endDate');
         
         if ($hasReadyStartDate !== $hasReadyEndDate) {
             abort(400);
         }
         
         if ($hasReadyStartDate) {
-            $startDate = new \DateTimeImmutable($request->input('readyStartDate'));
-            $endDate = new \DateTimeImmutable($request->input('readyEndDate'));
+            $startDate = null;
+            if (!self::tryParseDateTimeFromTimestamp(
+                $request->input('startDate'),
+                $startDate)) {
+                abort(400);
+            }
+            
+            $endDate = null;
+            if (!self::tryParseDateTimeFromTimestamp(
+                $request->input('endDate'),
+                $endDate)) {
+                abort(400);
+            }
         } else {
-            $startDate = new \DateTimeImmutable();
-            $endDate = new \DateTimeImmutable("today +30 day");
+            $firstOfTheMonthTimestamp = mktime(0, 0, 0, date('n'), 1);
+            $firstOfTheMonth = new \DateTime();
+            $firstOfTheMonth->setTimestamp($firstOfTheMonthTimestamp);
+            $startDate = \DateTimeImmutable::createFromMutable($firstOfTheMonth);
+            $endDate = $startDate->add(new \DateInterval('P1M'));
         }
 
         $events = $this->db->getRepository(CalendarEvent::class)
@@ -113,14 +127,13 @@ class CalendarController extends Controller
     {
         $json = $request->json()->all();
         
-        $this->validateEventJsonForUpdate($json);
-        
         $calendarEvent = $this->db->getRepository(CalendarEvent::class)
             ->findForUser($eventId, $this->user->getId());
         if (!$calendarEvent) {
             abort(404);
         }
         
+        $this->validateEventJsonForUpdate($calendarEvent, $json);
         $this->updateCalendarEventFromJson($calendarEvent, $json);
         
         $this->db->flush();
@@ -142,7 +155,7 @@ class CalendarController extends Controller
         return response('', 204);
     }
     
-    private function validateEventJsonForCreate($json)
+    private function validateEventJsonForCreate(array $json)
     {
         $validator = v::arrType()->
             keySet(
@@ -176,16 +189,18 @@ class CalendarController extends Controller
         $validator->check($json);
     }
 
-    private function validateEventJsonForUpdate($json)
+    private function validateEventJsonForUpdate(CalendarEvent $calendarEvent, $json)
     {
         $validator = v::arrType()->
             keySet(
-                v::key('id', v::strType()->length(5, 10)),
-                v::key('plantName', v::strType()->length(2, 100)),
+                v::key('id', v::equals($calendarEvent->getId(), true)),
+                v::key('plantName',
+                    v::equals($calendarEvent->plant()->getName(), true)),
                 v::key(
                     'plantedDate',
-                    v::date(\DateTime::ATOM)
-                        ->between('01 January 2010', '31 December 2020')),
+                    v::equals(
+                        $calendarEvent->getPlantedDate()->format(\DateTime::ATOM),
+                        true)),
                 v::key(
                     'readyDate',
                     v::date(\DateTime::ATOM)
@@ -213,7 +228,8 @@ class CalendarController extends Controller
     {
         if (array_key_exists('readyDate', $json)) {
             $readyDate = null;
-            if (!self::tryParseDateTime($json['readyDate'], $readyDate)) {
+            if (!self::tryParseDateTime($json['readyDate'], $readyDate) ||
+                ($readyDate < $calendarEvent->getPlantedDate())) {
                 abort(400);
             }
             
@@ -231,18 +247,40 @@ class CalendarController extends Controller
     
     private function updateCalendarEventFromJson(CalendarEvent $calendarEvent, array $json)
     {
-        $calendarEvent->setReadyDate($json['readyDate']);
+        $readyDate = null;
+        if (!self::tryParseDateTime($json['readyDate'], $readyDate) ||
+            ($readyDate < $calendarEvent->getPlantedDate())) {
+            abort(400);
+        }
+        
+        $readyDateChanged = $readyDate !== $calendarEvent->getReadyDate();
+        
+        $isDead = array_key_exists('isDead', $json) ?
+            $json['isDead'] :
+            false;
+            
+        $isDeadChanged = $isDead !== $calendarEvent->isDead();
+        
+        if ($calendarEvent->isDead() && !$isDead) {
+            // It is not possible to bring a dead plant back
+            abort(400);
+        }
+        
+        if ($readyDateChanged && $isDeadChanged) {
+            // Set the ready date first since it cannot be changed one the
+            // plant is marked as dead
+            $calendarEvent->setReadyDate($readyDate);
+            $calendarEvent->died();
+        } else if ($readyDateChanged) {
+            $calendarEvent->setReadyDate($readyDate);
+        } else if ($isDeadChanged) {
+            $calendarEvent->died();
+        }
         
         if (array_key_exists('harvests', $json)) {
             $calendarEvent->setHarvests($json['harvests']);
         } else {
             $calendarEvent->setHarvests([]);
-        }
-        
-        if (array_key_exists('isDead', $json) && $json['isDead']) {
-            $calendarEvent->died();
-        } else if (!$calendarEvent->isDead()) {
-            abort(400);
         }
     }
     
@@ -267,6 +305,18 @@ class CalendarController extends Controller
         try {
             $dateTime = \DateTimeImmutable::createFromFormat(
                 \DateTime::ATOM,
+                $mixed);
+        } catch (\Exception $e) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private static function tryParseDateTimeFromTimestamp($mixed, &$dateTime) {
+        try {
+            $dateTime = \DateTimeImmutable::createFromFormat(
+                'U',
                 $mixed);
         } catch (\Exception $e) {
             return false;
