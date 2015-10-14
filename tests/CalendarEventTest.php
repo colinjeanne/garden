@@ -419,6 +419,37 @@ class CalendarEventTest extends TestCase
         $this->assertEmpty($this->response->getContent());
     }
     
+    public function testDeleteEvent()
+    {
+        $this->createPlant('plant', 'P2M', 'P3M');
+        
+        $now = new \DateTime();
+        $nextMonth = new \DateTime('next month');
+        
+        $event = [
+            'id' => 'plant',
+            'plantName' => 'plant',
+            'plantedDate' => $now->format(\DateTime::ATOM),
+            'readyDate' => $nextMonth->format(\DateTime::ATOM)
+        ];
+        
+        $this->createEvent($event);
+        
+        $this->deleteEvent($event['id']);
+        $this->assertResponseStatus(204);
+        
+        $this->getEvent($event['id']);
+        $this->assertResponseStatus(404);
+        $this->assertEmpty($this->response->getContent());
+    }
+    
+    public function testDeleteNonexistentEvent()
+    {
+        $this->deleteEvent('unknown');
+        $this->assertResponseStatus(404);
+        $this->assertEmpty($this->response->getContent());
+    }
+    
     private function createPlant($name, $growTime, $harvestTime) {
         $plant = [
             'name' => $name,
@@ -498,5 +529,12 @@ class CalendarEventTest extends TestCase
             $this->getAcceptJSONHeader() +
             $this->getJSONContentTypeHeader(),
             json_encode($json));
+    }
+    
+    private function deleteEvent($id) {
+        $this->delete(
+            '/calendar/' . $id,
+            [],
+            $this->getAuthorizationHeader());
     }
 }

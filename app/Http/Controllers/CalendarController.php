@@ -30,7 +30,8 @@ class CalendarController extends Controller
 
         $this->middleware('auth');
         $this->middleware('accept-json', ['except' => 'deleteItem']);
-        $this->middleware('provide-json', ['except' => ['getCurrent', 'getItem']]);
+        $this->middleware('provide-json',
+            ['except' => ['getCurrent', 'getItem', 'deleteItem']]);
     }
 
     public function getCurrent(Request $request)
