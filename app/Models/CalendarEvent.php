@@ -17,10 +17,11 @@ class CalendarEvent
 {
     /**
      * @Id
-     * @Column(type="string", unique=true, length=20)
-     * @var string
+     * @Column(type="integer")
+     * @GeneratedValue
+     * @var int
      */
-    private $id;
+    private $id = null;
 
     /**
      * @Column(type="datetimetz")
@@ -60,11 +61,10 @@ class CalendarEvent
      */
     private $user;
 
-    public function __construct($id, User $user, Plant $plant, \DateTimeImmutable $plantedDate)
+    public function __construct(User $user, Plant $plant, \DateTimeImmutable $plantedDate)
     {
         $growInterval = new \DateInterval($plant->getGrowTime());
 
-        $this->id = $id;
         $this->user = $user;
         $this->plant = $plant;
         $this->plantedDate = $plantedDate;

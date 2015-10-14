@@ -19,7 +19,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event1 = [
-            'id' => '11111',
             'plantName' => 'plant',
             'plantedDate' => $lastMonth->format(\DateTime::ATOM)
         ];
@@ -27,7 +26,6 @@ class CalendarEventTest extends TestCase
         $this->createEvent($event1);
         
         $event2 = [
-            'id' => '22222',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
         ];
@@ -35,7 +33,6 @@ class CalendarEventTest extends TestCase
         $this->createEvent($event2);
         
         $event3 = [
-            'id' => '33333',
             'plantName' => 'plant',
             'plantedDate' => $nextMonth->format(\DateTime::ATOM),
         ];
@@ -70,7 +67,6 @@ class CalendarEventTest extends TestCase
         $this->createPlant('plant', 'P1M', 'P3M');
         
         $plantedDateBetween = [
-            'id' => 'plantedB',
             'plantName' => 'plant',
             'plantedDate' => $startDate->format(\DateTime::ATOM)
         ];
@@ -78,7 +74,6 @@ class CalendarEventTest extends TestCase
         $this->createEvent($plantedDateBetween);
         
         $plantedDateOutside = [
-            'id' => 'plantedO',
             'plantName' => 'plant',
             'plantedDate' => $endDate->
                 add(new \DateInterval('P1M'))->
@@ -88,7 +83,6 @@ class CalendarEventTest extends TestCase
         $this->createEvent($plantedDateOutside);
         
         $readyDateBetween = [
-            'id' => 'readyB',
             'plantName' => 'plant',
             'plantedDate' => $startDate->
                 sub(new \DateInterval('P1M'))->
@@ -98,7 +92,6 @@ class CalendarEventTest extends TestCase
         $this->createEvent($readyDateBetween);
         
         $harvestBetween = [
-            'id' => 'harvestB',
             'plantName' => 'plant',
             'plantedDate' => $startDate->
                 sub(new \DateInterval('P3M'))->
@@ -128,7 +121,6 @@ class CalendarEventTest extends TestCase
         $now = new \DateTime();
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM)
         ];
@@ -146,7 +138,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM),
@@ -159,32 +150,11 @@ class CalendarEventTest extends TestCase
         $this->seeJson($event);
     }
     
-    public function testCreateSameEventTwice()
-    {
-        $this->createPlant('plant', 'P2M', 'P3M');
-        
-        $now = new \DateTime();
-        
-        $event = [
-            'id' => 'plant',
-            'plantName' => 'plant',
-            'plantedDate' => $now->format(\DateTime::ATOM)
-        ];
-        
-        $this->createEvent($event);
-        $this->assertResponseStatus(201);
-        $this->seeJson($event);
-        
-        $this->createEvent($event);
-        $this->assertResponseStatus(400);
-    }
-    
     public function testCreateEventForNonexistentPlant()
     {
         $now = new \DateTime();
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM)
         ];
@@ -200,7 +170,6 @@ class CalendarEventTest extends TestCase
         $now = new \DateTime();
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant'
         ];
         
@@ -215,7 +184,6 @@ class CalendarEventTest extends TestCase
         $now = new \DateTime();
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => 5
         ];
@@ -231,7 +199,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $nextMonth->format(\DateTime::ATOM),
             'readyDate' => $now->format(\DateTime::ATOM)
@@ -249,7 +216,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM)
         ];
@@ -262,7 +228,7 @@ class CalendarEventTest extends TestCase
             'harvests' => [1, 2, 3],
         ];
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('1', $event);
         $this->assertResponseOk();
         
         $this->seeJson($event);
@@ -276,7 +242,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM),
@@ -284,7 +249,7 @@ class CalendarEventTest extends TestCase
             'harvests' => [1, 2, 3],
         ];
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('unknown', $event);
         $this->assertResponseStatus(404);
         $this->assertEmpty($this->response->getContent());
     }
@@ -297,7 +262,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM),
@@ -308,11 +272,10 @@ class CalendarEventTest extends TestCase
         
         unset($event['harvests']);
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('1', $event);
         $this->assertResponseOk();
         
         $expectedEvent = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM),
@@ -330,7 +293,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM),
@@ -341,12 +303,12 @@ class CalendarEventTest extends TestCase
         
         $event['isDead'] = false;
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('1', $event);
         $this->assertResponseStatus(400);
         
         unset($event['isDead']);
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('1', $event);
         $this->assertResponseStatus(400);
     }
     
@@ -357,7 +319,6 @@ class CalendarEventTest extends TestCase
         $lastMonth = new \DateTime('last month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
         ];
@@ -366,7 +327,7 @@ class CalendarEventTest extends TestCase
         
         $event['readyDate'] = $lastMonth->format(\DateTime::ATOM);
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('1', $event);
         $this->assertResponseStatus(400);
     }
     
@@ -377,7 +338,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM)
@@ -387,7 +347,7 @@ class CalendarEventTest extends TestCase
         
         $event['plantedDate'] = $nextMonth->format(\DateTime::ATOM);
         
-        $this->updateEvent($event['id'], $event);
+        $this->updateEvent('1', $event);
         $this->assertResponseStatus(400);
     }
     
@@ -399,7 +359,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM)
@@ -407,7 +366,7 @@ class CalendarEventTest extends TestCase
         
         $this->createEvent($event);
         
-        $this->getEvent($event['id']);
+        $this->getEvent('1');
         $this->assertResponseOk();
         $this->seeJson($event);
     }
@@ -427,7 +386,6 @@ class CalendarEventTest extends TestCase
         $nextMonth = new \DateTime('next month');
         
         $event = [
-            'id' => 'plant',
             'plantName' => 'plant',
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM)
@@ -435,10 +393,10 @@ class CalendarEventTest extends TestCase
         
         $this->createEvent($event);
         
-        $this->deleteEvent($event['id']);
+        $this->deleteEvent('1');
         $this->assertResponseStatus(204);
         
-        $this->getEvent($event['id']);
+        $this->getEvent('1');
         $this->assertResponseStatus(404);
         $this->assertEmpty($this->response->getContent());
     }

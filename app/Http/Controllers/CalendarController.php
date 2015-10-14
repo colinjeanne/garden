@@ -95,7 +95,6 @@ class CalendarController extends Controller
         }
         
         $calendarEvent = new CalendarEvent(
-            $json['id'],
             $this->user,
             $plant,
             $plantedDate);
@@ -160,7 +159,6 @@ class CalendarController extends Controller
     {
         $validator = v::arrType()->
             keySet(
-                v::key('id', v::strType()->length(5, 10)),
                 v::key('plantName', v::strType()->length(2, 100)),
                 v::key(
                     'plantedDate',
@@ -188,7 +186,6 @@ class CalendarController extends Controller
     {
         $validator = v::arrType()->
             keySet(
-                v::key('id', v::equals($calendarEvent->getId(), true)),
                 v::key('plantName',
                     v::equals($calendarEvent->plant()->getName(), true)),
                 v::key(
