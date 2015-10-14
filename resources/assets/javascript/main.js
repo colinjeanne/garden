@@ -1,10 +1,10 @@
 import App from './components/app';
-import React from 'react';
+import ReactDOM from 'react-dom';
 import UserActions from './actions/userActions';
 
 const signinFailed = error => {};
 
-React.render(
+ReactDOM.render(
     <App />,
     document.getElementById('app')
 );
