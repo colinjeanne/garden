@@ -80,7 +80,6 @@ class PlantTest extends TestCase
             'unitPerSquareFoot' => 1,
             'notes' => '',
             'label' => '',
-            'links' => ['self' => 'http://localhost/plants/plant'],
             'value' => 1
         ];
         

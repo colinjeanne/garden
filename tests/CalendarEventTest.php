@@ -151,11 +151,7 @@ class CalendarEventTest extends TestCase
             'plantedDate' => $now->format(\DateTime::ATOM),
             'readyDate' => $nextMonth->format(\DateTime::ATOM),
             'isDead' => false,
-            'harvests' => [1, 50],
-            'links' => [
-                'self' => 'http://localhost/calendar/plant',
-                'plant' => 'http://localhost/plants/plant'
-            ]
+            'harvests' => [1, 50]
         ];
         
         $this->createEvent($event);

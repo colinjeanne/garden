@@ -177,12 +177,6 @@ class CalendarController extends Controller
                         v::numericVal()->between(0, 1000), // Value
                         v::intVal() // Key
                     ),
-                    false),
-                v::key(
-                    'links',
-                    v::arrType()->keySet(
-                        v::key('self', v::url()),
-                        v::key('plant', v::url())),
                     false)
             );
         

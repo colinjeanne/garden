@@ -50,7 +50,7 @@ class PlantsController extends Controller
     {
         $json = $request->json()->all();
 
-        $this->validatePlantJson($json);
+        $this->validatePlantJsonForCreate($json);
 
         $plant = new Plant($json['name'], $this->user);
         $this->db->persist($plant);
@@ -81,22 +81,21 @@ class PlantsController extends Controller
     {
         $json = $request->json()->all();
 
-        $this->validatePlantJson($json);
-
         $plant = $this->db->getRepository(Plant::class)
             ->findForUser($name, $this->user->getId());
         if (!$plant) {
             abort(404);
         }
 
+        $this->validatePlantJsonForUpdate($plant, $json);
         $this->updatePlantFromJson($plant, $json);
 
         $this->db->flush();
 
         return response()->json(self::plantToJson($plant));
     }
-
-    private function validatePlantJson($json)
+    
+    private function validatePlantJsonForCreate(array $json)
     {
         $validator = v::arrType()->
             keySet(
@@ -111,8 +110,35 @@ class PlantsController extends Controller
                 v::key('unitPerSquareFoot', v::numericVal()->min(0.001, true)),
                 v::key('notes', v::strType()->length(null, 65536), false),
                 v::key('label', v::strType()->length(null, 50), false),
-                v::key('links', v::arrType()->key('self', v::url()), false),
                 v::key('value', v::numericVal(), false)
+            );
+        
+        $validator->check($json);
+    }
+
+    private function validatePlantJsonForUpdate(Plant $plant, array $json)
+    {
+        $validator = v::arrType()->
+            keySet(
+                v::key('name', v::equals($plant->getName())),
+                v::key('growTime', v::strType()->length(1, 5)),
+                v::key('harvestTime', v::strType()->length(1, 5)),
+                v::key('difficulty', v::intVal()->between(1, 5)),
+                v::key('taste', v::intVal()->between(1, 5)),
+                v::key('rarity', v::intVal()->between(1, 3)),
+                v::key('pricePerUnit', v::numericVal()->min(0.01, true)),
+                v::key('unit', v::strType()->length(null, 20), false),
+                v::key('unitPerSquareFoot', v::numericVal()->min(0.001, true)),
+                v::key('notes', v::strType()->length(null, 65536), false),
+                v::key('label', v::strType()->length(null, 50), false),
+                v::key('links', v::arrType()->
+                    key(
+                        'self',
+                        v::equals(
+                            route(
+                                'getPlant',
+                                ['name' => $plant->getName()]))), false),
+                v::key('value', v::equals($plant->value()), false)
             );
         
         $validator->check($json);
