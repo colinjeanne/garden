@@ -1,4 +1,5 @@
 import Constants from '../constants/constants';
+import NavigationActions from '../actions/navigationActions';
 import PlantListItem from './plantListItem';
 import PlantListSearchBox from './plantListSearchBox';
 import PlantListSortBox from './plantListSortBox';
@@ -11,6 +12,14 @@ export default class PlantList extends React.Component {
             filterString: React.PropTypes.string.isRequired,
             sortType: React.PropTypes.string.isRequired
         };
+    }
+    
+    handleListItemClick(plantName) {
+        NavigationActions.selectPlant(plantName);
+    }
+    
+    handleSearchBoxChange(searchText) {
+        NavigationActions.filterPlants(searchText);
     }
     
     render() {
@@ -56,14 +65,16 @@ export default class PlantList extends React.Component {
                     <PlantListItem
                         key={plant.name}
                         name={plant.name}
-                        detail={value} />
+                        detail={value}
+                        onClick={this.handleListItemClick.bind(this)} />
                 );
             }
         );
         
         return (
             <div className="plantList">
-                <PlantListSearchBox />
+                <PlantListSearchBox
+                    onChange={this.handleSearchBoxChange.bind(this)} />
                 <PlantListSortBox />
                 <ol>
                     {plantListItems}

@@ -2,7 +2,9 @@ import AppHeader from './appHeader';
 import CalendarPage from './calendarPage';
 import CalendarStore from '../stores/calendarStore';
 import Constants from '../constants/constants';
+import NavigationActions from '../actions/navigationActions';
 import NavigationStore from '../stores/navigationStore';
+import PlantActions from '../actions/plantActions';
 import PlantCalendarList from './plantCalendarList';
 import PlantStore from '../stores/plantStore';
 import PlantsViewPage from './plantsViewPage';
@@ -69,6 +71,14 @@ export default class App extends React.Component {
         });
     }
     
+    handleTabSelected(tabId) {
+        NavigationActions.showPage(tabId);
+    }
+    
+    handleAddPlant(plantName) {
+        PlantActions.createPlant(plantName);
+    }
+    
     render() {
         let displayName;
         let content;
@@ -88,7 +98,8 @@ export default class App extends React.Component {
                         plants={PlantStore.getAll()}
                         selectedPlantName={NavigationStore.getSelectedPlantName()}
                         filterString={NavigationStore.getFilterString()}
-                        sortType={NavigationStore.getSortType()} />;
+                        sortType={NavigationStore.getSortType()}
+                        onAddPlant={this.handleAddPlant.bind(this)} />;
                     break;
                 
                 case Constants.PLANTING_SUMMARY_PAGE:
@@ -102,7 +113,8 @@ export default class App extends React.Component {
                 <section>
                     <TabbedNavigation
                         id="mainNavigation"
-                        tabs={NavigationStore.getAllPages()} />
+                        tabs={NavigationStore.getAllPages()}
+                        onSelect={this.handleTabSelected.bind(this)} />
                     {page}
                 </section>
             );

@@ -9,7 +9,8 @@ export default class PlantsViewPage extends React.Component {
             plants: React.PropTypes.object.isRequired,
             selectedPlantName: React.PropTypes.string,
             filterString: React.PropTypes.string.isRequired,
-            sortType: React.PropTypes.string.isRequired
+            sortType: React.PropTypes.string.isRequired,
+            onAddPlant: React.PropType.func.isRequired
         };
     }
     
@@ -24,7 +25,8 @@ export default class PlantsViewPage extends React.Component {
         
         return (
             <div id="content" className="plantsViewPage">
-                <PlantListAddBox />
+                <PlantListAddBox
+                    onAdd={this.props.onAddPlant} />
                 <PlantList
                     plants={this.props.plants}
                     filterString={this.props.filterString}
