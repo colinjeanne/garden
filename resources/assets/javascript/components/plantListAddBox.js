@@ -11,7 +11,7 @@ export default class PlantListAddBox extends React.Component {
     }
     
     handleAdd() {
-        const addInput = React.findDOMNode(this.refs.addInput);
+        const addInput = this.refs.addInput;
         const name = addInput.value.trim();
         
         if (name.length < 2) {

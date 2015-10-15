@@ -19,7 +19,7 @@ export default class PlantCalendarAddBox extends React.Component {
     }
     
     handleAdd() {
-        const addInput = React.findDOMNode(this.refs.addInput);
+        const addInput = this.refs.addInput;
         const name = addInput.value.trim();
         const plant = PlantStore.getByName(name);
         if (!plant) {

@@ -23,7 +23,7 @@ export default class PlantCalendarItem extends React.Component {
     }
     
     handleAddHarvest() {
-        const harvestAmountElement = React.findDOMNode(this.refs.harvestAmount);
+        const harvestAmountElement = this.refs.harvestAmount;
         const harvestAmount = harvestAmountElement.valueAsNumber;
         if (isNaN(harvestAmount) || (harvestAmount === 0)) {
             harvestAmountElement.setCustomValidity(
