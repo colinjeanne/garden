@@ -2,7 +2,6 @@ import Constants from '../constants/constants';
 import Dispatcher from '../dispatcher/dispatcher';
 import {EventEmitter} from 'events';
 import moment from 'moment';
-import shortId from 'shortid';
 
 const CHANGE_EVENT = 'change';
 let calendarEvents = new Map();
@@ -14,7 +13,7 @@ const create = (plant, plantedDate) => {
         throw new Error(`Invalid planted date ${plantedDate}`);
     }
     
-    const id = shortId.generate();
+    const id = 0;
     const growTime = moment.duration(plant.growTime);
     const readyDate = moment.
         utc(plantedDateMoment).
@@ -24,7 +23,6 @@ const create = (plant, plantedDate) => {
     return calendarEvents.set(
         id,
         {
-            id: id,
             plant: plant,
             plantedDate: plantedDateMoment.toISOString(),
             readyDate: readyDate,
