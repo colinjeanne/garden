@@ -2,14 +2,14 @@ import TabbedNavigationButton from './tabbedNavigationButton';
 import React from 'react';
 
 const tabbedNavigation = props => {
-    const children = this.props.tabs.map(
+    const children = props.tabs.map(
         item => {
             return (
                 <TabbedNavigationButton
                     id={item.key}
                     key={item.key}
                     title={item.title}
-                    onSelect={this.props.onSelect} />
+                    onSelect={props.onSelect} />
             );
         }
     );

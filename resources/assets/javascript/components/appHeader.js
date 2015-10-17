@@ -3,7 +3,7 @@ import React from 'react';
 const appHeader = props => (
     <header>
         Kathy's Garden Planner
-        <span id="userContainer">{this.props.displayName}</span>
+        <span id="userContainer">{props.displayName}</span>
     </header>
 );
 

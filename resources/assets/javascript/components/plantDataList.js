@@ -1,11 +1,11 @@
 import React from 'react';
 
 const plantDataList = props => {
-    const plantOptions = this.props.plantNames.map(name =>
+    const plantOptions = props.plantNames.map(name =>
         <option key={name} value={name} />);
     
     return (
-        <datalist id={this.props.listId}>
+        <datalist id={props.listId}>
             {plantOptions}
         </datalist>
     );
