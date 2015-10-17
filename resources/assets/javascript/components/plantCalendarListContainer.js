@@ -9,7 +9,8 @@ import React from 'react';
 export default class PlantCalendarListContainer extends React.Component {
     static get propTypes() {
         return {
-            plantDataListId: React.PropTypes.string.isRequired,
+            plantNames: React.PropTypes
+                .arrayOf(React.PropTypes.string).isRequired,
             calendarDate: React.PropTypes.string.isRequired
         };
     }
@@ -48,7 +49,7 @@ export default class PlantCalendarListContainer extends React.Component {
                 <header>{title}</header>
                 <section>
                     <PlantCalendarAddBox
-                        plantDataListId={this.props.plantDataListId}
+                        plantNames={this.props.plantNames}
                         onAdd={this.handleAddCalendarEvent.bind(this)} />
                     <PlantCalendarList
                         calendarEvents={calendarEvents}

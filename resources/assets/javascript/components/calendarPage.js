@@ -1,6 +1,5 @@
 import moment from 'moment';
 import PlantCalendarListContainer from './plantCalendarListContainer';
-import PlantDataList from './plantDataList';
 import React from 'react';
 
 export default class CalendarPage extends React.Component {
@@ -27,14 +26,11 @@ export default class CalendarPage extends React.Component {
         
         return (
             <div id="content" className="calendarPage">
-                <PlantDataList
-                    listId="plantDataList"
-                    plantNames={this.props.plantNames} />
                 <PlantCalendarListContainer
-                    plantDataListId="plantDataList"
+                    plantNames={this.props.plantNames}
                     calendarDate={currentMonth} />
                 <PlantCalendarListContainer
-                    plantDataListId="plantDataList"
+                    plantNames={this.props.plantNames}
                     calendarDate={nextMonth} />
             </div>
         );
