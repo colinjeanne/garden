@@ -1,4 +1,3 @@
-import CalendarActions from '../actions/calendarActions';
 import PlantStore from '../stores/plantStore';
 import React from 'react';
 
@@ -14,7 +13,7 @@ export default class PlantCalendarAddBox extends React.Component {
     static get propTypes() {
         return {
             plantDataListId: React.PropTypes.string.isRequired,
-            calendarDate: React.PropTypes.string.isRequired
+            onAdd: React.PropTypes.func.isRequired
         };
     }
     
@@ -29,9 +28,7 @@ export default class PlantCalendarAddBox extends React.Component {
         }
         
         if (addInput.checkValidity()) {
-            CalendarActions.createCalendarEvent(
-                PlantStore.getByName(name),
-                this.props.calendarDate);
+            this.props.onAdd(name);
             this.setState({
                 name: ''
             });
