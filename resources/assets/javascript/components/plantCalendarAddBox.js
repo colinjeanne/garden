@@ -1,7 +1,7 @@
 import React from 'react';
 
 const plantCalendarAddBox = props => {
-    const options = this.props.plantNames.map(plantName =>
+    const options = props.plantNames.map(plantName =>
         <option
             key={plantName}
             value={plantName} />);
@@ -9,7 +9,7 @@ const plantCalendarAddBox = props => {
     const handleClick = () => {
         const selectedPlant = this.refs.selectedPlant;
         const plantName = selectedPlant.selectedOptions[0].value;
-        this.props.onAdd(plantName);
+        props.onAdd(plantName);
     };
     
     return (
