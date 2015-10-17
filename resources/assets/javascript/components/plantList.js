@@ -2,8 +2,8 @@ import Constants from '../constants/constants';
 import NavigationActions from '../actions/navigationActions';
 import PlantListItem from './plantListItem';
 import PlantListSearchBox from './plantListSearchBox';
-import PlantListSortBox from './plantListSortBox';
 import React from 'react';
+import SelectBox from './selectBox';
 
 export default class PlantList extends React.Component {
     static get propTypes() {
@@ -20,6 +20,10 @@ export default class PlantList extends React.Component {
     
     handleSearchBoxChange(searchText) {
         NavigationActions.filterPlants(searchText);
+    }
+    
+    handleSortChange(sortValue) {
+        NavigationActions.updateSortType(sortValue);
     }
     
     render() {
@@ -71,11 +75,24 @@ export default class PlantList extends React.Component {
             }
         );
         
+        const sortOptions = [
+            {
+                value: Constants.SORT_TYPE_ALPHABETICAL,
+                label: 'Sort by name'
+            },
+            {
+                value: Constants.SORT_TYPE_VALUE,
+                label: 'Sort by value'
+            }
+        ];
+        
         return (
             <div className="plantList">
                 <PlantListSearchBox
                     onChange={this.handleSearchBoxChange.bind(this)} />
-                <PlantListSortBox />
+                <SelectBox
+                    options={sortOptions}
+                    onChange={this.handleSortChange.bind(this)} />
                 <ol>
                     {plantListItems}
                 </ol>

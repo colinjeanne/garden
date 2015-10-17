@@ -1,6 +1,8 @@
 import CalendarActions from '../actions/calendarActions';
 import CalendarEventStore from '../stores/calendarStore';
 import moment from 'moment';
+import NavigationActions from '../actions/navigationActions';
+import NavigationStore from '../stores/navigationStore';
 import PlantCalendarAddBox from './plantCalendarAddBox';
 import PlantCalendarList from './plantCalendarList';
 import PlantStore from '../stores/plantStore';
@@ -15,10 +17,15 @@ export default class PlantCalendarListContainer extends React.Component {
         };
     }
     
-    handleAddCalendarEvent(plantName) {
+    handleAddCalendarEvent() {
+        const plantName = NavigationStore.getSelectedPlantName();
         CalendarActions.createCalendarEvent(
             PlantStore.getByName(plantName),
             this.props.calendarDate);
+    }
+    
+    handleAddPlantSelect(plantName) {
+        NavigationActions.selectPlant(plantName);
     }
     
     handleAddHarvest(calendarItemId, harvestAmount) {
@@ -50,7 +57,8 @@ export default class PlantCalendarListContainer extends React.Component {
                 <section>
                     <PlantCalendarAddBox
                         plantNames={this.props.plantNames}
-                        onAdd={this.handleAddCalendarEvent.bind(this)} />
+                        onAdd={this.handleAddCalendarEvent.bind(this)}
+                        onPlantSelect={this.handleAddPlantSelect.bind(this)} />
                     <PlantCalendarList
                         calendarEvents={calendarEvents}
                         onHarvestAdded={this.handleAddHarvest.bind(this)}

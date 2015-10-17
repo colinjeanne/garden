@@ -41,4 +41,10 @@ export default class NavigationActions {
             sortType: sortType
         });
     }
+    
+    static clickAddPlant() {
+        Dispatcher.dispatch({
+            actionType: Constants.CLICK_ADD_PLANT
+        });
+    }
 }

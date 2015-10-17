@@ -1,25 +1,23 @@
 import React from 'react';
+import SelectBox from './selectBox';
 
 const plantCalendarAddBox = props => {
-    const options = props.plantNames.map(plantName =>
-        <option
-            key={plantName}
-            value={plantName} />);
-    
-    const handleClick = () => {
-        const selectedPlant = this.refs.selectedPlant;
-        const plantName = selectedPlant.selectedOptions[0].value;
-        props.onAdd(plantName);
-    };
+    const plantOptions = props.plantNames.map(plantName => {
+        return {
+            value: plantName,
+            label: plantName
+        };
+    });
     
     return (
         <div className="plantCalendarAddBox">
-            <select ref="selectedPlant">
-                {options}
-            </select>
+            <SelectBox
+                options={plantOptions}
+                onChange={this.props.onPlantSelect}
+                ref="selectedPlant" />
             <button
                 type="button"
-                onClick={handleClick}>
+                onClick={this.props.onAdd}>
                 Add
             </button>
         </div>
@@ -28,7 +26,8 @@ const plantCalendarAddBox = props => {
 
 plantCalendarAddBox.propTypes = {
     plantNames: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-    onAdd: React.PropTypes.func.isRequired
+    onAdd: React.PropTypes.func.isRequired,
+    onPlantSelect: React.PropTypes.func.isRequired
 };
 
 export default plantCalendarAddBox;

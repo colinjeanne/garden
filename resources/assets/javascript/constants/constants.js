@@ -33,5 +33,8 @@ export default {
     CALENDAR_CREATE_EVENT:              0x5000,
     CALENDAR_ADD_HARVEST:               0x5001,
     CALENDAR_DELAY_HARVEST:             0x5002,
-    CALENDAR_PLANT_DIED:                0x5003
+    CALENDAR_PLANT_DIED:                0x5003,
+    
+    CHANGE_ADD_PLANT_NAME:              'CHANGE_ADD_PLANT_NAME',
+    CLICK_ADD_PLANT:                    'CLICK_ADD_PLANT'
 };
