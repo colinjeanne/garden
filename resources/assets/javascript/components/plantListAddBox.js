@@ -1,14 +1,6 @@
 import React from 'react';
 
 export default class PlantListAddBox extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            name: ''
-        };
-    }
-    
     static get propTypes() {
         return {
             onAdd: React.PropTypes.func.isRequired
@@ -27,16 +19,8 @@ export default class PlantListAddBox extends React.Component {
         
         if (addInput.checkValidity()) {
             this.props.onAdd(name);
-            this.setState({
-                name: ''
-            });
+            addInput.value = '';
         }
-    }
-    
-    handleChange(event) {
-        this.setState({
-            name: event.target.value
-        });
     }
     
     render() {
@@ -47,9 +31,7 @@ export default class PlantListAddBox extends React.Component {
                     placeholder="Plant name"
                     size="12"
                     maxLength="100"
-                    value={this.state.name}
-                    ref="addInput"
-                    onChange={this.handleChange.bind(this)} />
+                    ref="addInput" />
                 <button
                     type="button"
                     onClick={this.handleAdd.bind(this)}>
