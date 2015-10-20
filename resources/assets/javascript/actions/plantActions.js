@@ -1,98 +1,122 @@
-import Dispatcher from '../dispatcher/dispatcher';
 import Constants from '../constants/constants';
+import { createAction } from 'redux-actions';
+import { fetch, Headers } from 'isomorphic-fetch';
 
-export default class PlantActions {
-    static createPlant(name) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_CREATE,
-            name: name
-        });
-    }
+const getAllPlantsAction = createAction(Constants.GET_ALL_PLANTS);
+const createPlantAction = createAction(Constants.CREATE_PLANT);
+const updatePlantAction = createAction(Constants.UPDATE_PLANT);
+
+const createPlantFromName = name => ({
+    difficulty: 1,
+    growTime: 'P1M',
+    harvestTime: 'P1M',
+    label: '',
+    name: name,
+    notes: '',
+    pricePerUnit: 1.0,
+    rarity: 1,
+    taste: 1,
+    unit: '',
+    unitPerSquareFoot: 1.0,
+    value: 1
+});
+
+const getIdTokenFromState = state => state.user.idToken;
+
+const getGetHeaders = idToken =>
+    new Headers({
+        'Authorization': `Bearer ${idToken}`,
+        'Accept': 'application/json'
+    });
+
+const getPostOrPutHeaders = idToken =>
+    new Headers({
+        'Authorization': `Bearer ${idToken}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    });
+
+export const getAllPlants = () => (dispatch, getState) => {
+    dispatch(getAllPlantsAction());
     
-    static destroyPlant(name) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_DESTROY,
-            name: name
-        });
-    }
+    const idToken = getIdTokenFromState(getState());
+    return fetch(
+        '/plants',
+        {
+            method: 'GET',
+            headers: getGetHeaders(idToken)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    then(json => dispatch(getAllPlantsAction(json))).
+    catch(err => dispatch({
+        type: Constants.GET_ALL_PLANTS,
+        payload: err,
+        error: true
+    }));
+};
+
+export const createPlant = plantName => (dispatch, getState) => {
+    const plant = createPlantFromName(plantName);
+    dispatch(createPlantAction(plant));
     
-    static updatePlantDifficulty(name, difficulty) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_DIFFICULTY,
-            name: name,
-            difficulty: difficulty
-        });
-    }
+    const idToken = getIdTokenFromState(getState());
+    return fetch(
+        '/plants',
+        {
+            method: 'POST',
+            headers: getPostOrPutHeaders(idToken),
+            body: JSON.stringify(plant)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    then(json => dispatch(createPlantAction(json))).
+    catch(err => dispatch({
+        type: Constants.CREATE_PLANT,
+        payload: err,
+        error: true,
+        meta: {
+            name: plantName
+        }
+    }));
+};
+
+export const updatePlant = plantName => (dispatch, getState) => {
+    const plant = createPlantFromName(plantName);
+    dispatch(updatePlantAction(plant));
     
-    static updatePlantGrowTime(name, growTime) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_GROWTIME,
-            name: name,
-            growTime: growTime
-        });
-    }
-    
-    static updatePlantHarvestTime(name, harvestTime) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_HARVESTTIME,
-            name: name,
-            harvestTime: harvestTime
-        });
-    }
-    
-    static updatePlantLabel(name, label) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_LABEL,
-            name: name,
-            label: label
-        });
-    }
-    
-    static updatePlantNotes(name, notes) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_NOTES,
-            name: name,
-            notes: notes
-        });
-    }
-    
-    static updatePlantPricePerUnit(name, pricePerUnit) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_PRICE_PER_UNIT,
-            name: name,
-            pricePerUnit: pricePerUnit
-        });
-    }
-    
-    static updatePlantRarity(name, rarity) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_RARITY,
-            name: name,
-            rarity: rarity
-        });
-    }
-    
-    static updatePlantTaste(name, taste) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_TASTE,
-            name: name,
-            taste: taste
-        });
-    }
-    
-    static updatePlantUnit(name, unit) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_UNIT,
-            name: name,
-            unit: unit
-        });
-    }
-    
-    static updatePlantUnitPerSquareFoot(name, unitPerSquareFoot) {
-        Dispatcher.dispatch({
-            actionType: Constants.PLANT_UPDATE_UNIT_PER_SQUARE_FOOT,
-            name: name,
-            unitPerSquareFoot: unitPerSquareFoot
-        });
-    }
-}
+    const idToken = getIdTokenFromState(getState());
+    return fetch(
+        `/plants/${plantName}`,
+        {
+            method: 'PUT',
+            headers: getPostOrPutHeaders(idToken),
+            body: JSON.stringify(plant)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    then(json => dispatch(updatePlantAction(json))).
+    catch(err => dispatch({
+        type: Constants.UPDATE_PLANT,
+        payload: err,
+        error: true,
+        meta: {
+            name: plantName
+        }
+    }));
+};

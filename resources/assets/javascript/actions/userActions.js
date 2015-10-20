@@ -1,11 +1,4 @@
-import Dispatcher from '../dispatcher/dispatcher';
 import Constants from '../constants/constants';
+import { createAction } from 'redux-actions';
 
-export default class UserActions {
-    static signInUser(user) {
-        Dispatcher.dispatch({
-            actionType: Constants.USER_SIGNIN,
-            user: user
-        });
-    }
-}
+export const signInUser = createAction(Constants.USER_SIGNIN);
