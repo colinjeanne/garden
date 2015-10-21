@@ -1,4 +1,3 @@
-import NavigationActions from '../actions/navigationActions';
 import React from 'react';
 
 const tabbedNavigationButton = props => (

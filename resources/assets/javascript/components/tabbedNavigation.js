@@ -31,3 +31,5 @@ tabbedNavigation.propTypes = {
         })).isRequired,
     onSelect: React.PropTypes.func.isRequired
 };
+
+export default tabbedNavigation;
