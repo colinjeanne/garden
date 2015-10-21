@@ -4,9 +4,6 @@ import { fetch, Headers } from 'isomorphic-fetch';
 import moment from 'moment';
 
 const getCalendarEventsAction = createAction(Constants.GET_CALENDAR_EVENTS);
-const createCalendarEventAction = createAction(Constants.CREATE_CALENDAR_EVENT);
-const delayHarvestAction = createAction(Constants.DELAY_HARVEST);
-const plantDiedAction = createAction(Constants.PLANT_DIED);
 
 const getIdTokenFromState = state => state.user.idToken;
 const getCalendarEventFromState = (state, eventId) =>
@@ -57,7 +54,13 @@ export const getCalendarEvents = (startDate, endDate) => (dispatch, getState) =>
 
 export const createCalendarEvent = (plantName, plantedDate) => (dispatch, getState) => {
     const calendarEvent = { plantName, plantedDate };
-    dispatch(createCalendarEventAction(calendarEvent));
+    dispatch({
+        type: Constants.CREATE_CALENDAR_EVENT,
+        payload: calendarEvent,
+        meta: {
+            volatile: true
+        }
+    });
     
     const idToken = getIdTokenFromState(getState());
     return fetch(
@@ -74,7 +77,10 @@ export const createCalendarEvent = (plantName, plantedDate) => (dispatch, getSta
         
         return response.json();
     }).
-    then(json => dispatch(createCalendarEventAction(json))).
+    then(json => dispatch({
+        type: Constants.CREATE_CALENDAR_EVENT,
+        payload: json
+    })).
     catch(err => dispatch({
         type: Constants.CREATE_CALENDAR_EVENT,
         payload: err,
@@ -82,9 +88,55 @@ export const createCalendarEvent = (plantName, plantedDate) => (dispatch, getSta
     }));
 };
 
-export const delayHarvest = eventId => (dispatch, getState) => {
-    dispatch(delayHarvestAction(eventId));
+export const addHarvest = (eventId, amount) => (dispatch, getState) => {
+    const idToken = getIdTokenFromState(getState());
+    const calendarEvent = getCalendarEventFromState(getState(), eventId);
+    const updatedFields = {
+        harvests: [
+            amount,
+            ...calendarEvent.harvests
+        ]
+    };
     
+    const updatedCalendarEvent = Object.assign(
+        {}, 
+        calendarEvent, 
+        updatedFields);
+    
+    dispatch({
+        type: Constants.ADD_HARVEST,
+        payload: updatedCalendarEvent,
+        meta: {
+            volatile: true
+        }
+    });
+    
+    return fetch(
+        `/calendar/${eventId}`,
+        {
+            method: 'PUT',
+            headers: getPostOrPutHeaders(idToken),
+            body: JSON.stringify(updatedCalendarEvent)
+        }).
+    then(response => {
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+        
+        return response.json();
+    }).
+    then(json => dispatch({
+        type: Constants.ADD_HARVEST,
+        payload: json
+    })).
+    catch(err => dispatch({
+        type: Constants.ADD_HARVEST,
+        payload: err,
+        error: true
+    }));
+};
+
+export const delayHarvest = eventId => (dispatch, getState) => {
     const idToken = getIdTokenFromState(getState());
     const calendarEvent = getCalendarEventFromState(getState(), eventId);
     const updatedReadyDate = moment.utc(calendarEvent.readyDate).
@@ -96,6 +148,14 @@ export const delayHarvest = eventId => (dispatch, getState) => {
         calendarEvent, 
         updatedFields);
     
+    dispatch({
+        type: Constants.DELAY_HARVEST,
+        payload: updatedCalendarEvent,
+        meta: {
+            volatile: true
+        }
+    });
+    
     return fetch(
         `/calendar/${eventId}`,
         {
@@ -110,7 +170,10 @@ export const delayHarvest = eventId => (dispatch, getState) => {
         
         return response.json();
     }).
-    then(json => dispatch(delayHarvestAction(json))).
+    then(json => dispatch({
+        type: Constants.DELAY_HARVEST,
+        payload: json
+    })).
     catch(err => dispatch({
         type: Constants.DELAY_HARVEST,
         payload: err,
@@ -119,8 +182,6 @@ export const delayHarvest = eventId => (dispatch, getState) => {
 };
 
 export const plantDied = eventId => (dispatch, getState) => {
-    dispatch(plantDiedAction(eventId));
-    
     const idToken = getIdTokenFromState(getState());
     const calendarEvent = getCalendarEventFromState(getState(), eventId);
     const updatedFields = { isDead: true };
@@ -130,6 +191,14 @@ export const plantDied = eventId => (dispatch, getState) => {
         calendarEvent, 
         updatedFields);
     
+    dispatch({
+        type: Constants.PLANT_DIED,
+        payload: updatedCalendarEvent,
+        meta: {
+            volatile: true
+        }
+    });
+    
     return fetch(
         `/calendar/${eventId}`,
         {
@@ -144,7 +213,10 @@ export const plantDied = eventId => (dispatch, getState) => {
         
         return response.json();
     }).
-    then(json => dispatch(plantDiedAction(json))).
+    then(json => dispatch({
+        type: Constants.PLANT_DIED,
+        payload: json
+    })).
     catch(err => dispatch({
         type: Constants.PLANT_DIED,
         payload: err,

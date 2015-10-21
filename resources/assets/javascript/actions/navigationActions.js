@@ -1,50 +1,9 @@
-import Dispatcher from '../dispatcher/dispatcher';
 import Constants from '../constants/constants';
+import { createAction } from 'redux-actions';
 
-export default class NavigationActions {
-    static showPage(page) {
-        Dispatcher.dispatch({
-            actionType: Constants.SHOW_PAGE,
-            page: page
-        });
-    }
-    
-    static selectPlant(plantName) {
-        Dispatcher.dispatch({
-            actionType: Constants.SELECT_PLANT,
-            plantName: plantName
-        });
-    }
-    
-    static edit() {
-        Dispatcher.dispatch({
-            actionType: Constants.EDIT
-        });
-    }
-    
-    static save() {
-        Dispatcher.dispatch({
-            actionType: Constants.SAVE
-        });
-    }
-    
-    static filterPlants(filterString) {
-        Dispatcher.dispatch({
-            actionType: Constants.FILTER_PLANTS,
-            filterString: filterString
-        });
-    }
-    
-    static updateSortType(sortType) {
-        Dispatcher.dispatch({
-            actionType: Constants.SORT_PLANTS,
-            sortType: sortType
-        });
-    }
-    
-    static clickAddPlant() {
-        Dispatcher.dispatch({
-            actionType: Constants.CLICK_ADD_PLANT
-        });
-    }
-}
+const showPage = createAction(Constants.SHOW_PAGE);
+const selectPlant = createAction(Constants.SELECT_PLANT);
+const filterPlants = createAction(Constants.FILTER_PLANTS);
+const sortPlants = createAction(Constants.SORT_PLANTS);
+const editPlant = createAction(Constants.EDIT_PLANT);
+const savePlant = createAction(Constants.SAVE_PLANT);

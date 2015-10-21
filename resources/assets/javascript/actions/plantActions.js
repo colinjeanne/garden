@@ -3,8 +3,6 @@ import { createAction } from 'redux-actions';
 import { fetch, Headers } from 'isomorphic-fetch';
 
 const getAllPlantsAction = createAction(Constants.GET_ALL_PLANTS);
-const createPlantAction = createAction(Constants.CREATE_PLANT);
-const updatePlantAction = createAction(Constants.UPDATE_PLANT);
 
 const createPlantFromName = name => ({
     difficulty: 1,
@@ -22,6 +20,15 @@ const createPlantFromName = name => ({
 });
 
 const getIdTokenFromState = state => state.user.idToken;
+const getPlantFromState = (plantName, state) =>
+    state.plants.plants.find(plant => plant.name === plantName);
+
+const value = plant =>
+    plant.pricePerUnit *
+    plant.unitPerSquareFoot *
+    plant.rarity *
+    plant.taste /
+    plant.difficulty;
 
 const getGetHeaders = idToken =>
     new Headers({
@@ -63,7 +70,13 @@ export const getAllPlants = () => (dispatch, getState) => {
 
 export const createPlant = plantName => (dispatch, getState) => {
     const plant = createPlantFromName(plantName);
-    dispatch(createPlantAction(plant));
+    dispatch({
+        type: Constants.CREATE_PLANT,
+        payload: plant,
+        meta: {
+            volatile: true
+        }
+    });
     
     const idToken = getIdTokenFromState(getState());
     return fetch(
@@ -80,7 +93,10 @@ export const createPlant = plantName => (dispatch, getState) => {
         
         return response.json();
     }).
-    then(json => dispatch(createPlantAction(json))).
+    then(json => dispatch({
+        type: Constants.CREATE_PLANT,
+        payload: json
+    })).
     catch(err => dispatch({
         type: Constants.CREATE_PLANT,
         payload: err,
@@ -91,9 +107,18 @@ export const createPlant = plantName => (dispatch, getState) => {
     }));
 };
 
-export const updatePlant = plantName => (dispatch, getState) => {
-    const plant = createPlantFromName(plantName);
-    dispatch(updatePlantAction(plant));
+export const updatePlant = (plantName, change) => (dispatch, getState) => {
+    const plant = getPlantFromState(plantName, getState());
+    const updatedPlant = Object.assign({}, plant, change);
+    updatePlant.value = value(updatedPlant);
+    
+    dispatch({
+        type: Constants.UPDATE_PLANT,
+        payload: updatedPlant,
+        meta: {
+            volatile: true
+        }
+    });
     
     const idToken = getIdTokenFromState(getState());
     return fetch(
@@ -101,7 +126,7 @@ export const updatePlant = plantName => (dispatch, getState) => {
         {
             method: 'PUT',
             headers: getPostOrPutHeaders(idToken),
-            body: JSON.stringify(plant)
+            body: JSON.stringify(updatedPlant)
         }).
     then(response => {
         if (!response.ok) {
@@ -110,7 +135,10 @@ export const updatePlant = plantName => (dispatch, getState) => {
         
         return response.json();
     }).
-    then(json => dispatch(updatePlantAction(json))).
+    then(json => dispatch({
+        type: Constants.UPDATE_PLANT,
+        payload: json
+    })).
     catch(err => dispatch({
         type: Constants.UPDATE_PLANT,
         payload: err,

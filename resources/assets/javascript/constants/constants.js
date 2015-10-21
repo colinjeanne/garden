@@ -9,21 +9,21 @@ export default {
     DELAY_HARVEST:          'DELAY_HARVEST',
     PLANT_DIED:             'PLANT_DIED',
     
-    SHOW_PAGE:                          'SHOW_PAGE',
+    SHOW_PAGE:              'SHOW_PAGE',
     CALENDAR_PAGE:                      'calendar',
     PLANTS_PAGE:                        'plants',
     PLANTING_SUMMARY_PAGE:              'plantingSummary',
     SPACE_PLANNING_PAGE:                'spacePlanning',
     
-    SELECT_PLANT:                       'SELECT_PLANT',
-    FILTER_PLANTS:                      'FILTER_PLANTS',
+    SELECT_PLANT:           'SELECT_PLANT',
+    FILTER_PLANTS:          'FILTER_PLANTS',
     
-    SORT_PLANTS:                        'SORT_PLANTS',
+    SORT_PLANTS:            'SORT_PLANTS',
     SORT_TYPE_ALPHABETICAL:             'alphabetical',
     SORT_TYPE_VALUE:                    'value',
     
-    EDIT:                               'EDIT',
-    SAVE:                               'SAVE',
+    EDIT_PLANT:             'EDIT_PLANT',
+    SAVE_PLANT:             'SAVE_PLANT',
     
     USER_SIGNIN:            'USER_SIGNIN',
     
