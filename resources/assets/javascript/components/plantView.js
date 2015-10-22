@@ -7,7 +7,9 @@ import React from 'react';
 export default class PlantView extends React.Component {
     static get propTypes() {
         return {
-            plantName: React.PropTypes.string.isRequired
+            plantName: React.PropTypes.string.isRequired,
+            onEdit: React.PropTypes.func.isRequired,
+            editing: React.PropTypes.bool.isRequired
         };
     }
     
@@ -80,7 +82,9 @@ export default class PlantView extends React.Component {
         return (
             <section className="plantView">
                 <header>{plant.name}</header>
-                <EditableText>
+                <EditableText
+                    onChange={this.props.onEdit}
+                    editing={this.props.editing}>
                     <div>
                         <label htmlFor="growTime">Growth Time</label>
                         <input

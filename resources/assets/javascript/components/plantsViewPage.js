@@ -10,7 +10,9 @@ export default class PlantsViewPage extends React.Component {
             selectedPlantName: React.PropTypes.string,
             filterString: React.PropTypes.string.isRequired,
             sortType: React.PropTypes.string.isRequired,
-            onAddPlant: React.PropType.func.isRequired
+            onAddPlant: React.PropTypes.func.isRequired,
+            onEdit: React.PropTypes.func.isRequired,
+            editing: React.PropTypes.bool.isRequired
         };
     }
     
@@ -19,7 +21,9 @@ export default class PlantsViewPage extends React.Component {
         if (this.props.selectedPlantName) {
             plantView = (
                 <PlantView
-                    plantName={this.props.selectedPlantName} />
+                    plantName={this.props.selectedPlantName}
+                    editing={this.props.editing}
+                    onEdit={this.props.onEdit} />
             );
         }
         

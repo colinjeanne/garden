@@ -2,9 +2,8 @@ import AppHeader from './appHeader';
 import CalendarPage from './calendarPage';
 import CalendarStore from '../stores/calendarStore';
 import Constants from '../constants/constants';
-import NavigationActions from '../actions/navigationActions';
+import { editPlant, savePlant } from '../actions/navigationAction';
 import NavigationStore from '../stores/navigationStore';
-import PlantActions from '../actions/plantActions';
 import PlantCalendarList from './plantCalendarList';
 import PlantStore from '../stores/plantStore';
 import PlantsViewPage from './plantsViewPage';
@@ -79,6 +78,14 @@ export default class App extends React.Component {
         PlantActions.createPlant(plantName);
     }
     
+    handleEditPlant(editing) {
+        if (editing) {
+            editPlant();
+        } else {
+            savePlant();
+        }
+    }
+    
     render() {
         let displayName;
         let content;
@@ -99,7 +106,9 @@ export default class App extends React.Component {
                         selectedPlantName={NavigationStore.getSelectedPlantName()}
                         filterString={NavigationStore.getFilterString()}
                         sortType={NavigationStore.getSortType()}
-                        onAddPlant={this.handleAddPlant.bind(this)} />;
+                        onAddPlant={this.handleAddPlant.bind(this)}
+                        editing={}
+                        onEdit={this.handleEditPlant.bind(this)} />;
                     break;
                 
                 case Constants.PLANTING_SUMMARY_PAGE:
