@@ -1,45 +1,46 @@
-import CalendarActions from '../actions/calendarActions';
-import CalendarEventStore from '../stores/calendarStore';
+import { addHarvest, createCalendarEvent, delayHarvest, plantDied } from '../actions/calendarActions';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import NavigationActions from '../actions/navigationActions';
-import NavigationStore from '../stores/navigationStore';
 import PlantCalendarAddBox from './plantCalendarAddBox';
 import PlantCalendarList from './plantCalendarList';
 import PlantStore from '../stores/plantStore';
 import React from 'react';
+import { selectPlant } from '../actions/navigationActions';
 
-export default class PlantCalendarListContainer extends React.Component {
+const mapStateToProps = state => {
+    return {
+        selectedPlantName: state.plantsView.selectedPlantName,
+        plantNames: state.plants.map(plant => plant.name)
+    };
+};
+
+class PlantCalendarListContainer extends React.Component {
     static get propTypes() {
         return {
+            selectedPlantName: React.PropTypes.string,
             plantNames: React.PropTypes
                 .arrayOf(React.PropTypes.string).isRequired,
-            calendarDate: React.PropTypes.string.isRequired
+            calendarDate: React.PropTypes.string.isRequired,
+            dispatch: React.PropTypes.func.isRequired
         };
     }
     
     handleAddCalendarEvent() {
-        const plantName = NavigationStore.getSelectedPlantName();
-        CalendarActions.createCalendarEvent(
-            PlantStore.getByName(plantName),
+        createCalendarEvent(
+            this.props.selectedPlantName,
             this.props.calendarDate);
     }
     
-    handleAddPlantSelect(plantName) {
-        NavigationActions.selectPlant(plantName);
-    }
-    
     handleAddHarvest(calendarItemId, harvestAmount) {
-        CalendarActions.addHarvest(
-            calendarItemId,
-            harvestAmount);
+        addHarvest(calendarItemId, harvestAmount);
     }
     
     handleHarvestDelayed(calendarItemId) {
-        CalendarActions.delayHarvest(calendarItemId);
+        delayHarvest(calendarItemId);
     }
     
     handlePlantDied(calendarItemId) {
-        CalendarActions.plantDied(calendarItemId);
+        plantDied(calendarItemId);
     }
     
     render() {
@@ -58,14 +59,16 @@ export default class PlantCalendarListContainer extends React.Component {
                     <PlantCalendarAddBox
                         plantNames={this.props.plantNames}
                         onAdd={this.handleAddCalendarEvent.bind(this)}
-                        onPlantSelect={this.handleAddPlantSelect.bind(this)} />
+                        onPlantSelect={selectPlant} />
                     <PlantCalendarList
                         calendarEvents={calendarEvents}
-                        onHarvestAdded={this.handleAddHarvest.bind(this)}
-                        onHarvestDelayed={this.handleHarvestDelayed.bind(this)}
-                        onPlantDied={this.handlePlantDied.bind(this)} />
+                        onHarvestAdded={addHarvest}
+                        onHarvestDelayed={delayHarvest}
+                        onPlantDied={plantDied} />
                 </section>
             </div>
         );
     }
 }
+
+export default connect(mapStateToProps)(PlantCalendarListContainer);
