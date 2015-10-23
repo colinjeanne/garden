@@ -1,15 +1,17 @@
 import { connect } from 'react-redux';
-import { createPlant } from '../actions/plantActions';
+import { createPlant, updatePlant } from '../actions/plantActions';
 import { editPlant, savePlant } from '../actions/navigationActions';
 import PlantViewPage from './plantViewPage';
 import React from 'react';
 
 const mapStateToProps = state => {
+    const selectedPlant = state.plants.find(
+        plant => plant.name === state.plants.selectedPlantName);
     return {
         editing: state.plantsView.editing,
         filter: state.plants.filter,
         plants: state.plants.plants,
-        selectedPlantName: state.plants.selectedPlantName,
+        selectedPlant: selectedPlant,
         sort: state.plants.sort
     };
 };
@@ -28,8 +30,9 @@ const plantsViewContainer = props => (
         filter={props.filter}
         onAddPlant={createPlant}
         onEdit={handleEditPlant}
+        onUpdatePlant={updatePlant}
         plants={props.plants}
-        selectedPlantName={props.selectedPlantName}
+        selectedPlant={props.selectedPlant}
         sort={props.sort} />
 );
 
@@ -38,7 +41,7 @@ plantsViewContainer.propTypes = {
     editing: React.PropTypes.bool.isRequired,
     filter: React.PropTypes.func.isRequired,
     plants: React.PropTypes.object.isRequired,
-    selectedPlantName: React.PropTypes.string,
+    selectedPlan: React.PropTypes.object,
     sort: React.PropTypes.func.isRequired
 };
 

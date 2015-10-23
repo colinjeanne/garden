@@ -5,12 +5,13 @@ import React from 'react';
 
 const plantsViewPage = props => {
     let plantView;
-    if (props.selectedPlantName) {
+    if (props.selectedPlant) {
         plantView = (
             <PlantView
-                plantName={props.selectedPlantName}
+                plant={props.selectedPlant}
                 editing={props.editing}
-                onEdit={props.onEdit} />
+                onEdit={props.onEdit},
+                onUpdatePlant={props.onUpdatePlant} />
         );
     }
     
@@ -32,8 +33,9 @@ plantsViewPage.propTypes = {
     filter: React.PropTypes.func.isRequired,
     onAddPlant: React.PropTypes.func.isRequired,
     onEdit: React.PropTypes.func.isRequired,
+    onUpdatePlant: React.PropTypes.func.isRequired,
     plants: React.PropTypes.object.isRequired,
-    selectedPlantName: React.PropTypes.string,
+    selectedPlant: React.PropTypes.object,
     sort: React.PropTypes.func.isRequired
 };
 

@@ -7,67 +7,67 @@ export default class PlantView extends React.Component {
         return {
             editing: React.PropTypes.bool.isRequired,
             onEdit: React.PropTypes.func.isRequired,
+            onUpdatePlant: React.PropTypes.func.isRequire,
             plant: React.PropTypes.object.isRequired,
-            updatePlant: React.PropTypes.func.isRequire
         };
     }
     
     handleDifficultyChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { difficulty: event.target.valueAsNumber });
     }
     
     handleGrowTimeChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { growTime: `P${event.target.valueAsNumber}M` });
     }
     
     handleHarvestTimeChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { harvestTime: `P${event.target.valueAsNumber}M` });
     }
     
     handleLabelChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { label: event.target.value });
     }
     
     handleNotesChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { notes: event.target.value });
     }
     
     handlePricePerUnitChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { pricePerUnit: event.target.valueAsNumber });
     }
     
     handleRarityChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { rarity: event.target.valueAsNumber });
     }
     
     handleTasteChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { taste: event.target.valueAsNumber });
     }
     
     handleUnitChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { unit: event.target.value });
     }
     
     handleUnitPerSquareFootChanged(event) {
-        this.props.updatePlant(
+        this.props.onUpdatePlant(
             this.props.plant.name,
             { unitPerSquareFoot: event.target.valueAsNumber });
     }
