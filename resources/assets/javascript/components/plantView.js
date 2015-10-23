@@ -1,15 +1,14 @@
 import EditableText from './editableText';
 import moment from 'moment';
 import PlantActions from '../actions/plantActions';
-import PlantStore from '../stores/plantStore';
 import React from 'react';
 
 export default class PlantView extends React.Component {
     static get propTypes() {
         return {
-            plantName: React.PropTypes.string.isRequired,
+            editing: React.PropTypes.bool.isRequired,
             onEdit: React.PropTypes.func.isRequired,
-            editing: React.PropTypes.bool.isRequired
+            plantName: React.PropTypes.string.isRequired
         };
     }
     

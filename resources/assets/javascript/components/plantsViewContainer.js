@@ -24,13 +24,13 @@ const handleEditPlant = editing => {
 
 const plantsViewContainer = props => (
     <PlantsViewPage
-        editing={this.props.editing}
-        filter={this.props.filter}
+        editing={props.editing}
+        filter={props.filter}
         onAddPlant={createPlant}
         onEdit={handleEditPlant}
-        plants={this.props.plants}
-        selectedPlantName={this.props.selectedPlantName}
-        sort={this.props.sort} />
+        plants={props.plants}
+        selectedPlantName={props.selectedPlantName}
+        sort={props.sort} />
 );
 
 plantsViewContainer.propTypes = {

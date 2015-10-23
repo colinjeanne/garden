@@ -8,8 +8,8 @@ import SelectBox from './selectBox';
 export default class PlantList extends React.Component {
     static get propTypes() {
         return {
-            plants: React.PropTypes.any.isRequired,
             filterString: React.PropTypes.string.isRequired,
+            plants: React.PropTypes.any.isRequired,
             sortType: React.PropTypes.string.isRequired
         };
     }
@@ -67,9 +67,9 @@ export default class PlantList extends React.Component {
                 
                 return (
                     <PlantListItem
+                        detail={value}
                         key={plant.name}
                         name={plant.name}
-                        detail={value}
                         onClick={this.handleListItemClick.bind(this)} />
                 );
             }
@@ -91,8 +91,8 @@ export default class PlantList extends React.Component {
                 <PlantListSearchBox
                     onChange={this.handleSearchBoxChange.bind(this)} />
                 <SelectBox
-                    options={sortOptions}
-                    onChange={this.handleSortChange.bind(this)} />
+                    onChange={this.handleSortChange.bind(this)}
+                    options={sortOptions} />
                 <ol>
                     {plantListItems}
                 </ol>

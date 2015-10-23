@@ -24,12 +24,12 @@ const tabbedNavigation = props => {
 };
 
 tabbedNavigation.propTypes = {
+    onSelect: React.PropTypes.func.isRequired,
     tabs: React.PropTypes.arrayOf(
         React.PropTypes.shape({
-            title: React.PropTypes.string.isRequired,
-            key: React.PropTypes.string.isRequired
-        })).isRequired,
-    onSelect: React.PropTypes.func.isRequired
+            key: React.PropTypes.string.isRequired,
+            title: React.PropTypes.string.isRequired
+        })).isRequired
 };
 
 export default tabbedNavigation;

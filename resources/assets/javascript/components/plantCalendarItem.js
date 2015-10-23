@@ -3,16 +3,16 @@ import React from 'react';
 const CalendarEventActions = props => {
     const delayButton = (
         <button
-            type="button"
-            onClick={() => props.onHarvestDelayed(props.calendarItem.id)}>
+            onClick={() => props.onHarvestDelayed(props.calendarItem.id)}
+            type="button">
             Delay This Harvest
         </button>
     );
     
     const deadButton = (!props.calendarItem.isDead) ? (
         <button
-            type="button"
-            onClick={() => props.onPlantDied(props.calendarItem.id)}>
+            onClick={() => props.onPlantDied(props.calendarItem.id)}
+            type="button">
             This Plant Died
         </button>
     ) : undefined;
@@ -99,17 +99,17 @@ export default class PlantCalendarItem extends React.Component {
                 <label>
                     Amount harvested
                     <input
-                        type="number"
                         max="1000"
                         min="0.01"
-                        step="0.01"
-                        value={this.state.harvestAmount}
+                        onChange={this.handleHarvestChange.bind(this)}
                         ref="harvestAmount"
-                        onChange={this.handleHarvestChange.bind(this)} />
+                        step="0.01"
+                        type="number"
+                        value={this.state.harvestAmount} />
                 </label>
                 <button
-                    type="button"
-                    onClick={this.handleAddHarvest.bind(this)}>
+                    onClick={this.handleAddHarvest.bind(this)}
+                    type="button">
                     Add Harvest
                 </button>
             </div>

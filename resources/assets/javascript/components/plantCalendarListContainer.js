@@ -8,19 +8,19 @@ import { selectPlant } from '../actions/navigationActions';
 
 const mapStateToProps = state => {
     return {
-        selectedPlantName: state.plantsView.selectedPlantName,
-        plantNames: state.plants.map(plant => plant.name)
+        plantNames: state.plants.map(plant => plant.name),
+        selectedPlantName: state.plants.selectedPlantName
     };
 };
 
 class PlantCalendarListContainer extends React.Component {
     static get propTypes() {
         return {
-            selectedPlantName: React.PropTypes.string,
+            calendarDate: React.PropTypes.string.isRequired,
+            dispatch: React.PropTypes.func.isRequired,
             plantNames: React.PropTypes
                 .arrayOf(React.PropTypes.string).isRequired,
-            calendarDate: React.PropTypes.string.isRequired,
-            dispatch: React.PropTypes.func.isRequired
+            selectedPlantName: React.PropTypes.string
         };
     }
     
@@ -28,18 +28,6 @@ class PlantCalendarListContainer extends React.Component {
         createCalendarEvent(
             this.props.selectedPlantName,
             this.props.calendarDate);
-    }
-    
-    handleAddHarvest(calendarItemId, harvestAmount) {
-        addHarvest(calendarItemId, harvestAmount);
-    }
-    
-    handleHarvestDelayed(calendarItemId) {
-        delayHarvest(calendarItemId);
-    }
-    
-    handlePlantDied(calendarItemId) {
-        plantDied(calendarItemId);
     }
     
     render() {
@@ -56,9 +44,9 @@ class PlantCalendarListContainer extends React.Component {
                 <header>{title}</header>
                 <section>
                     <PlantCalendarAddBox
-                        plantNames={this.props.plantNames}
                         onAdd={this.handleAddCalendarEvent.bind(this)}
-                        onPlantSelect={selectPlant} />
+                        onPlantSelect={selectPlant}
+                        plantNames={this.props.plantNames} />
                     <PlantCalendarList
                         calendarEvents={calendarEvents}
                         onHarvestAdded={addHarvest}

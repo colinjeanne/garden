@@ -27,11 +27,11 @@ export default class CalendarPage extends React.Component {
         return (
             <div id="content" className="calendarPage">
                 <PlantCalendarListContainer
-                    plantNames={this.props.plantNames}
-                    calendarDate={currentMonth} />
+                    calendarDate={currentMonth}
+                    plantNames={this.props.plantNames} />
                 <PlantCalendarListContainer
-                    plantNames={this.props.plantNames}
-                    calendarDate={nextMonth} />
+                    calendarDate={nextMonth}
+                    plantNames={this.props.plantNames} />
             </div>
         );
     }

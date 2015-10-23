@@ -10,8 +10,8 @@ const plantListItem = props => (
 );
 
 plantListItem.propTypes = {
-    name: React.PropTypes.string.isRequired,
     detail: React.PropTypes.string.isRequired,
+    name: React.PropTypes.string.isRequired,
     onClick: React.PropTypes.func.isRequired
 };
 

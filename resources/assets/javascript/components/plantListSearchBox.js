@@ -2,10 +2,10 @@ import React from 'react';
 
 const plantListSearchBox = props => (
     <input
-        type="search"
         className="plantListSearchBox"
+        onChange={event => props.onChange(event.target.value)}
         placeholder="Search by name or label"
-        onChange={event => props.onChange(event.target.value)} />
+        type="search" />
 );
 
 plantListSearchBox.propTypes = {

@@ -27,14 +27,14 @@ export default class PlantListAddBox extends React.Component {
         return (
             <div className="plantListAddBox">
                 <input
-                    type="text"
-                    placeholder="Plant name"
-                    size="12"
                     maxLength="100"
-                    ref="addInput" />
+                    placeholder="Plant name"
+                    ref="addInput"
+                    size="12"
+                    type="text" />
                 <button
-                    type="button"
-                    onClick={this.handleAdd.bind(this)}>
+                    onClick={this.handleAdd.bind(this)}
+                    type="button">
                     Add
                 </button>
             </div>

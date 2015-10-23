@@ -19,13 +19,13 @@ const selectBox = props => {
 };
 
 selectBox.propTypes = {
+    onChange: React.PropTypes.func.isRequired,
     options: React.PropTypes.arrayOf(
         React.PropTypes.shape({
-            value: React.PropTypes.string.isRequired,
-            label: React.PropTypes.string.isRequired
+            label: React.PropTypes.string.isRequired,
+            value: React.PropTypes.string.isRequired
         })
-    ),
-    onChange: React.PropTypes.func.isRequired
+    )
 };
 
 export default selectBox;

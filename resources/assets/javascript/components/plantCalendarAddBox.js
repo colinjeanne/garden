@@ -12,12 +12,12 @@ const plantCalendarAddBox = props => {
     return (
         <div className="plantCalendarAddBox">
             <SelectBox
-                options={plantOptions}
                 onChange={this.props.onPlantSelect}
+                options={plantOptions}
                 ref="selectedPlant" />
             <button
-                type="button"
-                onClick={this.props.onAdd}>
+                onClick={this.props.onAdd}
+                type="button">
                 Add
             </button>
         </div>

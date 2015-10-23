@@ -6,8 +6,8 @@ const plantCalendarList = props => {
         item => {
             return (
                 <PlantCalendarItem
-                    key={item.id}
                     calendarItem={item}
+                    key={item.id}
                     onHarvestAdded={props.harvestAdded}
                     onHarvestDelayed={props.harvestDelayed}
                     onPlantDied={props.plantDied} />

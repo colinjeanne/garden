@@ -45,8 +45,8 @@ export default class App extends React.Component {
             switch (NavigationStore.getCurrentPage()) {
                 case Constants.CALENDAR_PAGE:
                     page = <CalendarPage
-                        plantNames={PlantStore.getAllPlantNames()}
-                        currentDate="2015-09-30T11:59:59-08:00" />;
+                        currentDate="2015-09-30T11:59:59-08:00"
+                        plantNames={PlantStore.getAllPlantNames()} />;
                     break;
                 
                 case Constants.PLANTS_PAGE:
@@ -64,8 +64,8 @@ export default class App extends React.Component {
                 <section>
                     <TabbedNavigation
                         id="mainNavigation"
-                        tabs={NavigationStore.getAllPages()}
-                        onSelect={this.handleTabSelected.bind(this)} />
+                        onSelect={this.handleTabSelected.bind(this)}
+                        tabs={NavigationStore.getAllPages()} />
                     {page}
                 </section>
             );
