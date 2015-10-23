@@ -1,6 +1,5 @@
 import EditableText from './editableText';
 import moment from 'moment';
-import PlantActions from '../actions/plantActions';
 import React from 'react';
 
 export default class PlantView extends React.Component {
@@ -8,90 +7,91 @@ export default class PlantView extends React.Component {
         return {
             editing: React.PropTypes.bool.isRequired,
             onEdit: React.PropTypes.func.isRequired,
-            plantName: React.PropTypes.string.isRequired
+            plant: React.PropTypes.object.isRequired,
+            updatePlant: React.PropTypes.func.isRequire
         };
     }
     
     handleDifficultyChanged(event) {
-        PlantActions.updatePlantDifficulty(
-            this.props.plantName,
-            event.target.valueAsNumber);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { difficulty: event.target.valueAsNumber });
     }
     
     handleGrowTimeChanged(event) {
-        PlantActions.updatePlantGrowTime(
-            this.props.plantName,
-            `P${event.target.valueAsNumber}M`);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { growTime: `P${event.target.valueAsNumber}M` });
     }
     
     handleHarvestTimeChanged(event) {
-        PlantActions.updatePlantHarvestTime(
-            this.props.plantName,
-            `P${event.target.valueAsNumber}M`);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { harvestTime: `P${event.target.valueAsNumber}M` });
     }
     
     handleLabelChanged(event) {
-        PlantActions.updatePlantLabel(
-            this.props.plantName,
-            event.target.value);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { label: event.target.value });
     }
     
     handleNotesChanged(event) {
-        PlantActions.updatePlantNotes(
-            this.props.plantName,
-            event.target.value);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { notes: event.target.value });
     }
     
     handlePricePerUnitChanged(event) {
-        PlantActions.updatePlantPricePerUnit(
-            this.props.plantName,
-            event.target.valueAsNumber);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { pricePerUnit: event.target.valueAsNumber });
     }
     
     handleRarityChanged(event) {
-        PlantActions.updatePlantRarity(
-            this.props.plantName,
-            event.target.valueAsNumber);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { rarity: event.target.valueAsNumber });
     }
     
     handleTasteChanged(event) {
-        PlantActions.updatePlantTaste(
-            this.props.plantName,
-            event.target.valueAsNumber);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { taste: event.target.valueAsNumber });
     }
     
     handleUnitChanged(event) {
-        PlantActions.updatePlantUnit(
-            this.props.plantName,
-            event.target.value);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { unit: event.target.value });
     }
     
     handleUnitPerSquareFootChanged(event) {
-        PlantActions.updatePlantUnitPerSquareFoot(
-            this.props.plantName,
-            event.target.valueAsNumber);
+        this.props.updatePlant(
+            this.props.plant.name,
+            { unitPerSquareFoot: event.target.valueAsNumber });
     }
     
     render() {
-        const plant = PlantStore.getByName(this.props.plantName);
-        
-        const growTime = moment.duration(plant.growTime).asMonths();
-        const harvestTime = moment.duration(plant.harvestTime).asMonths();
+        const growTime = moment.
+            duration(this.props.plant.growTime).asMonths();
+        const harvestTime = moment.
+            duration(this.props.plant.harvestTime).asMonths();
         
         return (
             <section className="plantView">
-                <header>{plant.name}</header>
+                <header>{this.props.plant.name}</header>
                 <EditableText
-                    onChange={this.props.onEdit}
-                    editing={this.props.editing}>
+                    editing={this.props.editing}
+                    onChange={this.props.onEdit}>
                     <div>
                         <label htmlFor="growTime">Growth Time</label>
                         <input
                             id="growTime"
-                            type="number"
-                            min="1"
                             max="12"
+                            min="1"
                             onChange={this.handleGrowTimeChanged.bind(this)}
+                            type="number"
                             value={growTime} />
                         Months
                     </div>
@@ -99,10 +99,10 @@ export default class PlantView extends React.Component {
                         <label htmlFor="harvestTime">Harvest Time</label>
                         <input
                             id="harvestTime"
-                            type="number"
-                            min="1"
                             max="12"
+                            min="1"
                             onChange={this.handleHarvestTimeChanged.bind(this)}
+                            type="number"
                             value={harvestTime} />
                         Months
                     </div>
@@ -112,84 +112,84 @@ export default class PlantView extends React.Component {
                             id="unit"
                             maxLength="20"
                             onChange={this.handleUnitChanged.bind(this)}
-                            value={plant.unit} />
+                            value={this.props.plant.unit} />
                     </div>
                     <div>
                         <label htmlFor="difficulty">Difficulty</label>
                         <input
                             id="difficulty"
-                            type="number"
-                            min="1"
                             max="5"
+                            min="1"
                             onChange={this.handleDifficultyChanged.bind(this)}
-                            value={plant.difficulty} />
+                            type="number"
+                            value={this.props.plant.difficulty} />
                     </div>
                     <div>
                         <label htmlFor="rarity">Rarity</label>
                         <input
                             id="rarity"
-                            type="number"
-                            min="1"
                             max="3"
+                            min="1"
                             onChange={this.handleRarityChanged.bind(this)}
-                            value={plant.rarity} />
+                            type="number"
+                            value={this.props.plant.rarity} />
                     </div>
                     <div>
                         <label htmlFor="taste">Taste</label>
                         <input
                             id="taste"
-                            type="number"
-                            min="1"
                             max="5"
+                            min="1"
                             onChange={this.handleTasteChanged.bind(this)}
-                            value={plant.taste} />
+                            type="number"
+                            value={this.props.plant.taste} />
                     </div>
                     <div>
                         <label htmlFor="cost">Store Cost</label>
                         $<input
                             id="cost"
-                            type="number"
-                            min="0.01"
                             max="400.00"
-                            step="0.01"
+                            min="0.01"
                             onChange={this.handlePricePerUnitChanged.bind(this)}
-                            value={plant.pricePerUnit} />
+                            step="0.01"
+                            type="number"
+                            value={this.props.plant.pricePerUnit} />
                     </div>
                     <div>
                         <label htmlFor="yield">Yield Per Square Foot</label>
                         <input
                             id="yield"
-                            type="number"
-                            min="0.01"
                             max="100"
-                            step="0.01"
+                            min="0.01"
                             onChange={this.handleUnitPerSquareFootChanged.bind(this)}
-                            value={plant.unitPerSquareFoot} />
+                            step="0.01"
+                            type="number"
+                            value={this.props.plant.unitPerSquareFoot} />
                     </div>
                     <div>
                         <label htmlFor="plantValue">Value</label>
                         $<output
-                            id="plantValue">{plant.value.toFixed(2)}</output>
+                            id="plantValue">{this.props.plant.value.toFixed(2)}</output>
                     </div>
                     <div>
                         <label htmlFor="notes">Notes</label>
                         <textarea
-                            id="notes"
                             cols="60"
-                            rows="10"
+                            id="notes"
                             maxLength="32000"
-                            spellCheck
                             onChange={this.handleNotesChanged.bind(this)}
-                            value={plant.notes} />
+                            rows="10"
+                            spellCheck
+                            value={this.props.plant.notes} />
                     </div>
                     <div>
                         <label htmlFor="label">Label</label>
                         <input
                             id="label"
                             maxLength="50"
-                            spellCheck
                             onChange={this.handleLabelChanged.bind(this)}
-                            value={plant.label} />
+                            spellCheck
+                            value={this.props.plant.label} />
                     </div>
                 </EditableText>
             </section>
