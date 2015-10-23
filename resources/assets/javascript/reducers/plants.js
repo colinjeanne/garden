@@ -3,12 +3,22 @@ import { handleActions } from 'redux-actions';
 
 const initialState = {
     plants: [],
-    dirtyByName: []
+    dirtyByName: [],
+    visibleByName: [],
+    sort: (first, second) => first < second,
+    filter: () => true
 };
 
 const filterPlant = plantName => plant => plant.name !== plantName;
 const filterPlantName = filteredPlantName =>
     plantName => filteredPlantName !== plantName;
+
+const filterAndSortPlantNames = (state, plants) => {
+    const filter = state.filter;
+    const sort = state.sort;
+    
+    return plants.map(plant => plant.name).filter(filter).sort(sort);
+};
 
 const handleUpdatedPlant = (state, action) => {
         const nextState = {
@@ -18,6 +28,10 @@ const handleUpdatedPlant = (state, action) => {
                     filter(filterPlant(action.payload.name))
             ]
         };
+        
+        nextState.visibleByName = filterAndSortPlantNames(
+            state,
+            nextState.plants);
         
         const filteredDirty = state.dirtyByName.
             filter(filterPlantName(action.payload.name));
@@ -41,7 +55,8 @@ const reducer = handleActions({
             
             return {
                 plants: action.payload,
-                dirtyByName: []
+                dirtyByName: [],
+                visibleByName: filterAndSortPlantNames(state, action.payload)
             };
         },
         
@@ -53,7 +68,23 @@ const reducer = handleActions({
         [Constants.UPDATE_PLANT]: (state, action) => ({
             next: handleUpdatedPlant,
             throw: state => state
-        })
+        }),
+        
+        [Constants.SELECT_PLANT]: (state, action) => ({
+            selectedPlantName: action.payload
+        }),
+        
+        [Constants.FILTER_PLANTS]: (state, action) => ({
+            filter: action.payload,
+            visiblePlantNames:
+                filterAndSortPlantNames(state, state.allPlantNames)
+        }),
+        
+        [Constants.SORT_PLANTS]: (state, action) => ({
+            sort: action.payload,
+            visiblePlantNames:
+                filterAndSortPlantNames(state, state.allPlantNames)
+        }),
     },
     initialState);
 

@@ -6,13 +6,13 @@ import React from 'react';
 export default class PlantsViewPage extends React.Component {
     static get propTypes() {
         return {
-            plants: React.PropTypes.object.isRequired,
-            selectedPlantName: React.PropTypes.string,
-            filterString: React.PropTypes.string.isRequired,
-            sortType: React.PropTypes.string.isRequired,
+            editing: React.PropTypes.bool.isRequired,
+            filter: React.PropTypes.func.isRequired,
             onAddPlant: React.PropTypes.func.isRequired,
             onEdit: React.PropTypes.func.isRequired,
-            editing: React.PropTypes.bool.isRequired
+            plants: React.PropTypes.object.isRequired,
+            selectedPlantName: React.PropTypes.string,
+            sort: React.PropTypes.func.isRequired
         };
     }
     

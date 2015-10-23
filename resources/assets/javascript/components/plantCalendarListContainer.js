@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import PlantCalendarAddBox from './plantCalendarAddBox';
 import PlantCalendarList from './plantCalendarList';
-import PlantStore from '../stores/plantStore';
 import React from 'react';
 import { selectPlant } from '../actions/navigationActions';
 

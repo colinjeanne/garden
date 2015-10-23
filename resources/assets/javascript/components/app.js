@@ -1,16 +1,11 @@
 import AppHeader from './appHeader';
 import CalendarPage from './calendarPage';
-import CalendarStore from '../stores/calendarStore';
 import Constants from '../constants/constants';
-import { editPlant, savePlant } from '../actions/navigationAction';
-import NavigationStore from '../stores/navigationStore';
 import PlantCalendarList from './plantCalendarList';
-import PlantStore from '../stores/plantStore';
 import PlantsViewPage from './plantsViewPage';
 import React from 'react';
 import SignInPage from './signInPage';
 import TabbedNavigation from './tabbedNavigation';
-import UserStore from '../stores/userStore';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -22,46 +17,12 @@ export default class App extends React.Component {
     }
     
     componentDidMount() {
-        CalendarStore.addChangeListener(
-            this.handleCalendarStoreChange.bind(this));
-        
-        NavigationStore.addChangeListener(
-            this.handleNavigationStoreChange.bind(this));
-        
-        PlantStore.addChangeListener(this.handlePlantStoreChange.bind(this));
-        
         UserStore.addChangeListener(
             this.handleUserStoreChange.bind(this));
     }
     
     componentWillUnmount() {
-        CalendarStore.removeChangeListener(this.handleCalendarStoreChange);
-        
-        NavigationStore.removeChangeListener(this.handleNavigationStoreChange);
-        
-        PlantStore.removeChangeListener(this.handlePlantStoreChange);
-        
         UserStore.removeChangeListener(this.handleUserStoreChange);
-    }
-    
-    handleCalendarStoreChange() {
-        this.forceUpdate();
-    }
-    
-    handleNavigationStoreChange() {
-        this.setState({
-            viewPage: NavigationStore.getCurrentPage(),
-            selectedPlantName: NavigationStore.getSelectedPlantName(),
-            filterString: NavigationStore.getFilterString(),
-            sortType: NavigationStore.getSortType()
-        });
-    }
-    
-    handlePlantStoreChange() {
-        this.setState({
-            plants: PlantStore.getAll(),
-            selectedPlantName: NavigationStore.getSelectedPlantName()
-        });
     }
     
     handleUserStoreChange() {
@@ -72,18 +33,6 @@ export default class App extends React.Component {
     
     handleTabSelected(tabId) {
         NavigationActions.showPage(tabId);
-    }
-    
-    handleAddPlant(plantName) {
-        PlantActions.createPlant(plantName);
-    }
-    
-    handleEditPlant(editing) {
-        if (editing) {
-            editPlant();
-        } else {
-            savePlant();
-        }
     }
     
     render() {
@@ -101,14 +50,7 @@ export default class App extends React.Component {
                     break;
                 
                 case Constants.PLANTS_PAGE:
-                    page = <PlantsViewPage
-                        plants={PlantStore.getAll()}
-                        selectedPlantName={NavigationStore.getSelectedPlantName()}
-                        filterString={NavigationStore.getFilterString()}
-                        sortType={NavigationStore.getSortType()}
-                        onAddPlant={this.handleAddPlant.bind(this)}
-                        editing={}
-                        onEdit={this.handleEditPlant.bind(this)} />;
+                    page = <PlantsViewContainer />;
                     break;
                 
                 case Constants.PLANTING_SUMMARY_PAGE:
