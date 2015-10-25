@@ -1,6 +1,11 @@
 import { connect } from 'react-redux';
 import { createPlant, updatePlant } from '../actions/plantActions';
-import { editPlant, savePlant } from '../actions/navigationActions';
+import { 
+    editPlant,
+    filterPlants,
+    savePlant,
+    selectPlant,
+    sortPlants } from '../actions/navigationActions';
 import PlantViewPage from './plantViewPage';
 import React from 'react';
 
@@ -9,40 +14,29 @@ const mapStateToProps = state => {
         plant => plant.name === state.plants.selectedPlantName);
     return {
         editing: state.plantsView.editing,
-        filter: state.plants.filter,
         plants: state.plants.plants,
         selectedPlant: selectedPlant,
-        sort: state.plants.sort
+        visiblePlantNames: state.plants.visibleByName
     };
 };
 
 const handleEditPlant = editing => {
     if (editing) {
-        editPlant();
-    } else {
-        savePlant();
+        return editPlant();
     }
+    
+    return savePlant();
 };
 
-const plantsViewContainer = props => (
-    <PlantsViewPage
-        editing={props.editing}
-        filter={props.filter}
-        onAddPlant={createPlant}
-        onEdit={handleEditPlant}
-        onUpdatePlant={updatePlant}
-        plants={props.plants}
-        selectedPlant={props.selectedPlant}
-        sort={props.sort} />
-);
-
-plantsViewContainer.propTypes = {
-    dispatch: React.PropTypes.func.isRequired,
-    editing: React.PropTypes.bool.isRequired,
-    filter: React.PropTypes.func.isRequired,
-    plants: React.PropTypes.object.isRequired,
-    selectedPlan: React.PropTypes.object,
-    sort: React.PropTypes.func.isRequired
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddPlant: createPlant,
+        onEdit: handleEditPlant,
+        onFilterPlants: filterPlants,
+        onSelectPlant: selectPlant,
+        onSortPlants: sortPlants,
+        onUpdatePlant: updatePlant
+    };
 };
 
-export default connect(mapStateToProps)(plantsViewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(PlantViewPage);

@@ -1,102 +1,99 @@
-import Constants from '../constants/constants';
-import NavigationActions from '../actions/navigationActions';
 import PlantListItem from './plantListItem';
 import PlantListSearchBox from './plantListSearchBox';
 import React from 'react';
 import SelectBox from './selectBox';
 
-export default class PlantList extends React.Component {
-    static get propTypes() {
-        return {
-            filterString: React.PropTypes.string.isRequired,
-            plants: React.PropTypes.any.isRequired,
-            sortType: React.PropTypes.string.isRequired
-        };
+const alphabeticalSort = (first, second) => {
+    if (first.name < second.name) {
+        return -1;
+    } else if (first.name > second.name) {
+        return 1;
     }
     
-    handleListItemClick(plantName) {
-        NavigationActions.selectPlant(plantName);
+    return 0;
+};
+
+const valueSort = (first, second) => {
+    if (first.value < second.value) {
+        return -1;
+    } else if (first.value > second.value) {
+        return 1;
     }
     
-    handleSearchBoxChange(searchText) {
-        NavigationActions.filterPlants(searchText);
-    }
+    return 0;
+};
+
+const SORT_TYPES = {
+    alphabetical: {
+        label: 'Sort by name',
+        sort: alphabeticalSort
+    },
     
-    handleSortChange(sortValue) {
-        NavigationActions.updateSortType(sortValue);
+    value: {
+        label: 'Sort by value',
+        sort: valueSort
     }
+};
+
+const filter = filterString => plant => {
+    filterString = this.props.filterString.toUpperCase();
+    return plant.name.toUpperCase().includes(filterString) ||
+        (plant.label && (plant.label.toUpperCase().includes(filterString)));
+};
+
+const plantList = props => {
+    const visiblePlants = this.props.plants.filter(plant =>
+        this.props.visiblePlantNames.includes(plant.name));
     
-    render() {
-        const allPlants = Array.from(this.props.plants.keys())
-            .map(plantName => this.props.plants.get(plantName));
-        
-        const sortedPlantListItems = allPlants
-            .sort((plantA, plantB) => {
-                if (this.props.sortType === Constants.SORT_TYPE_ALPHABETICAL) {
-                    if (plantA.name < plantB.name) {
-                        return -1;
-                    } else if (plantA.name > plantB.name) {
-                        return 1;
-                    }
-                    
-                    return 0;
-                } else if (this.props.sortType === Constants.SORT_TYPE_VALUE) {
-                    if (plantA.value < plantB.value) {
-                        return 1;
-                    } else if (plantA.value > plantB.value) {
-                        return -1;
-                    }
-                    
-                    return 0;
-                }
-            });
-        
-        const filteredPlantListItems = sortedPlantListItems
-            .filter(plant => {
-                const filterString = this.props.filterString.toUpperCase();
-                return (plant.name.toUpperCase().indexOf(filterString) !== -1) ||
-                    (plant.label && (plant.label.toUpperCase().indexOf(filterString) !== -1));
-            });
-        
-        const plantListItems = filteredPlantListItems.map(
-            plant => {
-                let value;
-                if (plant.value) {
-                    value = ' ($' + plant.value.toFixed(2) + ')';
-                }
-                
-                return (
-                    <PlantListItem
-                        detail={value}
-                        key={plant.name}
-                        name={plant.name}
-                        onClick={this.handleListItemClick.bind(this)} />
-                );
+    const plantListItems = visiblePlants.map(
+        plant => {
+            let value;
+            if (plant.value) {
+                value = ' ($' + plant.value.toFixed(2) + ')';
             }
-        );
-        
-        const sortOptions = [
-            {
-                value: Constants.SORT_TYPE_ALPHABETICAL,
-                label: 'Sort by name'
-            },
-            {
-                value: Constants.SORT_TYPE_VALUE,
-                label: 'Sort by value'
-            }
-        ];
-        
-        return (
-            <div className="plantList">
-                <PlantListSearchBox
-                    onChange={this.handleSearchBoxChange.bind(this)} />
-                <SelectBox
-                    onChange={this.handleSortChange.bind(this)}
-                    options={sortOptions} />
-                <ol>
-                    {plantListItems}
-                </ol>
-            </div>
-        );
-    }
-}
+            
+            return (
+                <PlantListItem
+                    detail={value}
+                    key={plant.name}
+                    name={plant.name}
+                    onClick={this.props.onSelectPlant} />
+            );
+        }
+    );
+    
+    const sortOptions = Object.getOwnPropertyNames(SORT_TYPES).
+        map(sort => ({
+            value: sort.label,
+            label: SORT_TYPES[sort].sort
+        }));
+    
+    return (
+        <div className="plantList">
+            <PlantListSearchBox
+                onChange={filterString => this.onFilterPlants(
+                    filter(filterString)
+                )} />
+            <SelectBox
+                onChange={sortType => this.onSortPlants(
+                    SORT_TYPES[sortType].sort
+                )}
+                options={sortOptions} />
+            <ol>
+                {plantListItems}
+            </ol>
+        </div>
+    );
+};
+
+plantList.propTypes = {
+    onFilterPlants: React.PropTypes.func.isRequired,
+    onSelectPlant: React.PropTypes.func.isRequired,
+    onSortPlants: React.PropTypes.func.isRequired,
+    plants: React.PropTypes.arrayOf(
+        React.PropTypes.object).isRequired,
+    visiblePlantNames: React.PropTypes.arrayOf(
+        React.PropTypes.string).isRequired
+};
+
+export default plantList;

@@ -20,9 +20,11 @@ const plantsViewPage = props => {
             <PlantListAddBox
                 onAdd={props.onAddPlant} />
             <PlantList
+                onFilterPlants={props.onFilterPlants}
+                onSelectPlant={props.onSelectPlant}
+                onSortPlants={props.onSortPlants}
                 plants={props.plants}
-                filterString={props.filterString}
-                sortType={props.sortType} />
+                visiblePlantNames={props.visiblePlantNames} />
             {plantView}
         </div>
     );
@@ -30,13 +32,16 @@ const plantsViewPage = props => {
 
 plantsViewPage.propTypes = {
     editing: React.PropTypes.bool.isRequired,
-    filter: React.PropTypes.func.isRequired,
     onAddPlant: React.PropTypes.func.isRequired,
     onEdit: React.PropTypes.func.isRequired,
+    onFilterPlants: React.PropTypes.func.isRequired,
+    onSelectPlant: React.PropTypes.func.isRequired,
+    onSortPlants: React.PropTypes.func.isRequired,
     onUpdatePlant: React.PropTypes.func.isRequired,
     plants: React.PropTypes.object.isRequired,
     selectedPlant: React.PropTypes.object,
-    sort: React.PropTypes.func.isRequired
+    visiblePlantNames: React.PropTypes.arrayOf(
+        React.PropTypes.string).isRequired
 };
 
 export default plantsViewPage;

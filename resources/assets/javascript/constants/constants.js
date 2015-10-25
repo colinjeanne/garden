@@ -19,8 +19,6 @@ export default {
     FILTER_PLANTS:          'FILTER_PLANTS',
     
     SORT_PLANTS:            'SORT_PLANTS',
-    SORT_TYPE_ALPHABETICAL:             'alphabetical',
-    SORT_TYPE_VALUE:                    'value',
     
     EDIT_PLANT:             'EDIT_PLANT',
     SAVE_PLANT:             'SAVE_PLANT',

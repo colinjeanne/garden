@@ -17,7 +17,7 @@ const filterAndSortPlantNames = (state, plants) => {
     const filter = state.filter;
     const sort = state.sort;
     
-    return plants.map(plant => plant.name).filter(filter).sort(sort);
+    return plants.filter(filter).sort(sort);
 };
 
 const handleUpdatedPlant = (state, action) => {
