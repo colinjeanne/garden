@@ -1,8 +1,7 @@
 import AppHeader from './appHeader';
-import CalendarPage from './calendarPage';
+import CalendarPageContainer from './calendarPageContainer';
 import Constants from '../constants/constants';
-import PlantCalendarList from './plantCalendarList';
-import PlantsViewPage from './plantsViewPage';
+import PlantsViewContainer from './plantsViewContainer';
 import React from 'react';
 import SignInPage from './signInPage';
 import TabbedNavigation from './tabbedNavigation';
@@ -44,9 +43,7 @@ export default class App extends React.Component {
             let page;
             switch (NavigationStore.getCurrentPage()) {
                 case Constants.CALENDAR_PAGE:
-                    page = <CalendarPage
-                        currentDate="2015-09-30T11:59:59-08:00"
-                        plantNames={PlantStore.getAllPlantNames()} />;
+                    page = <CalendarPageContainer />;
                     break;
                 
                 case Constants.PLANTS_PAGE:

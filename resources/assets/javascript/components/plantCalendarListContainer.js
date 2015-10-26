@@ -1,61 +1,33 @@
-import { addHarvest, createCalendarEvent, delayHarvest, plantDied } from '../actions/calendarActions';
-import { connect } from 'react-redux';
-import moment from 'moment';
 import PlantCalendarAddBox from './plantCalendarAddBox';
 import PlantCalendarList from './plantCalendarList';
 import React from 'react';
-import { selectPlant } from '../actions/navigationActions';
 
-const mapStateToProps = state => {
-    return {
-        plantNames: state.plants.map(plant => plant.name),
-        selectedPlantName: state.plants.selectedPlantName
-    };
+const plantCalendarListContainer = props => (
+    <div className="plantCalendarListContainer">
+        <header>{props.title}</header>
+        <section>
+            <PlantCalendarAddBox
+                onAdd={props.onCreateCalendarEvent}
+                plantNames={props.plantNames} />
+            <PlantCalendarList
+                calendarEvents={props.calendarEvents}
+                onHarvestAdded={props.onHarvestAdded}
+                onHarvestDelayed={props.onHarvestDelayed}
+                onPlantDied={props.onPlantDied} />
+        </section>
+    </div>
+);
+
+plantCalendarListContainer.propTypes = {
+    calendarEvents: React.PropTypes.arrayOf(
+        React.PropTypes.object).isRequired,
+    plantNames: React.PropTypes
+        .arrayOf(React.PropTypes.string).isRequired,
+    onCreateCalendarEvent: React.PropTypes.func.isRequired,
+    onHarvestAdded: React.PropTypes.func.isRequired,
+    onHarvestDelayed: React.PropTypes.func.isRequired,
+    onPlantDied: React.PropTypes.func.isRequired,
+    title: React.PropTypes.string.isRequired,
 };
 
-class PlantCalendarListContainer extends React.Component {
-    static get propTypes() {
-        return {
-            calendarDate: React.PropTypes.string.isRequired,
-            dispatch: React.PropTypes.func.isRequired,
-            plantNames: React.PropTypes
-                .arrayOf(React.PropTypes.string).isRequired,
-            selectedPlantName: React.PropTypes.string
-        };
-    }
-    
-    handleAddCalendarEvent() {
-        createCalendarEvent(
-            this.props.selectedPlantName,
-            this.props.calendarDate);
-    }
-    
-    render() {
-        const utcTime = moment.utc(this.props.calendarDate);
-        const title = utcTime.format('MMMM, YYYY');
-        const nextMonth = utcTime.
-            add(1, 'months').toISOString();
-        const calendarEvents = CalendarEventStore.getReadyBetween(
-            this.props.calendarDate,
-            nextMonth);
-        
-        return (
-            <div className="plantCalendarListContainer">
-                <header>{title}</header>
-                <section>
-                    <PlantCalendarAddBox
-                        onAdd={this.handleAddCalendarEvent.bind(this)}
-                        onPlantSelect={selectPlant}
-                        plantNames={this.props.plantNames} />
-                    <PlantCalendarList
-                        calendarEvents={calendarEvents}
-                        onHarvestAdded={addHarvest}
-                        onHarvestDelayed={delayHarvest}
-                        onPlantDied={plantDied} />
-                </section>
-            </div>
-        );
-    }
-}
-
-export default connect(mapStateToProps)(PlantCalendarListContainer);
+export default plantCalendarListContainer;
