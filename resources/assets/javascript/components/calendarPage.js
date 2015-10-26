@@ -1,5 +1,5 @@
 import moment from 'moment';
-import PlantCalendarListContainer from './plantCalendarListContainer';
+import CalendarColumn from './calendarColumn';
 import React from 'react';
 
 const isBetween = (checkDate, startDate, endDate) =>
@@ -41,7 +41,7 @@ const calendarPage = props => {
     
     return (
         <div id="content" className="calendarPage">
-            <PlantCalendarListContainer
+            <CalendarColumn
                 calendarEvents={currentEvents}
                 plantNames={plantNames}
                 onCreateCalendarEvent={createCalendarEvent(currentMonth)}
@@ -49,7 +49,7 @@ const calendarPage = props => {
                 onHarvestDelayed={props.onHarvestDelayed}
                 onPlantDied={props.onPlantDied}
                 title={currentMonth.format(titleFormat)} />
-            <PlantCalendarListContainer
+            <CalendarColumn
                 calendarEvents={nextEvents}
                 plantNames={plantNames}
                 onCreateCalendarEvent={createCalendarEvent(nextMonth)}

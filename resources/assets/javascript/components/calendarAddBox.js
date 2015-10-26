@@ -1,7 +1,7 @@
 import React from 'react';
 import SelectBox from './selectBox';
 
-export default class PlantCalendarAddBox extends React.Component {
+export default class CalendarAddBox extends React.Component {
     static get propTypes() {
         return {
             onAdd: React.PropTypes.func.isRequired,

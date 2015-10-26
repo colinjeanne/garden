@@ -1,15 +1,15 @@
-import PlantCalendarAddBox from './plantCalendarAddBox';
-import PlantCalendarList from './plantCalendarList';
+import CalendarAddBox from './calendarAddBox';
+import CalendarList from './calendarList';
 import React from 'react';
 
-const plantCalendarListContainer = props => (
+const calendarColumn = props => (
     <div className="plantCalendarListContainer">
         <header>{props.title}</header>
         <section>
-            <PlantCalendarAddBox
+            <CalendarAddBox
                 onAdd={props.onCreateCalendarEvent}
                 plantNames={props.plantNames} />
-            <PlantCalendarList
+            <CalendarList
                 calendarEvents={props.calendarEvents}
                 onHarvestAdded={props.onHarvestAdded}
                 onHarvestDelayed={props.onHarvestDelayed}
@@ -18,7 +18,7 @@ const plantCalendarListContainer = props => (
     </div>
 );
 
-plantCalendarListContainer.propTypes = {
+calendarColumn.propTypes = {
     calendarEvents: React.PropTypes.arrayOf(
         React.PropTypes.object).isRequired,
     plantNames: React.PropTypes
@@ -30,4 +30,4 @@ plantCalendarListContainer.propTypes = {
     title: React.PropTypes.string.isRequired,
 };
 
-export default plantCalendarListContainer;
+export default calendarColumn;

@@ -1,11 +1,11 @@
-import PlantCalendarItem from './plantCalendarItem';
+import CalendarItem from './calendarItem';
 import React from 'react';
 
-const plantCalendarList = props => {
+const calendarList = props => {
     const calendarItems = props.calendarEvents.map(
         item => {
             return (
-                <PlantCalendarItem
+                <CalendarItem
                     calendarItem={item}
                     key={item.id}
                     onHarvestAdded={props.harvestAdded}
@@ -22,11 +22,11 @@ const plantCalendarList = props => {
     );
 };
 
-plantCalendarList.propTypes = {
+calendarList.propTypes = {
     calendarEvents: React.PropTypes.array.isRequired,
     onHarvestAdded: React.PropTypes.func.isRequired,
     onHarvestDelayed: React.PropTypes.func.isRequired,
     onPlantDied: React.PropTypes.func.isRequired
 };
 
-export default plantCalendarList;
+export default calendarList;

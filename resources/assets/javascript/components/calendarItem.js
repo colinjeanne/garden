@@ -46,7 +46,7 @@ const PlantStatus = props => {
     );
 };
 
-export default class PlantCalendarItem extends React.Component {
+export default class CalendarItem extends React.Component {
     constructor(props) {
         super(props);
         
