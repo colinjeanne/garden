@@ -6,7 +6,7 @@ import {
     savePlant,
     selectPlant,
     sortPlants } from '../actions/navigationActions';
-import PlantViewPage from './plantViewPage';
+import PlantsViewPage from './plantsViewPage';
 import React from 'react';
 
 const mapStateToProps = state => {
@@ -39,4 +39,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlantViewPage);
+export default connect(mapStateToProps, mapDispatchToProps)(PlantsViewPage);
