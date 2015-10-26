@@ -10,10 +10,12 @@ export default {
     PLANT_DIED:             'PLANT_DIED',
     
     SHOW_PAGE:              'SHOW_PAGE',
-    CALENDAR_PAGE:                      'calendar',
-    PLANTS_PAGE:                        'plants',
-    PLANTING_SUMMARY_PAGE:              'plantingSummary',
-    SPACE_PLANNING_PAGE:                'spacePlanning',
+    pages: {
+        CALENDAR:           'Calendar',
+        PLANTS:             'Plants',
+        PLANTING_SUMMARY:   'Planting Summary',
+        SPACE_PLANNING:     'Space Planning'
+    },
     
     SELECT_PLANT:           'SELECT_PLANT',
     FILTER_PLANTS:          'FILTER_PLANTS',
@@ -23,8 +25,5 @@ export default {
     EDIT_PLANT:             'EDIT_PLANT',
     SAVE_PLANT:             'SAVE_PLANT',
     
-    USER_SIGNIN:            'USER_SIGNIN',
-    
-    CHANGE_ADD_PLANT_NAME:              'CHANGE_ADD_PLANT_NAME',
-    CLICK_ADD_PLANT:                    'CLICK_ADD_PLANT'
+    USER_SIGNIN:            'USER_SIGNIN'
 };

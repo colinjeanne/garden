@@ -1,4 +1,4 @@
-import App from './components/app';
+import AppContainer from './components/appContainer';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import store from './stores/store';
@@ -8,7 +8,7 @@ const signinFailed = error => {};
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <AppContainer />
     </Provider>,
     document.getElementById('app')
 );

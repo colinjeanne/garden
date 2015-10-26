@@ -2,13 +2,13 @@ import TabbedNavigationButton from './tabbedNavigationButton';
 import React from 'react';
 
 const tabbedNavigation = props => {
-    const children = props.tabs.map(
-        item => {
+    const children = Object.getOwnPropertyNames(props.tabs).map(
+        tab => {
             return (
                 <TabbedNavigationButton
-                    id={item.key}
-                    key={item.key}
-                    title={item.title}
+                    id={tab}
+                    key={tab}
+                    title={props.tabs[tab]}
                     onSelect={props.onSelect} />
             );
         }
@@ -25,11 +25,7 @@ const tabbedNavigation = props => {
 
 tabbedNavigation.propTypes = {
     onSelect: React.PropTypes.func.isRequired,
-    tabs: React.PropTypes.arrayOf(
-        React.PropTypes.shape({
-            key: React.PropTypes.string.isRequired,
-            title: React.PropTypes.string.isRequired
-        })).isRequired
+    tabs: React.PropTypes.objectOf(React.PropTypes.string).isRequired
 };
 
 export default tabbedNavigation;

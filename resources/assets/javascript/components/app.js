@@ -6,79 +6,55 @@ import React from 'react';
 import SignInPage from './signInPage';
 import TabbedNavigation from './tabbedNavigation';
 
-export default class App extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            viewPage: Constants.PLANTS_PAGE
-        };
-    }
-    
-    componentDidMount() {
-        UserStore.addChangeListener(
-            this.handleUserStoreChange.bind(this));
-    }
-    
-    componentWillUnmount() {
-        UserStore.removeChangeListener(this.handleUserStoreChange);
-    }
-    
-    handleUserStoreChange() {
-        this.setState({
-            displayName: UserStore.getDisplayName()
-        });
-    }
-    
-    handleTabSelected(tabId) {
-        NavigationActions.showPage(tabId);
-    }
-    
-    render() {
-        let displayName;
-        let content;
-        if (UserStore.isUserSignedIn()) {
-            displayName = UserStore.getDisplayName();
+const app = props => {
+    let content;
+    if (props.displayName) {
+        let page;
+        switch (props.page) {
+            case Constants.pages.CALENDAR:
+                page = <CalendarPageContainer />;
+                break;
             
-            let page;
-            switch (NavigationStore.getCurrentPage()) {
-                case Constants.CALENDAR_PAGE:
-                    page = <CalendarPageContainer />;
-                    break;
-                
-                case Constants.PLANTS_PAGE:
-                    page = <PlantsViewContainer />;
-                    break;
-                
-                case Constants.PLANTING_SUMMARY_PAGE:
-                    break;
-                
-                case Constants.SPACE_PLANNING_PAGE:
-                    break;
-            }
+            case Constants.pages.PLANTS:
+                page = <PlantsViewContainer />;
+                break;
             
-            content = (
-                <section>
-                    <TabbedNavigation
-                        id="mainNavigation"
-                        onSelect={this.handleTabSelected.bind(this)}
-                        tabs={NavigationStore.getAllPages()} />
-                    {page}
-                </section>
-            );
-        } else {
-            content = (
-                <section>
-                    <SignInPage />
-                </section>
-            );
+            case Constants.pages.PLANTING_SUMMARY:
+                break;
+            
+            case Constants.pages.SPACE_PLANNING:
+                break;
         }
         
-        return (
-            <div>
-                <AppHeader displayName={displayName} />
-                {content}
-            </div>
+        content = (
+            <section>
+                <TabbedNavigation
+                    id="mainNavigation"
+                    onSelect={props.onTabSelected}
+                    tabs={Constants.pages} />
+                {page}
+            </section>
+        );
+    } else {
+        content = (
+            <section>
+                <SignInPage />
+            </section>
         );
     }
-}
+    
+    return (
+        <div>
+            <AppHeader displayName={props.displayName} />
+            {content}
+        </div>
+    );
+};
+
+app.propTypes = {
+    displayName: React.PropTypes.string,
+    onTabSelected: React.PropType.func.isRequired,
+    page: React.PropTypes.string.isRequired,
+};
+
+export default app;
