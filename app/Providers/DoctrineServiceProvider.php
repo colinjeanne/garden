@@ -16,11 +16,13 @@ class DoctrineServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             ObjectManager::class,
-            function($app) {
+            function ($app) {
                 $isDevMode = getenv('APP_DEBUG');
                 $modelsPath = realpath(__DIR__ . '/../Models');
                 $config = Setup::createAnnotationMetadataConfiguration(
-                    [$modelsPath], $isDevMode);
+                    [$modelsPath],
+                    $isDevMode
+                );
 
                 $connection = ['driver' => getenv('DOCTRINE_DRIVER')];
                 
@@ -33,6 +35,7 @@ class DoctrineServiceProvider extends ServiceProvider
                 }
 
                 return EntityManager::create($connection, $config);
-            });
+            }
+        );
     }
 }

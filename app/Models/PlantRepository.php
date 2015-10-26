@@ -22,9 +22,9 @@ class PlantRepository extends EntityRepository
         $qb->select('p')
            ->from(Plant::class, 'p')
            ->where($qb->expr()->andX(
-                $qb->expr()->eq('p.name', '?1'),
-                $qb->expr()->eq('p.user', '?2')
-            ))
+               $qb->expr()->eq('p.name', '?1'),
+               $qb->expr()->eq('p.user', '?2')
+           ))
            ->setParameter(1, $name)
            ->setParameter(2, $userId);
 

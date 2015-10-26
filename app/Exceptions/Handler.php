@@ -5,7 +5,8 @@ use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Respect\Validation\Exceptions\ValidationExceptionInterface as ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class Handler extends ExceptionHandler {
+class Handler extends ExceptionHandler
+{
 
     /**
      * A list of the exception types that should not be reported.
@@ -42,7 +43,7 @@ class Handler extends ExceptionHandler {
         if ($e instanceof ValidationException) {
             $log->info($e->getMainMessage());
             return response($e->getMainMessage(), 400);
-        } else if ($e instanceof HttpException) {
+        } elseif ($e instanceof HttpException) {
             if ($e->getStatusCode() >= 400 &&
                 $e->getStatusCode() < 500) {
                 return response($e->getMessage(), $e->getStatusCode());
@@ -55,5 +56,4 @@ class Handler extends ExceptionHandler {
         $log->critical((string)$e);
         return response((string)$e, 500);
     }
-
 }

@@ -11,86 +11,86 @@
 |
 */
 
-$app->get('/', function() {
+$app->get('/', function () {
     return view('main', ['googleClientId' => getenv('GOOGLE_CLIENT_ID')]);
 });
 
 $app->get(
-   '/me',
-   [
+    '/me',
+    [
       'as' => 'getMe',
       'uses' => 'App\Http\Controllers\UserController@getMe'
-   ]
+    ]
 );
 
 $app->get(
-   '/plants',
-   [
+    '/plants',
+    [
       'as' => 'getAllPlants',
       'uses' => 'App\Http\Controllers\PlantsController@getPlants'
-   ]
+    ]
 );
 
 $app->post(
-   '/plants',
-   [
+    '/plants',
+    [
       'as' => 'createPlant',
       'uses' => 'App\Http\Controllers\PlantsController@createPlant'
-   ]
+    ]
 );
 
 $app->get(
-   '/plants/{name}',
-   [
+    '/plants/{name}',
+    [
       'as' => 'getPlant',
       'uses' => 'App\Http\Controllers\PlantsController@getPlant'
-   ]
+    ]
 );
 
 $app->put(
-   '/plants/{name}',
-   [
+    '/plants/{name}',
+    [
       'as' => 'updatePlant',
       'uses' => 'App\Http\Controllers\PlantsController@updatePlant'
-   ]
+    ]
 );
 
 $app->get(
-   '/calendar',
-   [
+    '/calendar',
+    [
       'as' => 'getCurrentCalendarItems',
       'uses' => 'App\Http\Controllers\CalendarController@getCurrent'
-   ]
+    ]
 );
 
 $app->post(
-   '/calendar',
-   [
+    '/calendar',
+    [
       'as' => 'createCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@createItem'
-   ]
+    ]
 );
 
 $app->get(
-   '/calendar/{eventId:[A-Za-z0-9_-]+}',
-   [
+    '/calendar/{eventId:[A-Za-z0-9_-]+}',
+    [
       'as' => 'getCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@getItem'
-   ]
+    ]
 );
 
 $app->put(
-   '/calendar/{eventId:[A-Za-z0-9_-]+}',
-   [
+    '/calendar/{eventId:[A-Za-z0-9_-]+}',
+    [
       'as' => 'updateCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@updateItem'
-   ]
+    ]
 );
 
 $app->delete(
-   '/calendar/{eventId:[A-Za-z0-9_-]+}',
-   [
+    '/calendar/{eventId:[A-Za-z0-9_-]+}',
+    [
       'as' => 'deleteCalendarItem',
       'uses' => 'App\Http\Controllers\CalendarController@deleteItem'
-   ]
+    ]
 );

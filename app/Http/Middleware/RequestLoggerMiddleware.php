@@ -7,7 +7,7 @@ class RequestLoggerMiddleware
 {
     /**
      * The current request's logger
-     * 
+     *
      * @var Psr\Log\LoggerInterface
      */
     private $log;
@@ -33,19 +33,21 @@ class RequestLoggerMiddleware
                 'method' => $request->method(),
                 'path' => '/' . $request->path(),
                 'time' => $startTime
-            ]);
+            ]
+        );
         
-        $response = $next($request);
+            $response = $next($request);
         
-        $endTime = microtime(true);
-        $this->log->info(
-            'End request',
-            [
+            $endTime = microtime(true);
+            $this->log->info(
+                'End request',
+                [
                 'status' => $response->status(),
                 'time' => $endTime,
                 'duration' => $endTime - $startTime
-            ]);
+                ]
+            );
         
-        return $response;
+            return $response;
     }
 }

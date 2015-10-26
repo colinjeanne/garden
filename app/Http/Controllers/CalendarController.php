@@ -30,8 +30,10 @@ class CalendarController extends Controller
 
         $this->middleware('auth');
         $this->middleware('accept-json', ['except' => 'deleteItem']);
-        $this->middleware('provide-json',
-            ['except' => ['getCurrent', 'getItem', 'deleteItem']]);
+        $this->middleware(
+            'provide-json',
+            ['except' => ['getCurrent', 'getItem', 'deleteItem']]
+        );
     }
 
     public function getCurrent(Request $request)
@@ -47,14 +49,16 @@ class CalendarController extends Controller
             $startDate = null;
             if (!self::tryParseDateTimeFromTimestamp(
                 $request->input('startDate'),
-                $startDate)) {
+                $startDate
+            )) {
                 abort(400);
             }
             
             $endDate = null;
             if (!self::tryParseDateTimeFromTimestamp(
                 $request->input('endDate'),
-                $endDate)) {
+                $endDate
+            )) {
                 abort(400);
             }
         } else {
@@ -69,11 +73,13 @@ class CalendarController extends Controller
             ->getCalendarEventsBetween(
                 $this->user->getId(),
                 $startDate,
-                $endDate);
+                $endDate
+            );
         
         $eventsJson = array_map(
             [self::class, 'calendarEventToJson'],
-            $events);
+            $events
+        );
 
         return response()->json($eventsJson);
     }
@@ -97,7 +103,8 @@ class CalendarController extends Controller
         $calendarEvent = new CalendarEvent(
             $this->user,
             $plant,
-            $plantedDate);
+            $plantedDate
+        );
         
         $this->createCalendarEventFromJson($calendarEvent, $json);
         
@@ -163,12 +170,14 @@ class CalendarController extends Controller
                 v::key(
                     'plantedDate',
                     v::date(\DateTime::ATOM)
-                        ->between('01 January 2010', '31 December 2020')),
+                        ->between('01 January 2010', '31 December 2020')
+                ),
                 v::key(
                     'readyDate',
                     v::date(\DateTime::ATOM)
                         ->between('01 January 2010', '31 December 2020'),
-                    false),
+                    false
+                ),
                 v::key('isDead', v::boolType(), false),
                 v::key(
                     'harvests',
@@ -176,7 +185,8 @@ class CalendarController extends Controller
                         v::numericVal()->between(0, 1000), // Value
                         v::intVal() // Key
                     ),
-                    false)
+                    false
+                )
             );
         
         $validator->check($json);
@@ -186,17 +196,22 @@ class CalendarController extends Controller
     {
         $validator = v::arrType()->
             keySet(
-                v::key('plantName',
-                    v::equals($calendarEvent->plant()->getName(), true)),
+                v::key(
+                    'plantName',
+                    v::equals($calendarEvent->plant()->getName(), true)
+                ),
                 v::key(
                     'plantedDate',
                     v::equals(
                         $calendarEvent->getPlantedDate()->format(\DateTime::ATOM),
-                        true)),
+                        true
+                    )
+                ),
                 v::key(
                     'readyDate',
                     v::date(\DateTime::ATOM)
-                        ->between('01 January 2010', '31 December 2020')),
+                        ->between('01 January 2010', '31 December 2020')
+                ),
                 v::key('isDead', v::boolType(), false),
                 v::key(
                     'harvests',
@@ -204,13 +219,16 @@ class CalendarController extends Controller
                         v::numericVal()->between(0, 1000), // Value
                         v::intVal() // Key
                     ),
-                    false),
+                    false
+                ),
                 v::key(
                     'links',
                     v::arrType()->keySet(
                         v::key('self', v::url()),
-                        v::key('plant', v::url())),
-                    false)
+                        v::key('plant', v::url())
+                    ),
+                    false
+                )
             );
         
         $validator->check($json);
@@ -263,9 +281,9 @@ class CalendarController extends Controller
             // plant is marked as dead
             $calendarEvent->setReadyDate($readyDate);
             $calendarEvent->died();
-        } else if ($readyDateChanged) {
+        } elseif ($readyDateChanged) {
             $calendarEvent->setReadyDate($readyDate);
-        } else if ($isDeadChanged) {
+        } elseif ($isDeadChanged) {
             $calendarEvent->died();
         }
         
@@ -293,11 +311,13 @@ class CalendarController extends Controller
         ];
     }
     
-    private static function tryParseDateTime($mixed, &$dateTime) {
+    private static function tryParseDateTime($mixed, &$dateTime)
+    {
         try {
             $dateTime = \DateTimeImmutable::createFromFormat(
                 \DateTime::ATOM,
-                $mixed);
+                $mixed
+            );
         } catch (\Exception $e) {
             return false;
         }
@@ -305,11 +325,13 @@ class CalendarController extends Controller
         return true;
     }
     
-    private static function tryParseDateTimeFromTimestamp($mixed, &$dateTime) {
+    private static function tryParseDateTimeFromTimestamp($mixed, &$dateTime)
+    {
         try {
             $dateTime = \DateTimeImmutable::createFromFormat(
                 'U',
-                $mixed);
+                $mixed
+            );
         } catch (\Exception $e) {
             return false;
         }

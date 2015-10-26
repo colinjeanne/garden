@@ -15,7 +15,7 @@ class Plant
     /**
      * @Column(type="string", length=30)
      * @var string
-     * 
+     *
      * An ISO 8601 duration specification. The grow time of a plant is the
      * amount of time between when the plant is first planted and when the
      * first harvest should be ready.
@@ -25,7 +25,7 @@ class Plant
     /**
      * @Column(type="string", length=30)
      * @var string
-     * 
+     *
      * An ISO 8601 duration specification. The harvest time of a plant is the
      * amount of time that the plant should have harvets.
      */
@@ -281,8 +281,7 @@ class Plant
     
     private static function validateDuration($duration)
     {
-        try
-        {
+        try {
             $testInterval = new \DateInterval($duration);
             if (($testInterval->y !== 0) ||
                 ($testInterval->d !== 0) ||

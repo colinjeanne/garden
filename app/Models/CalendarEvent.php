@@ -127,7 +127,8 @@ class CalendarEvent
 
                 return $current;
             },
-            true);
+            true
+        );
 
         if (!$areAllValid) {
             throw new \InvalidArgumentException('harvests');

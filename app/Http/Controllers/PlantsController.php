@@ -30,8 +30,10 @@ class PlantsController extends Controller
 
         $this->middleware('auth');
         $this->middleware('accept-json');
-        $this->middleware('provide-json',
-            ['only' => 'createPlant', 'updatePlant']);
+        $this->middleware(
+            'provide-json',
+            ['only' => 'createPlant', 'updatePlant']
+        );
     }
 
     public function getPlants()
@@ -41,7 +43,8 @@ class PlantsController extends Controller
 
         $plantsJson = array_map(
             [self::class, 'plantToJson'],
-            $plants);
+            $plants
+        );
 
         return response()->json($plantsJson);
     }
@@ -137,7 +140,10 @@ class PlantsController extends Controller
                         v::equals(
                             route(
                                 'getPlant',
-                                ['name' => $plant->getName()]))), false),
+                                ['name' => $plant->getName()]
+                            )
+                        )
+                    ), false),
                 v::key('value', v::equals($plant->value()), false)
             );
         

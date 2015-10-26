@@ -17,7 +17,7 @@ class HttpAuthorizationUserProvider implements UserProvider
 
     /**
      * The current request's logger
-     * 
+     *
      * @var Psr\Log\LoggerInterface
      */
     private $log;
@@ -30,14 +30,14 @@ class HttpAuthorizationUserProvider implements UserProvider
 
     /**
      * The current user
-     * 
+     *
      * @var App\Models\User
      */
     private $currentUser = null;
 
     /**
      * Whether the authorization header has been parsed
-     * 
+     *
      * @var boolean
      */
     private $hasAuthorizationHeaderBeenParsed = false;
@@ -58,7 +58,8 @@ class HttpAuthorizationUserProvider implements UserProvider
             if ($authorization !== null) {
                 $this->log->info(
                     'Authorization header is present',
-                    ['header' => $authorization]);
+                    ['header' => $authorization]
+                );
                  
                 $authInfo = explode(' ', $authorization);
                 if ((count($authInfo) === 2) && ($authInfo[0] === 'Bearer')) {
@@ -78,7 +79,8 @@ class HttpAuthorizationUserProvider implements UserProvider
                         $claim = $this->db->getRepository(Claim::class)
                             ->findByIssuerAndSubject(
                                 $claims['iss'],
-                                $claims['sub']);
+                                $claims['sub']
+                            );
                         if (!isset($claim)) {
                             $this->log->info('Claim not found in database, persisting');
                             $claim = new Claim($claims['iss'], $claims['sub']);

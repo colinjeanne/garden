@@ -11,9 +11,9 @@ class CalendarEventRepository extends EntityRepository
         $qb->select('c')
            ->from(CalendarEvent::class, 'c')
            ->where($qb->expr()->andX(
-                $qb->expr()->eq('c.id', '?1'),
-                $qb->expr()->eq('c.user', '?2')
-            ))
+               $qb->expr()->eq('c.id', '?1'),
+               $qb->expr()->eq('c.user', '?2')
+           ))
            ->setParameter(1, $eventId)
            ->setParameter(2, $userId);
 
@@ -36,7 +36,8 @@ class CalendarEventRepository extends EntityRepository
             $qb->getQuery()->getResult(),
             function ($calendarEvent) use ($startDate, $endDate) {
                 $harvestTime = new \DateInterval(
-                    $calendarEvent->plant()->getHarvestTime());
+                    $calendarEvent->plant()->getHarvestTime()
+                );
                 $readyDate = $calendarEvent->getReadyDate();
                 $lastReadyDate = $readyDate->add($harvestTime);
                 $plantedDate = $calendarEvent->getPlantedDate();
@@ -45,6 +46,7 @@ class CalendarEventRepository extends EntityRepository
                     ($lastReadyDate >= $startDate && $lastReadyDate <= $endDate) ||
                     ($startDate >= $readyDate && $startDate <= $lastReadyDate) ||
                     ($plantedDate >= $startDate && $plantedDate <= $endDate);
-            });
+            }
+        );
     }
 }
