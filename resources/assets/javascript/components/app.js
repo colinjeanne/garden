@@ -53,7 +53,7 @@ const app = props => {
 
 app.propTypes = {
     displayName: React.PropTypes.string,
-    onTabSelected: React.PropType.func.isRequired,
+    onTabSelected: React.PropTypes.func.isRequired,
     page: React.PropTypes.string.isRequired,
 };
 
