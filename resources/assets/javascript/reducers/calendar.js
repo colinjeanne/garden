@@ -18,6 +18,7 @@ const filterEventId = filteredEventId =>
 
 const handleUpdatedEvent = (state, action) => {
         const nextState = {
+            ...state,
             events: [
                 action.payload,
                 ...state.plants.
@@ -46,30 +47,31 @@ const reducer = handleActions({
             }
             
             return {
+                ...state,
                 plants: action.payload,
                 dirtyById: []
             };
         },
         
-        [Constants.CREATE_CALENDAR_EVENT]: (state, action) => ({
+        [Constants.CREATE_CALENDAR_EVENT]: {
             next: handleUpdatedEvent,
             throw: state => state
-        }),
+        },
         
-        [Constants.ADD_HARVEST]: (state, action) => ({
+        [Constants.ADD_HARVEST]: {
             next: handleUpdatedEvent,
             throw: state => state
-        }),
+        },
         
-        [Constants.DELAY_HARVEST]: (state, action) => ({
+        [Constants.DELAY_HARVEST]: {
             next: handleUpdatedEvent,
             throw: state => state
-        }),
+        },
         
-        [Constants.PLANT_DIED]: (state, action) => ({
+        [Constants.PLANT_DIED]: {
             next: handleUpdatedEvent,
             throw: state => state
-        })
+        }
     },
     initialState);
 

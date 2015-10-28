@@ -36,14 +36,15 @@ const SORT_TYPES = {
 };
 
 const filter = filterString => plant => {
-    filterString = this.props.filterString.toUpperCase();
-    return plant.name.toUpperCase().includes(filterString) ||
-        (plant.label && (plant.label.toUpperCase().includes(filterString)));
+    console.log(JSON.stringify(filterString));
+    filterString = filterString.toUpperCase();
+    return (plant.name.toUpperCase().indexOf(filterString) !== -1) ||
+        (plant.label && (plant.label.toUpperCase().indexOf(filterString) !== -1));
 };
 
 const plantList = props => {
-    const visiblePlants = this.props.plants.filter(plant =>
-        this.props.visiblePlantNames.includes(plant.name));
+    const visiblePlants = props.plants.filter(plant =>
+        props.visiblePlantNames.indexOf(plant.name) !== -1);
     
     const plantListItems = visiblePlants.map(
         plant => {
@@ -57,25 +58,25 @@ const plantList = props => {
                     detail={value}
                     key={plant.name}
                     name={plant.name}
-                    onClick={this.props.onSelectPlant} />
+                    onClick={props.onSelectPlant} />
             );
         }
     );
     
     const sortOptions = Object.getOwnPropertyNames(SORT_TYPES).
         map(sort => ({
-            value: sort.label,
-            label: SORT_TYPES[sort].sort
+            value: sort,
+            label: SORT_TYPES[sort].label
         }));
     
     return (
         <div className="plantList">
             <PlantListSearchBox
-                onChange={filterString => this.onFilterPlants(
+                onChange={filterString => props.onFilterPlants(
                     filter(filterString)
                 )} />
             <SelectBox
-                onChange={sortType => this.onSortPlants(
+                onChange={sortType => props.onSortPlants(
                     SORT_TYPES[sortType].sort
                 )}
                 options={sortOptions} />

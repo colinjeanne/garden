@@ -1,5 +1,6 @@
 import AppContainer from './components/appContainer';
 import { Provider } from 'react-redux';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { signInUser } from './actions/userActions';
 import store from './stores/store';
@@ -11,5 +12,5 @@ ReactDOM.render(
     document.getElementById('app')
 );
 
-window.signinSucceeded = signInUser;
-window.signinFailed = signInUser;
+window.signinSucceeded = user => store.dispatch(signInUser(user));
+window.signinFailed = error => store.dispatch(signInUser(error));

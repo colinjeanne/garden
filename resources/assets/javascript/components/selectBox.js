@@ -5,7 +5,7 @@ const selectedValue = event => event.target.selectedOptions[0].value;
 export default class SelectBox extends React.Component {
     static get propTypes() {
         return {
-            onChange: React.PropTypes.func.isRequired,
+            onChange: React.PropTypes.func,
             options: React.PropTypes.arrayOf(
                 React.PropTypes.shape({
                     label: React.PropTypes.string.isRequired,
@@ -16,7 +16,17 @@ export default class SelectBox extends React.Component {
     }
     
     selectedValue() {
-        return this.select.selectedOptions[0].value;
+        if (this.select.selectedOptions.length > 0) {
+            return this.select.selectedOptions[0].value;
+        }
+        
+        return null;
+    }
+    
+    handleChange(event) {
+        if (this.props.onChange) {
+            this.props.onChange(this.selectedValue(event));
+        }
     }
     
     render() {
@@ -30,8 +40,7 @@ export default class SelectBox extends React.Component {
         
         return (
             <select
-                onChange={event =>
-                    this.props.onChange(selectedValue(event))}
+                onChange={event => this.handleChange.bind(this)}
                 ref={r => this.select = r}>
                 {options}
             </select>

@@ -1,4 +1,5 @@
 import App from './app';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import React from 'react';
 import { showPage } from '../actions/navigationActions';
@@ -11,9 +12,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
+    return bindActionCreators({
         onTabSelected: showPage
-    };
+    },
+    dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

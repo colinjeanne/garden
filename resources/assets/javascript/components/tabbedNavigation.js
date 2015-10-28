@@ -6,7 +6,7 @@ const tabbedNavigation = props => {
         tab => {
             return (
                 <TabbedNavigationButton
-                    id={tab}
+                    id={props.tabs[tab]}
                     key={tab}
                     title={props.tabs[tab]}
                     onSelect={props.onSelect} />

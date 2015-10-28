@@ -17,11 +17,12 @@ const filterAndSortPlantNames = (state, plants) => {
     const filter = state.filter;
     const sort = state.sort;
     
-    return plants.filter(filter).sort(sort);
+    return plants.filter(filter).sort(sort).map(plant => plant.name);
 };
 
 const handleUpdatedPlant = (state, action) => {
         const nextState = {
+            ...state,
             plants: [
                 action.payload,
                 ...state.plants.
@@ -54,36 +55,40 @@ const reducer = handleActions({
             }
             
             return {
+                ...state,
                 plants: action.payload,
                 dirtyByName: [],
                 visibleByName: filterAndSortPlantNames(state, action.payload)
             };
         },
         
-        [Constants.CREATE_PLANT]: (state, action) => ({
+        [Constants.CREATE_PLANT]: {
             next: handleUpdatedPlant,
             throw: state => state
-        }),
+        },
         
-        [Constants.UPDATE_PLANT]: (state, action) => ({
+        [Constants.UPDATE_PLANT]: {
             next: handleUpdatedPlant,
             throw: state => state
-        }),
+        },
         
         [Constants.SELECT_PLANT]: (state, action) => ({
+            ...state,
             selectedPlantName: action.payload
         }),
         
         [Constants.FILTER_PLANTS]: (state, action) => ({
+            ...state,
             filter: action.payload,
-            visiblePlantNames:
-                filterAndSortPlantNames(state, state.allPlantNames)
+            visibleByName:
+                filterAndSortPlantNames(state, state.plants)
         }),
         
         [Constants.SORT_PLANTS]: (state, action) => ({
+            ...state,
             sort: action.payload,
-            visiblePlantNames:
-                filterAndSortPlantNames(state, state.allPlantNames)
+            visibleByName:
+                filterAndSortPlantNames(state, state.plants)
         }),
     },
     initialState);
