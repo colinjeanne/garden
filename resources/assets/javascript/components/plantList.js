@@ -36,7 +36,6 @@ const SORT_TYPES = {
 };
 
 const filter = filterString => plant => {
-    console.log(JSON.stringify(filterString));
     filterString = filterString.toUpperCase();
     return (plant.name.toUpperCase().indexOf(filterString) !== -1) ||
         (plant.label && (plant.label.toUpperCase().indexOf(filterString) !== -1));
