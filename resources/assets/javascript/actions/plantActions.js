@@ -1,6 +1,5 @@
 import Constants from '../constants/constants';
 import { createAction } from 'redux-actions';
-import { fetch, Headers } from 'isomorphic-fetch';
 
 const getAllPlantsAction = createAction(Constants.GET_ALL_PLANTS);
 

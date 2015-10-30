@@ -1,6 +1,5 @@
 import Constants from '../constants/constants';
 import { createAction } from 'redux-actions';
-import { fetch, Headers } from 'isomorphic-fetch';
 import moment from 'moment';
 
 const getCalendarEventsAction = createAction(Constants.GET_CALENDAR_EVENTS);
