@@ -46,6 +46,7 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof HttpException) {
             if ($e->getStatusCode() >= 400 &&
                 $e->getStatusCode() < 500) {
+                $log->info((string)$e);
                 return response($e->getMessage(), $e->getStatusCode());
             } else {
                 $log->critical((string)$e);
