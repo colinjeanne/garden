@@ -55,7 +55,7 @@ class PlantsController extends Controller
 
         $this->validatePlantJsonForCreate($json);
 
-        $plant = new Plant($json['name'], $this->user);
+        $plant = new Plant(strtolower($json['name']), $this->user);
         $this->db->persist($plant);
 
         $this->updatePlantFromJson($plant, $json);
@@ -72,7 +72,7 @@ class PlantsController extends Controller
     public function getPlant(Request $request, $name)
     {
         $plant = $this->db->getRepository(Plant::class)
-            ->findForUser($name, $this->user->getId());
+            ->findForUser(strtolower($name), $this->user->getId());
         if (!$plant) {
             abort(404);
         }
@@ -85,7 +85,7 @@ class PlantsController extends Controller
         $json = $request->json()->all();
 
         $plant = $this->db->getRepository(Plant::class)
-            ->findForUser($name, $this->user->getId());
+            ->findForUser(strtolower($name), $this->user->getId());
         if (!$plant) {
             abort(404);
         }
@@ -144,7 +144,7 @@ class PlantsController extends Controller
                             )
                         )
                     ), false),
-                v::key('value', v::equals($plant->value()), false)
+                v::key('value', v::intVal(), false)
             );
         
         $validator->check($json);

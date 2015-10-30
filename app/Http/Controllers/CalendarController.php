@@ -91,7 +91,7 @@ class CalendarController extends Controller
         $this->validateEventJsonForCreate($json);
         
         $plant = $this->db->getRepository(Plant::class)
-            ->findForUser($json['plantName'], $this->user->getId());
+            ->findForUser(strtolower($json['plantName']), $this->user->getId());
         if (!$plant) {
             abort(400);
         }
