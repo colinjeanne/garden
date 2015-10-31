@@ -144,7 +144,7 @@ class PlantsController extends Controller
                             )
                         )
                     ), false),
-                v::key('value', v::intVal(), false)
+                v::key('value', v::numericVal(), false)
             );
         
         $validator->check($json);
