@@ -21,7 +21,7 @@ const handleUpdatedEvent = (state, action) => {
             ...state,
             events: [
                 action.payload,
-                ...state.plants.
+                ...state.events.
                     filter(filterEvent(action.payload))
             ]
         };

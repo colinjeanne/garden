@@ -8,9 +8,9 @@ const calendarList = props => {
                 <CalendarItem
                     calendarItem={item}
                     key={item.id}
-                    onHarvestAdded={props.harvestAdded}
-                    onHarvestDelayed={props.harvestDelayed}
-                    onPlantDied={props.plantDied} />
+                    onHarvestAdded={props.onHarvestAdded}
+                    onHarvestDelayed={props.onHarvestDelayed}
+                    onPlantDied={props.onPlantDied} />
             );
         }
     );

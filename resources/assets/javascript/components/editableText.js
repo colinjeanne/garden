@@ -15,7 +15,8 @@ const editableText = props => (
 );
 
 editableText.propTypes = {
-    children: React.PropTypes.element.isRequired,
+    children: React.PropTypes.arrayOf(
+        React.PropTypes.element).isRequired,
     editing: React.PropTypes.bool.isRequired,
     onChange: React.PropTypes.func.isRequired
 };

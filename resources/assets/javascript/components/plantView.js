@@ -7,7 +7,7 @@ export default class PlantView extends React.Component {
         return {
             editing: React.PropTypes.bool.isRequired,
             onEdit: React.PropTypes.func.isRequired,
-            onUpdatePlant: React.PropTypes.func.isRequire,
+            onUpdatePlant: React.PropTypes.func.isRequired,
             plant: React.PropTypes.object.isRequired,
         };
     }
