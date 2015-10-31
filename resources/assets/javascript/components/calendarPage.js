@@ -37,7 +37,9 @@ const calendarPage = props => {
         filter(filterEvents(nextMonth, monthAfter, props.plants));
     
     const createCalendarEvent = calendarDate => addedPlantName =>
-        props.onCreateCalendarEvent(addedPlantName, calendarDate);
+        props.onCreateCalendarEvent(
+            addedPlantName,
+            calendarDate.format('YYYY-MM-DDThh:mm:ssZ'));
     
     return (
         <div id="content" className="calendarPage">

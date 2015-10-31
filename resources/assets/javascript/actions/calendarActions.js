@@ -140,7 +140,7 @@ export const delayHarvest = eventId => (dispatch, getState) => {
     const calendarEvent = getCalendarEventFromState(getState(), eventId);
     const updatedReadyDate = moment.utc(calendarEvent.readyDate).
         add(1, 'months').
-        toISOString();
+        format('YYYY-MM-DDThh:mm:ssZ');
     const updatedFields = { readyDate: updatedReadyDate };
     
     const updatedCalendarEvent = Object.assign(

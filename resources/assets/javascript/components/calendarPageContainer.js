@@ -12,7 +12,9 @@ import React from 'react';
 const mapStateToProps = state => {
     return {
         calendarEvents: state.calendar.events,
-        currentDate: moment.utc().toISOString(),
+        currentDate: moment.
+            utc().
+            format('YYYY-MM-DDThh:mm:ssZ'),
         plants: state.plants.plants
     };
 };
