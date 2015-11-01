@@ -24,14 +24,17 @@ class DoctrineServiceProvider extends ServiceProvider
                     $isDevMode
                 );
 
-                $connection = ['driver' => getenv('DOCTRINE_DRIVER')];
+                $driver = getenv('DOCTRINE_DRIVER');
+                $connection = ['driver' => $driver];
                 
                 if ($app->environment() === 'testing') {
                     $connection['memory'] = true;
-                } else {
+                } elseif ($driver === 'pdo_sqlite') {
                     $databaseDirectory = realpath(__DIR__ . '/../../storage');
                     $databasePath = $databaseDirectory . '/database.sqlite';
                     $connection['path'] = $databasePath;
+                } else {
+                    $connection['url'] = getenv('DATABASE_URL');
                 }
 
                 return EntityManager::create($connection, $config);
