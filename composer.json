@@ -35,6 +35,6 @@
         "preferred-install": "dist"
     },
     "scripts": {
-        "compile": "npm run prepare"
+        "compile": "npm install & npm run prepare"
     }
 }
