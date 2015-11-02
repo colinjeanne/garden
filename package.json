@@ -13,23 +13,23 @@
   "author": "Colin Jeanne <colinjeanne@hotmail.com> (http://www.colinjeanne.net)",
   "license": "MIT",
   "devDependencies": {
+  },
+  "dependencies": {
     "browserify": "^11.0.0",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.0",
     "gulp-jasmine": "^2.0.0",
     "gulp-uglify": "^1.4.1",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "dependencies": {
     "moment": "^2.10.6",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
     "redux": "^3.0.2",
     "redux-actions": "^0.8.0",
-    "redux-thunk": "^1.0.0"
+    "redux-thunk": "^1.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   },
   "private": true
 }
