@@ -27,7 +27,7 @@ class GoogleJwtAuthorization implements JwtAuthorization
         try {
             $userData = $this->googleClient->verifyIdToken($jwt);
             if ($userData) {
-                $claims = $userData['payload'];
+                $claims = $userData;
             }
         } catch (Google_Exception $e) {
         }
