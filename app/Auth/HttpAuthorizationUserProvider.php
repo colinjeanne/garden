@@ -70,7 +70,7 @@ class HttpAuthorizationUserProvider implements UserProvider
                         $authorization = new UnitTestAuthorization();
                     } else {
                         $this->log->info('Attempting Google authentication');
-                        $authorization = new GoogleJwtAuthorization();
+                        $authorization = new GoogleJwtAuthorization($this->log);
                     }
                     
                     $claims = $authorization->getClaims($jwt);

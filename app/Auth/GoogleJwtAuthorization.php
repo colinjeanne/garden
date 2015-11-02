@@ -1,7 +1,8 @@
 <?php namespace App\Auth;
 
 use Google_Client;
-use Google_Auth_Exception;
+use Google_Exception;
+use Psr\Log\LoggerInterface as Log;
 
 class GoogleJwtAuthorization implements JwtAuthorization
 {
@@ -12,20 +13,23 @@ class GoogleJwtAuthorization implements JwtAuthorization
      */
     private $googleClient;
 
-    public function __construct()
+    public function __construct(Log $log)
     {
         $this->googleClient = new Google_Client;
         $this->googleClient->setClientId(getenv('GOOGLE_CLIENT_ID'));
         $this->googleClient->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
+        $this->googleClient->setLogger($log);
     }
 
     public function getClaims($jwt)
     {
         $claims = [];
         try {
-            $token = $this->googleClient->verifyIdToken($jwt);
-            $claims = $token->getAttributes()['payload'];
-        } catch (Google_Auth_Exception $e) {
+            $userData = $this->googleClient->verifyIdToken($jwt);
+            if ($userData) {
+                $claims = $userData['payload'];
+            }
+        } catch (Google_Exception $e) {
         }
 
         return $claims;
