@@ -196,6 +196,7 @@ class CalendarController extends Controller
     {
         $validator = v::arrType()->
             keySet(
+                v::key('id', v::equals($calendarEvent->getId(), true)),
                 v::key(
                     'plantName',
                     v::equals($calendarEvent->plant()->getName(), true)

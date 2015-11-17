@@ -13,8 +13,10 @@ class Claim
     private $claim;
 
     /**
-     * @Column(type="datetime")
-     * @var DateTime
+     * The Unix timestamp when this claim was created
+     *
+     * @Column(type="integer")
+     * @var int
      */
     private $created;
 
@@ -28,7 +30,9 @@ class Claim
     public function __construct($issuer, $subject)
     {
         $this->claim = $issuer . ModelConstants::CLAIM_SEPARATOR . $subject;
-        $this->created = new \DateTime("now");
+        
+        $now = new \DateTime("now");
+        $this->created = $now->getTimestamp();
     }
 
     public function getClaim()

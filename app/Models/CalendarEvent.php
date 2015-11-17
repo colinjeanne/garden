@@ -24,14 +24,18 @@ class CalendarEvent
     private $id = null;
 
     /**
-     * @Column(type="datetimetz")
-     * @var DateTime
+     * The Unix timestamp when the plant was planted
+     *
+     * @Column(type="integer")
+     * @var int
      */
     private $plantedDate;
 
     /**
-     * @Column(type="datetimetz")
-     * @var DateTime
+     * The Unix timestamp when the plant will be ready for harvest
+     *
+     * @Column(type="integer")
+     * @var int
      */
     private $readyDate;
 
@@ -42,7 +46,7 @@ class CalendarEvent
     private $isDead = false;
 
     /**
-     * @Column(type="array")
+     * @Column(type="json_array")
      * @var array
      */
     private $harvests = [];
@@ -67,9 +71,9 @@ class CalendarEvent
 
         $this->user = $user;
         $this->plant = $plant;
-        $this->plantedDate = $plantedDate;
-        $this->readyDate = $plantedDate->add($growInterval);
-        $this->harvests = '[]';
+        $this->plantedDate = $plantedDate->getTimestamp();
+        $this->readyDate = $plantedDate->add($growInterval)->getTimestamp();
+        $this->harvests = [];
     }
 
     public function getId()
@@ -79,12 +83,16 @@ class CalendarEvent
 
     public function getPlantedDate()
     {
-        return $this->plantedDate;
+        $plantedDate = new \DateTimeImmutable();
+        $plantedDate = $plantedDate->setTimestamp($this->plantedDate);
+        return $plantedDate;
     }
 
     public function getReadyDate()
     {
-        return $this->readyDate;
+        $readyDate = new \DateTimeImmutable();
+        $readyDate = $readyDate->setTimestamp($this->readyDate);
+        return $readyDate;
     }
 
     public function setReadyDate(\DateTimeImmutable $readyDate)
@@ -93,7 +101,7 @@ class CalendarEvent
             throw new \LogicException('Cannot set the ready date of a dead plant');
         }
 
-        $this->readyDate = $readyDate;
+        $this->readyDate = $readyDate->getTimestamp();
     }
 
     public function isDelayed()
@@ -111,7 +119,13 @@ class CalendarEvent
 
     public function getHarvests()
     {
-        return $this->harvests;
+        if (is_array($this->harvests)) {
+            return $this->harvests;
+        }
+        
+        // Doctrine cannot unserialize array types for all drivers. In this
+        // case perform the unserialization manually.
+        return json_decode($this->harvests, true);
     }
 
     public function setHarvests(array $harvests)

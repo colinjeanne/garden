@@ -23,15 +23,19 @@ class User
     private $claims = null;
 
     /**
-     * @Column(type="datetime")
-     * @var DateTime
+     * The Unix timestamp when this user was created
+     *
+     * @Column(type="integer")
+     * @var int
      */
     private $created;
 
     public function __construct()
     {
         $this->claims = new ArrayCollection();
-        $this->created = new \DateTime("now");
+        
+        $now = new \DateTime("now");
+        $this->created = $now->getTimestamp();
     }
 
     public function getId()
