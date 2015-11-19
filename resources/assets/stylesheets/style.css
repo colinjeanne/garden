@@ -3,6 +3,7 @@ header {
    font-size: 130%;
    font-family: sans-serif;
    margin-bottom: 0.5em;
+   text-transform: capitalize;
 }
 
 section header {
