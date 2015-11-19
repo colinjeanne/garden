@@ -6,10 +6,11 @@ const initialState = {
 };
 
 const reducer = handleActions({
-        [Constants.SHOW_PAGE]: (state, action) => ({
-            ...state,
-            page: action.payload
-        })
+        [Constants.SHOW_PAGE]: (state, action) =>
+            Object.assign(
+                {},
+                state,
+                { page: action.payload })
     },
     initialState);
 

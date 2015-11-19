@@ -9,7 +9,7 @@ export default class PlantListAddBox extends React.Component {
     
     handleAdd() {
         const addInput = this.refs.addInput;
-        const name = addInput.value.trim();
+        const name = addInput.value.trim().toLowerCase();
         
         if (name.length < 2) {
             addInput.setCustomValidity('Name must be at least two characters');

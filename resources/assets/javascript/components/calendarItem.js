@@ -9,20 +9,20 @@ const CalendarEventActions = props => {
         </button>
     );
     
-    const deadButton = (!props.calendarItem.isDead) ? (
+    const deadButton = (
         <button
             onClick={() => props.onPlantDied(props.calendarItem.id)}
             type="button">
             This Plant Died
         </button>
-    ) : undefined;
+    );
     
-    return (
+    return (!props.calendarItem.isDead) ? (
         <div className="actions">
             {delayButton}
             {deadButton}
         </div>
-    );
+    ) : <div className="actions"></div>;
 };
 
 const PlantStatus = props => {
@@ -58,9 +58,11 @@ export default class CalendarItem extends React.Component {
     static get propTypes() {
         return {
             calendarItem: React.PropTypes.object.isRequired,
+            eventType: React.PropTypes.string.isRequired,
             onHarvestAdded: React.PropTypes.func.isRequired,
             onHarvestDelayed: React.PropTypes.func.isRequired,
-            onPlantDied: React.PropTypes.func.isRequired
+            onPlantDied: React.PropTypes.func.isRequired,
+            plant: React.PropTypes.object.isRequired
         };
     }
     
@@ -81,7 +83,7 @@ export default class CalendarItem extends React.Component {
         }
         
         if (harvestAmountElement.checkValidity()) {
-            this.props.harvestAdded(this.props.calendarItem.id, harvestAmount);
+            this.props.onHarvestAdded(this.props.calendarItem.id, harvestAmount);
             this.setState({
                 harvestAmount: 1
             });
@@ -89,12 +91,11 @@ export default class CalendarItem extends React.Component {
     }
     
     render() {
-        const plant = this.props.calendarItem.plant;
         const harvestAmount = this.props.calendarItem.harvests.reduce(
             (previousValue, currentValue) => previousValue + currentValue,
             0);
         
-        const addHarvestElement = (
+        const addHarvestElement = (!this.props.calendarItem.isDead) ? (
             <div className="addHarvest">
                 <label>
                     Amount harvested
@@ -113,13 +114,13 @@ export default class CalendarItem extends React.Component {
                     Add Harvest
                 </button>
             </div>
-        );
+        ) : undefined;
         
         let harvestElement;
         if (harvestAmount > 0) {
             harvestElement = (
                 <div className="harvest">
-                    {harvestAmount.toFixed(2)} {plant.unit} harvested
+                    {harvestAmount.toFixed(2)} {this.props.plant.unit} harvested
                     {addHarvestElement}
                 </div>
             );
@@ -131,11 +132,15 @@ export default class CalendarItem extends React.Component {
             );
         }
         
+        const className = (this.props.eventType === 'planted') ?
+            'plantedItem' :
+            'harvestItem';
+        
         return (
-            <li className="plantCalendarItem">
+            <li className={className}>
                 <section>
                     <div className="mainLine">
-                        <span className="name">{plant.name}</span>
+                        <span className="name">{this.props.plant.name}</span>
                     </div>
                     {harvestElement}
                     <PlantStatus

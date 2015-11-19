@@ -6,21 +6,23 @@ const isBetween = (checkDate, startDate, endDate) =>
     startDate.isSame(checkDate) ||
     (startDate.isBefore(checkDate) && endDate.isAfter(checkDate));
 
-const filterEvents = (startDate, endDate, plants) => event => {
-    const plantedDate = moment.utc(event.plantedDate);
+const filterHarvestEvents = (startDate, endDate, plants) => event => {
     const readyDate = moment.utc(event.readyDate);
     const harvestTime = moment.duration(
             plants.find(plant => plant.name === event.plantName).
             harvestTime);
     const lastReadyDate = moment.utc(readyDate).add(harvestTime);
     
-    return isBetween(plantedDate, startDate, endDate) ||
-        isBetween(readyDate, startDate, endDate) ||
+    return isBetween(readyDate, startDate, endDate) ||
         isBetween(lastReadyDate, startDate, endDate);
 };
 
+const filterPlantedEvents = (startDate, endDate, plants) => event => {
+    const plantedDate = moment.utc(event.plantedDate);
+    return isBetween(plantedDate, startDate, endDate);
+};
+
 const calendarPage = props => {
-    const plantNames = props.plants.map(plant => plant.name);
     const titleFormat = 'MMMM, YYYY';
     const currentMonth = moment.utc(props.currentDate).
         startOf('month');
@@ -31,10 +33,14 @@ const calendarPage = props => {
     const monthAfter = moment.utc(currentMonth).
         add(2, 'months');
     
-    const currentEvents = props.calendarEvents.
-        filter(filterEvents(currentMonth, nextMonth, props.plants));
-    const nextEvents = props.calendarEvents.
-        filter(filterEvents(nextMonth, monthAfter, props.plants));
+    const currentHarvestEvents = props.calendarEvents.
+        filter(filterHarvestEvents(currentMonth, nextMonth, props.plants));
+    const currentPlantedEvents = props.calendarEvents.
+        filter(filterPlantedEvents(currentMonth, nextMonth, props.plants));
+    const nextHarvestEvents = props.calendarEvents.
+        filter(filterHarvestEvents(nextMonth, monthAfter, props.plants));
+    const nextPlantedEvents = props.calendarEvents.
+        filter(filterPlantedEvents(nextMonth, monthAfter, props.plants));
     
     const createCalendarEvent = calendarDate => addedPlantName =>
         props.onCreateCalendarEvent(
@@ -44,20 +50,22 @@ const calendarPage = props => {
     return (
         <div id="content" className="calendarPage">
             <CalendarColumn
-                calendarEvents={currentEvents}
-                plantNames={plantNames}
+                harvestEvents={currentHarvestEvents}
                 onCreateCalendarEvent={createCalendarEvent(currentMonth)}
                 onHarvestAdded={props.onHarvestAdded}
                 onHarvestDelayed={props.onHarvestDelayed}
                 onPlantDied={props.onPlantDied}
+                plantedEvents={currentPlantedEvents}
+                plants={props.plants}
                 title={currentMonth.format(titleFormat)} />
             <CalendarColumn
-                calendarEvents={nextEvents}
-                plantNames={plantNames}
+                harvestEvents={nextHarvestEvents}
                 onCreateCalendarEvent={createCalendarEvent(nextMonth)}
                 onHarvestAdded={props.onHarvestAdded}
                 onHarvestDelayed={props.onHarvestDelayed}
                 onPlantDied={props.onPlantDied}
+                plantedEvents={nextPlantedEvents}
+                plants={props.plants}
                 title={nextMonth.format(titleFormat)} />
         </div>
     );
@@ -71,8 +79,8 @@ calendarPage.propTypes = {
     onHarvestAdded: React.PropTypes.func.isRequired,
     onHarvestDelayed: React.PropTypes.func.isRequired,
     onPlantDied: React.PropTypes.func.isRequired,
-    plants: React.PropTypes
-        .arrayOf(React.PropTypes.object).isRequired
+    plants: React.PropTypes.arrayOf(
+        React.PropTypes.object).isRequired
 };
 
 export default calendarPage;

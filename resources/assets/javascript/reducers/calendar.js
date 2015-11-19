@@ -6,9 +6,7 @@ const initialState = {
     dirtyById: []
 };
 
-const areEventsEqual = (first, second) =>
-    first.plantName === second.plantName &&
-    first.plantedDate === second.plantedDate;
+const areEventsEqual = (first, second) => first.id === second.id;
 
 const filterEvent = filteredEvent =>
     event => !areEventsEqual(filteredEvent, event);
@@ -17,28 +15,29 @@ const filterEventId = filteredEventId =>
     eventId => filteredEventId !== eventId;
 
 const handleUpdatedEvent = (state, action) => {
-        const nextState = {
-            ...state,
+    const nextState = Object.assign(
+        {},
+        state,
+        {
             events: [
-                action.payload,
                 ...state.events.
                     filter(filterEvent(action.payload))
+            ],
+            
+            dirtyById: [
+                ...state.dirtyById.
+                    filter(filterEventId(action.payload.id))
             ]
-        };
-        
-        const filteredDirty = state.dirtyById.
-            filter(filterEventId(action.payload));
-        if (!action.meta.volatile) {
-            nextState.dirtyById = filteredDirty;
-        } else {
-            nextState.dirtyById = [
-                action.payload.id,
-                ...filteredDirty
-            ];
-        }
-        
-        return nextState;
-    };
+        });
+    
+    if (!action.meta || !action.meta.volatile) {
+        nextState.events.push(action.payload);
+    } else {
+        nextState.dirtyById.push(action.payload.id);
+    }
+    
+    return nextState;
+};
 
 const reducer = handleActions({
         [Constants.GET_CALENDAR_EVENTS]: (state, action) => {
@@ -46,11 +45,13 @@ const reducer = handleActions({
                 return state;
             }
             
-            return {
-                ...state,
-                plants: action.payload,
-                dirtyById: []
-            };
+            return Object.assign(
+                {},
+                state,
+                {
+                    events: action.payload,
+                    dirtyById: []
+                });
         },
         
         [Constants.CREATE_CALENDAR_EVENT]: {

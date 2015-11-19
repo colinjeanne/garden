@@ -6,7 +6,7 @@ const getCalendarEventsAction = createAction(Constants.GET_CALENDAR_EVENTS);
 
 const getIdTokenFromState = state => state.user.idToken;
 const getCalendarEventFromState = (state, eventId) =>
-    state.calendarEvents[eventId];
+    state.calendar.events.find(event => event.id === eventId);
 
 const getGetHeaders = idToken =>
     new Headers({

@@ -26,7 +26,6 @@ body > header {
 button {
    -moz-appearance: none;
    -webkit-appearance: none;
-   appearance: none;
    text-align: center;
    color: inherit;
    background-color: transparent;
@@ -142,6 +141,10 @@ fieldset {
    width: 33%;
 }
 
+.plantListItemName {
+   text-transform: capitalize;
+}
+
 .plantView {
    padding-left: 0.5em;
    width: auto;
@@ -192,20 +195,27 @@ fieldset {
 
 .plantCalendarList li {
    color: white;
-   background-color: cornflowerblue;
    margin-bottom: 0.5em;
    padding: 0.5em;
+}
+
+.plantCalendarList .plantedItem {
+   background-color: #94ed64;
+}
+
+.plantCalendarList .harvestItem {
+   background-color: cornflowerblue;
 }
 
 .plantCalendarList button {
    color: black;
    background-color: #edbf64;
-   border-color: #ed7b64;
+   border-color: #bd64ed;
 }
 
 .plantCalendarList button:hover {
    color: black;
-   background-color: #ed7b64;
+   background-color: #bd64ed;
    border-color: #edbf64;
 }
 
@@ -228,7 +238,7 @@ fieldset {
 }
 
 .plantCalendarList .errors {
-   color: #ed7b64;
+   color: #bd64ed;
    margin: 0.25em 0;
 }
 
@@ -238,15 +248,17 @@ fieldset {
 
 .plantCalendarList .mainLine {
    margin-bottom: 0.5em;
+   text-transform: capitalize;
 }
 
 .plantCalendarAddBox {
    margin-bottom: 0.5em;
 }
 
-.plantCalendarAddBox input {
+.plantCalendarAddBox select {
    width: 90%;
    font-size: 110%;
+   text-transform: capitalize;
 }
 
 .plantCalendarAddBox button {
