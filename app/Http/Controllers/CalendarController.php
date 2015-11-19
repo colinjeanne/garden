@@ -272,26 +272,35 @@ class CalendarController extends Controller
             
         $isDeadChanged = $isDead !== $calendarEvent->isDead();
         
+        $harvests = array_key_exists('harvests', $json) ?
+            $json['harvests'] :
+            [];
+        
+        $harvestsChanged = $harvests !== $calendarEvent->getHarvests();
+        
         if ($calendarEvent->isDead() && !$isDead) {
             // It is not possible to bring a dead plant back
             abort(400);
         }
         
-        if ($readyDateChanged && $isDeadChanged) {
-            // Set the ready date first since it cannot be changed one the
-            // plant is marked as dead
-            $calendarEvent->setReadyDate($readyDate);
-            $calendarEvent->died();
-        } elseif ($readyDateChanged) {
-            $calendarEvent->setReadyDate($readyDate);
-        } elseif ($isDeadChanged) {
-            $calendarEvent->died();
+        if (($readyDateChanged || $harvestsChanged) &&
+            $calendarEvent->isDead()) {
+            // It is not possible to change values if the plant is dead
+            abort(400);
         }
         
-        if (array_key_exists('harvests', $json)) {
-            $calendarEvent->setHarvests($json['harvests']);
-        } else {
-            $calendarEvent->setHarvests([]);
+        if ($readyDateChanged) {
+            $calendarEvent->setReadyDate($readyDate);
+        }
+        
+        if ($harvestsChanged) {
+            $calendarEvent->setHarvests($harvests);
+        }
+        
+        if ($isDeadChanged) {
+            // Set this field last since other fields cannot be change once the
+            // plant is marked as dead.
+            $calendarEvent->died();
         }
     }
     
