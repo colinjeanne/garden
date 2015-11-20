@@ -30,12 +30,12 @@ button {
    text-align: center;
    color: inherit;
    background-color: transparent;
-   border: thin solid cornflowerblue;
+   border: thin solid #8c6239;
 }
 
 button:hover {
    color: white;
-   background-color: cornflowerblue;
+   background-color: #8c6239;
 }
 
 fieldset {
@@ -69,13 +69,13 @@ fieldset {
 #mainNavigation label {
    padding: 0.5em 0.5em;
    color: white;
-   background-color: cornflowerblue;
+   background-color: #8c6239;
    cursor: pointer;
 }
 
 #mainNavigation label:hover {
    color: white;
-   background-color: darkblue;
+   background-color: #005826;
 }
 
 #mainNavigation input {
@@ -84,7 +84,7 @@ fieldset {
 
 #mainNavigation input:checked ~ label {
    color: white;
-   background-color: blue;
+   background-color: #005826;
 }
 
 #content {
@@ -109,13 +109,13 @@ fieldset {
    margin: 0.5em 0;
    padding: 0.5em 0.5em;
    color: white;
-   background-color: cornflowerblue;
+   background-color: #8c6239;
    cursor: pointer;
 }
 
 .plantList li:hover {
    color: white;
-   background-color: darkblue;
+   background-color: #005826;
 }
 
 .plantList input[type="search"],
@@ -197,27 +197,38 @@ fieldset {
 .plantCalendarList li {
    color: white;
    margin-bottom: 0.5em;
-   padding: 0.5em;
+}
+
+.calendarEventInfo {
+   margin-bottom: 0.5em;
+   padding: 0 0.5em 0.5em;
 }
 
 .plantCalendarList .plantedItem {
-   background-color: #94ed64;
+   background-color: #bcc45d;
 }
 
 .plantCalendarList .harvestItem {
-   background-color: cornflowerblue;
+   background-color: #005826;
+}
+
+.plantCalendarList .deadItem {
+   background-color: #7d8672;
+}
+
+.plantCalendarList .delayedItem {
+   background-color: #d29535;
 }
 
 .plantCalendarList button {
    color: black;
-   background-color: #edbf64;
-   border-color: #bd64ed;
+   background-color: #827b00;
+   border-color: #4f4b01;
 }
 
 .plantCalendarList button:hover {
    color: black;
-   background-color: #bd64ed;
-   border-color: #edbf64;
+   background-color: #406618;
 }
 
 .plantCalendarList .addHarvest {
@@ -230,17 +241,11 @@ fieldset {
 }
 
 .plantCalendarList .actions {
-   padding: 0.25em 0;
    text-align: right;
 }
 
 .plantCalendarList .actions button {
    margin-left: 0.5em;
-}
-
-.plantCalendarList .errors {
-   color: #bd64ed;
-   margin: 0.25em 0;
 }
 
 .plantCalendarList .errors div {
@@ -249,6 +254,7 @@ fieldset {
 
 .plantCalendarList .mainLine {
    margin-bottom: 0.5em;
+   padding: 0.5em;
    text-transform: capitalize;
 }
 

@@ -136,12 +136,19 @@ export default class CalendarItem extends React.Component {
             'plantedItem' :
             'harvestItem';
         
+        let mainLineClassName = 'mainLine';
+        if (this.props.calendarItem.isDead) {
+            mainLineClassName += ' deadItem';
+        } else if (this.props.calendarItem.isDelayed) {
+            mainLineClassName += ' delayedItem';
+        }
+        
         return (
             <li className={className}>
-                <section>
-                    <div className="mainLine">
-                        <span className="name">{this.props.plant.name}</span>
-                    </div>
+                <header className={mainLineClassName}>
+                    <span className="name">{this.props.plant.name}</span>
+                </header>
+                <div className="calendarEventInfo">
                     {harvestElement}
                     <PlantStatus
                         calendarItem={this.props.calendarItem} />
@@ -149,7 +156,7 @@ export default class CalendarItem extends React.Component {
                         calendarItem={this.props.calendarItem}
                         onHarvestDelayed={this.props.onHarvestDelayed}
                         onPlantDied={this.props.onPlantDied} />
-                </section>
+                </div>
             </li>
         );
     }
