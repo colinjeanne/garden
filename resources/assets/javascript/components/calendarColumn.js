@@ -37,8 +37,7 @@ calendarColumn.propTypes = {
     onHarvestDelayed: React.PropTypes.func.isRequired,
     onPlantDied: React.PropTypes.func.isRequired,
     plantedEvents: React.PropTypes.array.isRequired,
-    plants: React.PropTypes.arrayOf(
-        React.PropTypes.object).isRequired,
+    plants: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     title: React.PropTypes.string.isRequired,
 };
 

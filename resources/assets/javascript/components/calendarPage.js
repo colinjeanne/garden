@@ -72,15 +72,13 @@ const calendarPage = props => {
 };
 
 calendarPage.propTypes = {
-    calendarEvents: React.PropTypes.arrayOf(
-        React.PropTypes.object).isRequired,
+    calendarEvents: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     currentDate: React.PropTypes.string.isRequired,
     onCreateCalendarEvent: React.PropTypes.func.isRequired,
     onHarvestAdded: React.PropTypes.func.isRequired,
     onHarvestDelayed: React.PropTypes.func.isRequired,
     onPlantDied: React.PropTypes.func.isRequired,
-    plants: React.PropTypes.arrayOf(
-        React.PropTypes.object).isRequired
+    plants: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
 };
 
 export default calendarPage;

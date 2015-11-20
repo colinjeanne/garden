@@ -188,13 +188,19 @@ fieldset {
    margin-right: 1em;
 }
 
-.plantCalendarList {
+.plantCalendarList, .plantSummaryList {
    list-style-type: none;
    margin: 0;
    padding: 0;
 }
 
 .plantCalendarList li {
+   color: white;
+   margin-bottom: 0.5em;
+}
+
+.plantSummaryList li {
+   background-color: #005826;
    color: white;
    margin-bottom: 0.5em;
 }
@@ -252,7 +258,7 @@ fieldset {
    padding: 0.25em 0;
 }
 
-.plantCalendarList .mainLine {
+.mainLine {
    margin-bottom: 0.5em;
    padding: 0.5em;
    text-transform: capitalize;

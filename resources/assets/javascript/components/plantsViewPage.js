@@ -38,8 +38,7 @@ plantsViewPage.propTypes = {
     onSelectPlant: React.PropTypes.func.isRequired,
     onSortPlants: React.PropTypes.func.isRequired,
     onUpdatePlant: React.PropTypes.func.isRequired,
-    plants: React.PropTypes.arrayOf(
-        React.PropTypes.object).isRequired,
+    plants: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     selectedPlant: React.PropTypes.object,
     visiblePlantNames: React.PropTypes.arrayOf(
         React.PropTypes.string).isRequired

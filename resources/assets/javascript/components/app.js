@@ -4,6 +4,7 @@ import Constants from '../constants/constants';
 import PlantsViewContainer from './plantsViewContainer';
 import React from 'react';
 import SignInPage from './signInPage';
+import SummaryPageContainer from './summaryPageContainer';
 import TabbedNavigation from './tabbedNavigation';
 
 const app = props => {
@@ -20,6 +21,7 @@ const app = props => {
                 break;
             
             case Constants.pages.PLANTING_SUMMARY:
+                page = <SummaryPageContainer />;
                 break;
             
             case Constants.pages.SPACE_PLANNING:

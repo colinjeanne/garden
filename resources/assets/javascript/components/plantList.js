@@ -90,8 +90,7 @@ plantList.propTypes = {
     onFilterPlants: React.PropTypes.func.isRequired,
     onSelectPlant: React.PropTypes.func.isRequired,
     onSortPlants: React.PropTypes.func.isRequired,
-    plants: React.PropTypes.arrayOf(
-        React.PropTypes.object).isRequired,
+    plants: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     visiblePlantNames: React.PropTypes.arrayOf(
         React.PropTypes.string).isRequired
 };
