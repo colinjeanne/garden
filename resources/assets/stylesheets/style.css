@@ -278,3 +278,17 @@ fieldset {
    width: 9%;
    font-size: 110%;
 }
+
+.summaryDatePicker {
+   font-size: 125%;
+   margin-bottom: 0.5em;
+}
+
+.summaryDatePicker .datePicker {
+   display: inline;
+   margin: 0 0.5em;
+}
+
+.datePicker select {
+   font-size: inherit;
+}

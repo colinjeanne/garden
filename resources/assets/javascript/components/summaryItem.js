@@ -16,7 +16,7 @@ const summaryItem = props => {
     const plantsWord = props.totalAmount === 1 ? 'plant' : 'plants';
     const harvestedWord = props.harvested > 0 ?
         props.harvested.toFixed(2) :
-        'None';
+        'Nothing';
     
     return (
         <li>

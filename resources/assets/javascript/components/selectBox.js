@@ -5,6 +5,7 @@ const selectedValue = event => event.target.selectedOptions[0].value;
 export default class SelectBox extends React.Component {
     static get propTypes() {
         return {
+            defaultValue: React.PropTypes.string,
             onChange: React.PropTypes.func,
             options: React.PropTypes.arrayOf(
                 React.PropTypes.shape({
@@ -25,7 +26,7 @@ export default class SelectBox extends React.Component {
     
     handleChange(event) {
         if (this.props.onChange) {
-            this.props.onChange(this.selectedValue(event));
+            this.props.onChange(this.selectedValue());
         }
     }
     
@@ -40,7 +41,8 @@ export default class SelectBox extends React.Component {
         
         return (
             <select
-                onChange={event => this.handleChange.bind(this)}
+                defaultValue={this.props.defaultValue}
+                onChange={this.handleChange.bind(this)}
                 ref={r => this.select = r}>
                 {options}
             </select>

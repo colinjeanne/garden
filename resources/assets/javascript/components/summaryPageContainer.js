@@ -1,4 +1,5 @@
 import { bindActionCreators } from 'redux';
+import { changeSummaryStartDate, changeSummaryEndDate } from './../actions/navigationActions';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import React from 'react';
@@ -20,24 +21,27 @@ const filterHarvestEvents = (startDate, endDate, plants) => event => {
 };
 
 const mapStateToProps = state => {
-    const startDate = moment.
-        utc();
-    const endDate = moment.
-        utc().
-        add(1, 'month');
     const calendarEvents = state.calendar.events.
-        filter(filterHarvestEvents(startDate, endDate, state.plants.plants));
+        filter(
+            filterHarvestEvents(
+                moment.utc(state.summary.startDate),
+                moment.utc(state.summary.endDate),
+                state.plants.plants));
     
     return {
         calendarEvents: calendarEvents,
-        endDate: endDate.format('YYYY-MM-DDThh:mm:ssZ'),
+        endDate: state.summary.endDate,
         plants: state.plants.plants,
-        startDate: startDate.format('YYYY-MM-DDThh:mm:ssZ')
+        startDate: state.summary.startDate
     };
 };
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        onEndDateChange: changeSummaryEndDate,
+        onStartDateChange: changeSummaryStartDate,
+    },
+    dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryPage);
