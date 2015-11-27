@@ -17,7 +17,6 @@ section section header {
 body {
    margin: 0;
    padding: 1em;
-   overflow: hidden;
 }
 
 body > header {
@@ -211,7 +210,7 @@ fieldset {
 }
 
 .plantCalendarList .plantedItem {
-   background-color: #bcc45d;
+   background-color: #adb922;
 }
 
 .plantCalendarList .harvestItem {
@@ -291,4 +290,25 @@ fieldset {
 
 .datePicker select {
    font-size: inherit;
+}
+
+.companionPage table {
+   border-collapse: collapse;
+}
+
+.companionPage tbody tr:hover {
+   background-color: #827b00;
+}
+
+.companionPage td {
+   border: thin solid black;
+   width: 5em;
+}
+
+.goodCompanion {
+   background-color: green;
+}
+
+.badCompanion {
+   background-color: red;
 }

@@ -1,5 +1,6 @@
 import AppHeader from './appHeader';
 import CalendarPageContainer from './calendarPageContainer';
+import CompanionPage from './companionPage';
 import Constants from '../constants/constants';
 import PlantsViewContainer from './plantsViewContainer';
 import React from 'react';
@@ -25,6 +26,7 @@ const app = props => {
                 break;
             
             case Constants.pages.SPACE_PLANNING:
+                page = <CompanionPage />;
                 break;
         }
         
