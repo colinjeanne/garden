@@ -42,8 +42,8 @@ const filter = filterString => plant => {
 };
 
 const plantList = props => {
-    const visiblePlants = props.plants.filter(plant =>
-        props.visiblePlantNames.indexOf(plant.name) !== -1);
+    const visiblePlants = props.visiblePlantNames.map(plantName =>
+        props.plants.find(plant => plant.name === plantName));
     
     const plantListItems = visiblePlants.map(
         plant => {

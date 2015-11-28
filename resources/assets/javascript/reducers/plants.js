@@ -5,7 +5,9 @@ const initialState = {
     plants: [],
     dirtyByName: [],
     visibleByName: [],
-    sort: (first, second) => first < second,
+    sort: (first, second) =>
+        first.name < second.name ? -1 :
+            first.name > second.name ? 1 : 0,
     filter: () => true
 };
 
