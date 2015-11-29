@@ -6,17 +6,11 @@ const initialState = {
 };
 
 const reducer = handleActions({
-        [Constants.EDIT_PLANT]: state =>
+        [Constants.EDIT_PLANT]: (state, action) =>
             Object.assign(
                 {},
                 state,
-                { editing: true }),
-        
-        [Constants.SAVE_PLANT]: state =>
-            Object.assign(
-                {},
-                state,
-                { editing: false })
+                { editing: action.payload.editing })
     },
     initialState);
 

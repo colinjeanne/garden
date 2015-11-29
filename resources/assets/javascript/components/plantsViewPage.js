@@ -10,7 +10,7 @@ const plantsViewPage = props => {
             <PlantView
                 plant={props.selectedPlant}
                 editing={props.editing}
-                onEdit={props.onEdit}
+                onEdit={editing => props.onEdit(editing, props.selectedPlant)}
                 onUpdatePlant={props.onUpdatePlant} />
         );
     }

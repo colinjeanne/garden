@@ -1,18 +1,21 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { createPlant, updatePlant } from '../actions/plantActions';
+import { createPlant, editPlant, updatePlant } from '../actions/plantActions';
 import { 
-    editPlant,
     filterPlants,
-    savePlant,
     selectPlant,
     sortPlants } from '../actions/navigationActions';
 import PlantsViewPage from './plantsViewPage';
 import React from 'react';
 
 const mapStateToProps = state => {
-    const selectedPlant = state.plants.plants.find(
+    let selectedPlant = state.plants.dirty.find(
         plant => plant.name === state.plants.selectedPlantName);
+    if (!selectedPlant) {
+        selectedPlant = state.plants.plants.find(
+            plant => plant.name === state.plants.selectedPlantName);
+    }
+    
     return {
         editing: state.plantsView.editing,
         plants: state.plants.plants,
@@ -21,13 +24,8 @@ const mapStateToProps = state => {
     };
 };
 
-const handleEditPlant = editing => {
-    if (editing) {
-        return editPlant();
-    }
-    
-    return savePlant();
-};
+const handleEditPlant = (editing, selectedPlant) =>
+    editPlant(editing, selectedPlant.name);
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({

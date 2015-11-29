@@ -21,6 +21,8 @@ const createPlantFromName = name => ({
 const getIdTokenFromState = state => state.user.idToken;
 const getPlantFromState = (plantName, state) =>
     state.plants.plants.find(plant => plant.name === plantName);
+const getDirtyPlantFromState = (plantName, state) =>
+    state.plants.dirty.find(plant => plant.name === plantName);
 
 const value = plant =>
     plant.pricePerUnit *
@@ -107,7 +109,11 @@ export const createPlant = plantName => (dispatch, getState) => {
 };
 
 export const updatePlant = (plantName, change) => (dispatch, getState) => {
-    const plant = getPlantFromState(plantName, getState());
+    let plant = getDirtyPlantFromState(plantName, getState());
+    if (!plant) {
+        plant = getPlantFromState(plantName, getState());
+    }
+    
     const updatedPlant = Object.assign({}, plant, change);
     updatePlant.value = value(updatedPlant);
     
@@ -118,32 +124,46 @@ export const updatePlant = (plantName, change) => (dispatch, getState) => {
             volatile: true
         }
     });
-    
-    const idToken = getIdTokenFromState(getState());
-    return fetch(
-        `/plants/${plantName}`,
-        {
-            method: 'PUT',
-            headers: getPostOrPutHeaders(idToken),
-            body: JSON.stringify(updatedPlant)
-        }).
-    then(response => {
-        if (!response.ok) {
-            throw new Error(`Request failed: ${response.status}`);
-        }
-        
-        return response.json();
-    }).
-    then(json => dispatch({
-        type: Constants.UPDATE_PLANT,
-        payload: json
-    })).
-    catch(err => dispatch({
-        type: Constants.UPDATE_PLANT,
-        payload: err,
-        error: true,
-        meta: {
+};
+
+export const editPlant = (editing, plantName) => (dispatch, getState) => {
+    dispatch({
+        type: Constants.EDIT_PLANT,
+        payload: {
+            editing: editing,
             name: plantName
         }
-    }));
+    });
+    
+    if (!editing) {
+        const updatedPlant = getDirtyPlantFromState(plantName, getState());
+        
+        const idToken = getIdTokenFromState(getState());
+        return fetch(
+            `/plants/${plantName}`,
+            {
+                method: 'PUT',
+                headers: getPostOrPutHeaders(idToken),
+                body: JSON.stringify(updatedPlant)
+            }).
+        then(response => {
+            if (!response.ok) {
+                throw new Error(`Request failed: ${response.status}`);
+            }
+            
+            return response.json();
+        }).
+        then(json => dispatch({
+            type: Constants.UPDATE_PLANT,
+            payload: json
+        })).
+        catch(err => dispatch({
+            type: Constants.UPDATE_PLANT,
+            payload: err,
+            error: true,
+            meta: {
+                name: plantName
+            }
+        }));
+    }
 };

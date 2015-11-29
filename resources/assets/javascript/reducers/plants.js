@@ -3,7 +3,7 @@ import { handleActions } from 'redux-actions';
 
 const initialState = {
     plants: [],
-    dirtyByName: [],
+    dirty: [],
     visibleByName: [],
     sort: (first, second) =>
         first.name < second.name ? -1 :
@@ -12,8 +12,6 @@ const initialState = {
 };
 
 const filterPlant = plantName => plant => plant.name !== plantName;
-const filterPlantName = filteredPlantName =>
-    plantName => filteredPlantName !== plantName;
 
 const filterAndSortPlantNames = (filter, sort, plants) => {
     return plants.filter(filter).sort(sort).map(plant => plant.name);
@@ -30,9 +28,9 @@ const handleUpdatedPlant = (state, action) => {
                     filter(filterPlant(action.payload.name))
             ],
             
-            dirtyByName: [
-                ...state.dirtyByName.
-                    filter(filterPlantName(action.payload.name))
+            dirty: [
+                ...state.dirty.
+                    filter(filterPlant(action.payload.name))
             ]
         });
     
@@ -44,7 +42,7 @@ const handleUpdatedPlant = (state, action) => {
     if (!action.meta || !action.meta.volatile) {
         nextState.plants.push(action.payload);
     } else {
-        nextState.dirtyByName.push(action.payload.name);
+        nextState.dirty.push(action.payload);
     }
     
     return nextState;
@@ -61,7 +59,7 @@ const reducer = handleActions({
                 state,
                 {
                     plants: action.payload,
-                    dirtyByName: [],
+                    dirty: [],
                     visibleByName: filterAndSortPlantNames(
                         state.filter,
                         state.sort,
