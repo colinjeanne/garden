@@ -6,12 +6,11 @@ header {
    text-transform: capitalize;
 }
 
-section header {
+section h1 {
    font-size: 125%;
-}
-
-section section header {
-   font-size: 110%;
+   font-family: sans-serif;
+   margin: 0 0 0.5em;
+   text-transform: capitalize;
 }
 
 body {
@@ -278,7 +277,7 @@ fieldset {
 }
 
 .plantCalendarAddBox button {
-   width: 9%;
+   width: 10%;
    font-size: 110%;
 }
 

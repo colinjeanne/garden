@@ -31,7 +31,8 @@ const app = props => {
         }
         
         content = (
-            <section>
+            <div>
+                <AppHeader displayName={props.displayName} />
                 <SignInPage
                     signedIn={true} />
                 <TabbedNavigation
@@ -39,23 +40,19 @@ const app = props => {
                     onSelect={props.onTabSelected}
                     tabs={Constants.pages} />
                 {page}
-            </section>
+            </div>
         );
     } else {
         content = (
-            <section>
+            <div>
+                <AppHeader displayName={props.displayName} />
                 <SignInPage
                     signedIn={false} />
-            </section>
+            </div>
         );
     }
     
-    return (
-        <div>
-            <AppHeader displayName={props.displayName} />
-            {content}
-        </div>
-    );
+    return content;
 };
 
 app.propTypes = {

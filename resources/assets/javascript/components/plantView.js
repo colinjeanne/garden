@@ -80,7 +80,7 @@ export default class PlantView extends React.Component {
         
         return (
             <section className="plantView">
-                <header>{this.props.plant.name}</header>
+                <h1>{this.props.plant.name}</h1>
                 <EditableText
                     editing={this.props.editing}
                     onChange={this.props.onEdit}>

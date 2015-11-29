@@ -5,28 +5,26 @@ import React from 'react';
 const calendarColumn = props => {
     const plantNames = props.plants.map(plant => plant.name);
     return (
-        <div className="plantCalendarListContainer">
-            <header>{props.title}</header>
-            <section>
-                <CalendarAddBox
-                    onAdd={props.onCreateCalendarEvent}
-                    plantNames={plantNames} />
-                <CalendarList
-                    calendarEvents={props.harvestEvents}
-                    eventType="harvest"
-                    onHarvestAdded={props.onHarvestAdded}
-                    onHarvestDelayed={props.onHarvestDelayed}
-                    onPlantDied={props.onPlantDied}
-                    plants={props.plants} />
-                <CalendarList
-                    calendarEvents={props.plantedEvents}
-                    eventType="planted"
-                    onHarvestAdded={props.onHarvestAdded}
-                    onHarvestDelayed={props.onHarvestDelayed}
-                    onPlantDied={props.onPlantDied}
-                    plants={props.plants} />
-            </section>
-        </div>
+        <section className="plantCalendarListContainer">
+            <h1>{props.title}</h1>
+            <CalendarAddBox
+                onAdd={props.onCreateCalendarEvent}
+                plantNames={plantNames} />
+            <CalendarList
+                calendarEvents={props.harvestEvents}
+                eventType="harvest"
+                onHarvestAdded={props.onHarvestAdded}
+                onHarvestDelayed={props.onHarvestDelayed}
+                onPlantDied={props.onPlantDied}
+                plants={props.plants} />
+            <CalendarList
+                calendarEvents={props.plantedEvents}
+                eventType="planted"
+                onHarvestAdded={props.onHarvestAdded}
+                onHarvestDelayed={props.onHarvestDelayed}
+                onPlantDied={props.onPlantDied}
+                plants={props.plants} />
+        </section>
     );
 };
 
