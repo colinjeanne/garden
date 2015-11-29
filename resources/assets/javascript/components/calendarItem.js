@@ -145,9 +145,9 @@ export default class CalendarItem extends React.Component {
         
         return (
             <li className={className}>
-                <header className={mainLineClassName}>
+                <h2 className={mainLineClassName}>
                     <span className="name">{this.props.plant.name}</span>
-                </header>
+                </h2>
                 <div className="calendarEventInfo">
                     {harvestElement}
                     <PlantStatus

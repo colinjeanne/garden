@@ -20,9 +20,9 @@ const summaryItem = props => {
     
     return (
         <li>
-            <header className="mainLine">
+            <h2 className="mainLine">
                 <span className="name">{props.plantName}</span>
-            </header>
+            </h2>
             <div className="calendarEventInfo">
                 <div className="harvest">
                     {harvestedWord} {props.unit} harvested 

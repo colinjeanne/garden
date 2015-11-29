@@ -4,7 +4,6 @@ import CompanionPage from './companionPage';
 import Constants from '../constants/constants';
 import PlantsViewContainer from './plantsViewContainer';
 import React from 'react';
-import SignInPage from './signInPage';
 import SummaryPageContainer from './summaryPageContainer';
 import TabbedNavigation from './tabbedNavigation';
 
@@ -33,8 +32,6 @@ const app = props => {
         content = (
             <div>
                 <AppHeader displayName={props.displayName} />
-                <SignInPage
-                    signedIn={true} />
                 <TabbedNavigation
                     id="mainNavigation"
                     onSelect={props.onTabSelected}
@@ -46,8 +43,6 @@ const app = props => {
         content = (
             <div>
                 <AppHeader displayName={props.displayName} />
-                <SignInPage
-                    signedIn={false} />
             </div>
         );
     }

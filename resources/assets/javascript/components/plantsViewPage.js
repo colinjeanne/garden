@@ -17,14 +17,16 @@ const plantsViewPage = props => {
     
     return (
         <div id="content" className="plantsViewPage">
-            <PlantListAddBox
-                onAdd={props.onAddPlant} />
-            <PlantList
-                onFilterPlants={props.onFilterPlants}
-                onSelectPlant={props.onSelectPlant}
-                onSortPlants={props.onSortPlants}
-                plants={props.plants}
-                visiblePlantNames={props.visiblePlantNames} />
+            <div className="plantsViewSidebar">
+                <PlantListAddBox
+                    onAdd={props.onAddPlant} />
+                <PlantList
+                    onFilterPlants={props.onFilterPlants}
+                    onSelectPlant={props.onSelectPlant}
+                    onSortPlants={props.onSortPlants}
+                    plants={props.plants}
+                    visiblePlantNames={props.visiblePlantNames} />
+            </div>
             {plantView}
         </div>
     );

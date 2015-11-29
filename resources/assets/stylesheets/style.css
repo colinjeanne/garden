@@ -1,14 +1,24 @@
 header {
-   display: block;
+   display: flex;
    font-size: 130%;
    font-family: sans-serif;
+   justify-content: space-between;
    margin-bottom: 0.5em;
    text-transform: capitalize;
 }
 
-section h1 {
+h1 {
    font-size: 125%;
    font-family: sans-serif;
+   font-weight: normal;
+   margin: 0 0 0.5em;
+   text-transform: capitalize;
+}
+
+h2 {
+   font-size: 110%;
+   font-family: sans-serif;
+   font-weight: normal;
    margin: 0 0 0.5em;
    text-transform: capitalize;
 }
@@ -40,10 +50,6 @@ fieldset {
    border-style: none;
    margin: 0;
    padding: 0;
-}
-
-#userContainer {
-   float: right;
 }
 
 #mainNavigation {
@@ -89,12 +95,17 @@ fieldset {
    padding-top: 0.5em;
 }
 
+.plantsViewPage {
+   display: flex;
+}
+
+.plantsViewSidebar {
+   width: 9em;
+}
+
 .plantList,
 .plantListAddBox {
    font-family: sans-serif;
-   width: 9em;
-   float: left;
-   clear: left;
 }
 
 .plantList ol {
@@ -122,22 +133,19 @@ fieldset {
    margin-bottom: 0.5em;
    display: block;
    width: 100%;
-   box-sizing: border-box;
 }
 
 .plantListAddBox {
    margin-bottom: 0.5em;
-   display: block;
-   box-sizing: border-box;
+   display: flex;
 }
 
 .plantListAddBox input {
-   width: 67%;
-   box-sizing: border-box;
+   flex-grow: 1;
 }
 
 .plantListAddBox button {
-   width: 33%;
+   padding: 0 0.5em;
 }
 
 .plantListItemName {
@@ -146,8 +154,6 @@ fieldset {
 
 .plantView {
    padding-left: 0.5em;
-   width: auto;
-   overflow: hidden;
 }
 
 .plantView div {
@@ -173,10 +179,6 @@ fieldset {
 
 .plantView output {
    font-weight: bold;
-}
-
-.signInPage {
-   text-align: center;
 }
 
 .signedIn {
@@ -267,32 +269,40 @@ fieldset {
 }
 
 .plantCalendarAddBox {
+   display: flex;
    margin-bottom: 0.5em;
 }
 
 .plantCalendarAddBox select {
-   width: 90%;
+   flex-grow: 1;
    font-size: 110%;
    text-transform: capitalize;
 }
 
 .plantCalendarAddBox button {
-   width: 10%;
    font-size: 110%;
+   padding: 0 0.5em;
+}
+
+.plantSummaryList {
+   width: 40em;
 }
 
 .summaryDatePicker {
-   font-size: 125%;
    margin-bottom: 0.5em;
 }
 
 .summaryDatePicker .datePicker {
    display: inline;
-   margin: 0 0.5em;
+   margin: 0;
 }
 
-.datePicker select {
-   font-size: inherit;
+.summaryDatePicker .datePicker:first-of-type {
+   margin-right: 0.5em;
+}
+
+.summaryDatePicker .datePicker:not(:first-of-type) {
+   margin-left: 0.5em;
 }
 
 .companionPage table {
