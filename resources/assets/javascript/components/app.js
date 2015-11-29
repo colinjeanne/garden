@@ -32,6 +32,8 @@ const app = props => {
         
         content = (
             <section>
+                <SignInPage
+                    signedIn={true} />
                 <TabbedNavigation
                     id="mainNavigation"
                     onSelect={props.onTabSelected}
@@ -42,7 +44,8 @@ const app = props => {
     } else {
         content = (
             <section>
-                <SignInPage />
+                <SignInPage
+                    signedIn={false} />
             </section>
         );
     }

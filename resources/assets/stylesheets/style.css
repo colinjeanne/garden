@@ -180,6 +180,10 @@ fieldset {
    text-align: center;
 }
 
+.signedIn {
+   display: none;
+}
+
 .plantCalendarListContainer {
    width: 40em;
    display: inline-block;
