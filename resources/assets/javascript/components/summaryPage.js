@@ -5,6 +5,7 @@ import SummaryList from './summaryList';
 const summaryPage = props => {
     return (
         <div id="content" className="summaryPage">
+            <h1>Planting Summary</h1>
             <SummaryDatePicker
                 endDate={props.endDate}
                 onEndDateChange={props.onEndDateChange}

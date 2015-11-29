@@ -16,7 +16,6 @@ const summaryDatePicker = props => {
     
     return (
         <div className="summaryDatePicker">
-            <h1>Planting Summary</h1>
             <DatePicker
                 defaultValue={props.startDate}
                 endDate={endDate}
