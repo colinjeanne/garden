@@ -27,6 +27,12 @@ const calendarPage = props => {
     const currentMonth = moment.utc(props.currentDate).
         startOf('month');
     
+    const oneMonthFromNow = moment.utc(props.currentDate).
+        add(1, 'months');
+        
+    const oneMonthAgo = moment.utc(props.currentDate).
+        subtract(1, 'months');
+    
     const nextMonth = moment.utc(currentMonth).
         add(1, 'months');
     
@@ -49,6 +55,12 @@ const calendarPage = props => {
     
     return (
         <div id="content" className="calendarPage">
+            <button
+                onClick={() => props.onUpdateCurrentDate(
+                    oneMonthAgo.format('YYYY-MM-DDThh:mm:ssZ'))}
+                type="button">
+                &lt;
+            </button>
             <CalendarColumn
                 harvestEvents={currentHarvestEvents}
                 onCreateCalendarEvent={createCalendarEvent(currentMonth)}
@@ -67,6 +79,12 @@ const calendarPage = props => {
                 plantedEvents={nextPlantedEvents}
                 plants={props.plants}
                 title={nextMonth.format(titleFormat)} />
+            <button
+                onClick={() => props.onUpdateCurrentDate(
+                    oneMonthFromNow.format('YYYY-MM-DDThh:mm:ssZ'))}
+                type="button">
+                &gt;
+            </button>
         </div>
     );
 };
@@ -78,6 +96,7 @@ calendarPage.propTypes = {
     onHarvestAdded: React.PropTypes.func.isRequired,
     onHarvestDelayed: React.PropTypes.func.isRequired,
     onPlantDied: React.PropTypes.func.isRequired,
+    onUpdateCurrentDate: React.PropTypes.func.isRequired,
     plants: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
 };
 

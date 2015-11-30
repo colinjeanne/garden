@@ -4,17 +4,15 @@ import {
     delayHarvest,
     plantDied } from '../actions/calendarActions';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import moment from 'moment';
 import CalendarPage from './calendarPage';
+import { connect } from 'react-redux';
 import React from 'react';
+import { updateCurrentDate } from '../actions/navigationActions';
 
 const mapStateToProps = state => {
     return {
         calendarEvents: state.calendar.events,
-        currentDate: moment.
-            utc().
-            format('YYYY-MM-DDThh:mm:ssZ'),
+        currentDate: state.calendarPage.currentDate,
         plants: state.plants.plants
     };
 };
@@ -24,7 +22,8 @@ const mapDispatchToProps = dispatch => {
         onCreateCalendarEvent: createCalendarEvent,
         onHarvestAdded: addHarvest,
         onHarvestDelayed: delayHarvest,
-        onPlantDied: plantDied
+        onPlantDied: plantDied,
+        onUpdateCurrentDate: updateCurrentDate
     },
     dispatch);
 };

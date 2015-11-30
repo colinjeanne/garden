@@ -9,6 +9,8 @@ export default {
     DELAY_HARVEST:              'DELAY_HARVEST',
     PLANT_DIED:                 'PLANT_DIED',
     
+    UPDATE_CURRENT_DATE:        'UPDATE_CURRENT_DATE',
+    
     SHOW_PAGE:                  'SHOW_PAGE',
     pages: {
         CALENDAR:               'Calendar',
@@ -23,7 +25,6 @@ export default {
     SORT_PLANTS:                'SORT_PLANTS',
     
     EDIT_PLANT:                 'EDIT_PLANT',
-    SAVE_PLANT:                 'SAVE_PLANT',
     
     USER_SIGNIN:                'USER_SIGNIN',
     

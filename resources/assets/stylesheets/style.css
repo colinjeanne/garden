@@ -185,6 +185,14 @@ fieldset {
    display: none;
 }
 
+.calendarPage > button {
+   font-size: 125%;
+}
+
+.calendarPage > button:first-of-type {
+   margin-right: 1em;
+}
+
 .plantCalendarListContainer {
    width: 40em;
    display: inline-block;
